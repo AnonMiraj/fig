@@ -11,7 +11,7 @@ contains
         type(canvas), intent(inout) :: canva
         character(len=:), allocatable :: file_path
         integer, intent(out) :: result
-        integer :: iunit, i
+        integer :: iunit, i,j
         integer :: bytes(3)
 
         file_path=canva%title // '.ppm'
@@ -21,12 +21,14 @@ contains
         write(iunit, '(i0," ",i0)')  canva%width, canva%height
         write(iunit, '(i0)') 255
 
-        do i = 0, canva%width*canva%height-1
-            bytes(1) = ibits(canva%pixels(i),  0, 8)
-            bytes(2) = ibits(canva%pixels(i),  8, 8)
-            bytes(3) = ibits(canva%pixels(i), 16, 8)
-
-            write(iunit,'(3a1)',advance='no') bytes
+        do j = 0, canva%height-1
+            do i = 0, canva%width-1
+                bytes(1) = ibits(canva%pixels(i, j),  0, 8)
+                bytes(2) = ibits(canva%pixels(i, j),  8, 8)
+                bytes(3) = ibits(canva%pixels(i, j), 16, 8)
+        
+                write(iunit, '(3a1)', advance='no') bytes
+            end do
         end do
 
         close(iunit)
@@ -45,7 +47,6 @@ contains
 
     end subroutine fig_fill
 
-
 subroutine fig_fill_rect(canva, x0, y0, w, h, rgb_color)
     type(canvas), intent(inout) :: canva
     integer, intent(in) :: x0, y0, w, h
@@ -60,7 +61,7 @@ subroutine fig_fill_rect(canva, x0, y0, w, h, rgb_color)
     
     do y = max(y0, 0), min(y_end, canva%height - 1)
         do x = max(x0, 0), min(x_end, canva%width - 1)
-            canva%pixels(y * canva%width + x) = color
+            canva%pixels(x, y) = color
         end do
     end do
 end subroutine fig_fill_rect
@@ -75,12 +76,10 @@ subroutine fig_draw_line(canva, x1, y1, x2, y2, rgb_color)
     integer :: dx, dy, x, y, x_start, x_end, y_start, y_end
     
     color = rgb_to_int(rgb_color)
-    
-    ! Calculate deltas
+
     dx = x2 - x1
     dy = y2 - y1
     
-    ! Determine start and end points
     x_start = max(min(x1, x2), 0)
     x_end = min(max(x1, x2), canva%width - 1)
     y_start = max(min(y1, y2), 0)
@@ -91,20 +90,18 @@ subroutine fig_draw_line(canva, x1, y1, x2, y2, rgb_color)
         do x = x_start, x_end
             if (x >= 0 .and. x < canva%width) then
                 y = max(min(y1, canva%height - 1), 0)
-                canva%pixels(y * canva%width + x) = color
+                canva%pixels(x, y) = color
             endif
         end do
     else
-        ! Draw lines with non-zero slope
         do x = x_start, x_end
             y = (dy * (x - x1)) / dx + y1
             if (y >= 0 .and. y < canva%height) then
-                canva%pixels(y * canva%width + x) = color
+                canva%pixels(x, y) = color
             endif
         end do
     endif
 end subroutine fig_draw_line
-
 
 subroutine fig_fill_circle(canva, cx, cy, r, rgb_color)
     type(canvas), intent(inout) :: canva
@@ -120,7 +117,7 @@ subroutine fig_fill_circle(canva, cx, cy, r, rgb_color)
             dx = x - cx
             dy = y - cy
             if (dx*dx + dy*dy <= r*r) then
-                canva%pixels(y * canva%width + x) = color
+                canva%pixels(x, y) = color
             end if
         end do
     end do
@@ -142,7 +139,7 @@ subroutine fig_fill_ellipse(canva, cx, cy, r1, r2, rgb_color)
     do y = max(cy - r2, 0), min(cy + r2, canva%height - 1)
         do x = max(cx - r1, 0), min(cx + r1, canva%width - 1)
             if (((x - cx) / real(r1))**2 + ((y - cy) / real(r2))**2 <= 1.0) then
-                canva%pixels(y * canva%width + x) = color
+                canva%pixels(x, y) = color
             end if
         end do
     end do
