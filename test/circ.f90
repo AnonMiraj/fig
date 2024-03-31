@@ -14,22 +14,19 @@ program circles_pattern
     integer :: radius
     type(canvas) :: circ
     type(RGB) :: color
-    type(RGB), dimension(8) :: color_palette ! Define a color palette
+    type(RGB), dimension(8) :: color_palette
     call canvas_init(circ, WIDTH, HEIGHT, "circles_pattern")
     
     call fig_fill(circ, BLACK)
-    color_palette = [ RED,   & ! Red
-                      MAGENTA, & ! Orange
-                      YELLOW, & ! Yellow
-                      GREEN,   & ! Green
-                      BLUE,   & ! Blue
-                      CYAN,  & ! Indigo
-                      PINK, & ! Purple
-                      WHITE ] ! Pink
+    color_palette = [ RED,   & 
+                      MAGENTA, &
+                      YELLOW, &
+                      GREEN,   &
+                      BLUE,   &
+                      CYAN,  &
+                      PINK, &
+                      WHITE ]
     
-    ! Draw circles
-
-! Draw circles
     do y = 0, rows - 1
         do x = 0, cols - 1
             center_x = (x + 0.5) * CELL_WIDTH

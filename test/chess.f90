@@ -26,7 +26,7 @@ program chess_checker
             else
                 color = BACKGROUND_COLOR
             endif
-            call fig_fill_rect(checker, (x - 1) * CELL_WIDTH+1, (y - 1) * CELL_HEIGHT+1, CELL_WIDTH, CELL_HEIGHT, color)
+            call fig_fill_rect(checker, (x - 1) * CELL_WIDTH, (y - 1) * CELL_HEIGHT, CELL_WIDTH, CELL_HEIGHT, color)
         end do
     end do
     

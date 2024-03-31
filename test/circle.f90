@@ -8,9 +8,9 @@ program circle_test
     integer :: cx, cy, radius, result
     call canvas_init(circle, 400, 400, "green_blob")
 
-    cx = circle%width / 2   ! Center x-coordinate
-    cy = circle%height / 3  ! Center y-coordinate
-    radius = min(circle%width, circle%height) / 8  ! Radius
+    cx = circle%width / 2 
+    cy = circle%height / 3
+    radius = min(circle%width, circle%height) / 8 
 
     call fig_fill(circle, GREEN)
 

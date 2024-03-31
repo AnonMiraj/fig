@@ -68,40 +68,49 @@ end subroutine fig_fill_rect
 
 
 subroutine fig_draw_line(canva, x1, y1, x2, y2, rgb_color)
+    ! The Bresenham's line algorithm
     type(canvas), intent(inout) :: canva
     integer, intent(in) :: x1, y1, x2, y2
     type(RGB), intent(in) :: rgb_color
     integer :: color
     
     integer :: dx, dy, x, y, x_start, x_end, y_start, y_end
+    integer :: sx, sy, err, e2
     
     color = rgb_to_int(rgb_color)
-
-    dx = x2 - x1
-    dy = y2 - y1
+    
+    dx = abs(x2 - x1)
+    dy = abs(y2 - y1)
     
     x_start = max(min(x1, x2), 0)
     x_end = min(max(x1, x2), canva%width - 1)
     y_start = max(min(y1, y2), 0)
     y_end = min(max(y1, y2), canva%height - 1)
     
-    ! Draw horizontal lines
-    if (dy == 0) then
-        do x = x_start, x_end
-            if (x >= 0 .and. x < canva%width) then
-                y = max(min(y1, canva%height - 1), 0)
-                canva%pixels(x, y) = color
-            endif
-        end do
-    else
-        do x = x_start, x_end
-            y = (dy * (x - x1)) / dx + y1
-            if (y >= 0 .and. y < canva%height) then
-                canva%pixels(x, y) = color
-            endif
-        end do
-    endif
+    sx = sign(1, x2 - x1)
+    sy = sign(1, y2 - y1)
+    
+    err = dx - dy
+    
+    x = x1
+    y = y1
+    
+    do while ((x /= x2 .or. y /= y2) .and. &
+              (x >= 0 .and. x < canva%width) .and. &
+              (y >= 0 .and. y < canva%height))
+        canva%pixels(x, y) = color 
+        e2 = 2 * err
+        if (e2 > -dy) then
+            err = err - dy
+            x = x + sx
+        end if
+        if (e2 < dx) then
+            err = err + dx
+            y = y + sy
+        end if
+    end do
 end subroutine fig_draw_line
+
 
 subroutine fig_fill_circle(canva, cx, cy, r, rgb_color)
     type(canvas), intent(inout) :: canva
