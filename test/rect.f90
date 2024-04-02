@@ -11,11 +11,14 @@ program rect_test
     call canvas_init(rect, 800, 600, "rect")
     call fig_fill(rect, CYAN)
 
-    call fig_fill_rect(rect, 400, 300,400, 300, RED)
-    call fig_fill_rect(rect, 400, 0,400, 300, BLUE)
+    call fig_draw_rect(rect, 100, 100, 200, 150, RED)
+    call fig_fill_rect(rect, 400, 100, 200, 150, BLUE)
+    call fig_draw_rect(rect, 200, 300, 150, 200, GREEN)
+    call fig_fill_rect(rect, 500, 300, 150, 200, YELLOW)
+    call fig_draw_rect(rect, 100, 500, 250, 100, MAGENTA)
+    call fig_fill_rect(rect, 400, 500, 250, 100, PINK)
 
     call fig_save_to_ppm_file(rect, result)
-
     if (result == 0) then
         print *, 'Image successfully saved to rect.ppm'
     else

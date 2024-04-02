@@ -25,8 +25,8 @@ program test_fig_draw_triangle
     colors(6) = MAGENTA
 
 
-    do i = 0, 801, triangle_size
-        do j = 0, 801, triangle_size
+    do i = 0, 800, triangle_size
+        do j = 0, 800, triangle_size
             ind =mod(i+j,7)
             call fig_draw_triangle(test_canvas, i, j, i + triangle_size, j, i + triangle_size, j + triangle_size,colors(ind))
             call fig_draw_triangle(test_canvas, i, j, i, j + triangle_size, i + triangle_size, j + triangle_size,colors(ind))

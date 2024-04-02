@@ -87,28 +87,23 @@ subroutine fig_draw_rect(canva, x0, y0, w, h, rgb_color)
     type(canvas), intent(inout) :: canva
     integer, intent(in) :: x0, y0, w, h
     type(RGB), intent(in) :: rgb_color
-    integer :: color
-    integer :: x, y, x_end, y_end
     
-    color = rgb_to_int(rgb_color)
-    
-    
-
+    call fig_draw_line(canva, x0, y0, x0 + w, y0, rgb_color) ! Top line
+    call fig_draw_line(canva, x0, y0, x0, y0 + h, rgb_color) ! Left line
+    call fig_draw_line(canva, x0 + w - 1, y0 + h - 1, x0 + w - 1, y0, rgb_color) ! Right line
+    call fig_draw_line(canva, x0 + w - 1, y0 + h - 1, x0, y0 + h - 1, rgb_color) ! Bottom line
 end subroutine fig_draw_rect
-
 
 subroutine fig_draw_triangle(canva, x0, y0, x1, y1, x2, y2, rgb_color)
     type(canvas), intent(inout) :: canva
     integer, intent(in) :: x0, y0, x1, y1, x2, y2
     type(RGB), intent(in) :: rgb_color
-    integer :: x, y, x_end, y_end
 
     call fig_draw_line(canva,x0,y0,x1,y1,rgb_color)
     call fig_draw_line(canva,x1,y1,x2,y2,rgb_color)
-    call fig_draw_line(canva,x0,y0,x2,y2,rgb_color)
-    
-    
+    call fig_draw_line(canva,x2,y2,x0,y0,rgb_color)
 end subroutine fig_draw_triangle
+
 
 subroutine fig_fill_circle(canva, cx, cy, r, rgb_color)
     type(canvas), intent(inout) :: canva
