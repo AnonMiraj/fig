@@ -1,2 +1,4 @@
 *.ppm
 ./build/
+./.fortlsrc
+./test/test.f90

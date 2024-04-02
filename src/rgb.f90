@@ -26,7 +26,7 @@ contains
         type(RGB), intent(in) :: color
         integer :: rgb_int
 
-        rgb_int = ior(ishft(color%a, 24), ior(ishft(color%r, 16), ior(ishft(color%g, 8), color%b)))
+        rgb_int = ior(ishft(color%a, 24), ior(ishft(color%b, 16), ior(ishft(color%g, 8), color%r)))
 
     end function rgb_to_int
 
