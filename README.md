@@ -8,6 +8,6 @@ Below are some examples of images created using FIG:
 |---|---|
 | ![](./assets/Radial%20Lines.png) | ![](./assets/circles_pattern.png) |
 | ![](./assets/rect.png) | ![](./assets/checker.png)  |
-| ![](./assets/green_blob.png) | ![](./assets/Smiley%20Face.png) |
+| ![](./assets/test_triangle.png)| ![](./assets/Smiley%20Face.png) |
 
 you can generate them yourself using `fpm test`

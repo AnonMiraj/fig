@@ -3,37 +3,9 @@ module fig_primitive
     use fig_rgb
     use fig_canvas
     implicit none
+    integer:: STROKE = 10
 
 contains
-
-    subroutine fig_save_to_ppm_file(canva, result)
-        implicit none
-        type(canvas), intent(inout) :: canva
-        character(len=:), allocatable :: file_path
-        integer, intent(out) :: result
-        integer :: iunit, i,j
-        integer :: bytes(3)
-
-        file_path=canva%title // '.ppm'
-        open(newunit=iunit, file=file_path, status='replace')
-
-        write(iunit, '(a2)') 'P6'
-        write(iunit, '(i0," ",i0)')  canva%width, canva%height
-        write(iunit, '(i0)') 255
-
-        do j = 0, canva%height-1
-            do i = 0, canva%width-1
-                bytes(1) = ibits(canva%pixels(i, j),  0, 8)
-                bytes(2) = ibits(canva%pixels(i, j),  8, 8)
-                bytes(3) = ibits(canva%pixels(i, j), 16, 8)
-        
-                write(iunit, '(3a1)', advance='no') bytes
-            end do
-        end do
-
-        close(iunit)
-        result = 0
-    end subroutine fig_save_to_ppm_file
 
     subroutine fig_fill(canva, background)
         implicit none
@@ -46,25 +18,6 @@ contains
         canva%pixels = color
 
     end subroutine fig_fill
-
-subroutine fig_fill_rect(canva, x0, y0, w, h, rgb_color)
-    type(canvas), intent(inout) :: canva
-    integer, intent(in) :: x0, y0, w, h
-    type(RGB), intent(in) :: rgb_color
-    integer :: color
-    integer :: x, y, x_end, y_end
-    
-    color = rgb_to_int(rgb_color)
-    
-    x_end = min(x0 + w - 1, canva%width)
-    y_end = min(y0 + h - 1, canva%height)
-    
-    do y = max(y0, 0), min(y_end, canva%height - 1)
-        do x = max(x0, 0), min(x_end, canva%width - 1)
-            canva%pixels(x, y) = color
-        end do
-    end do
-end subroutine fig_fill_rect
 
 
 subroutine fig_draw_line(canva, x1, y1, x2, y2, rgb_color)
@@ -111,6 +64,37 @@ subroutine fig_draw_line(canva, x1, y1, x2, y2, rgb_color)
     end do
 end subroutine fig_draw_line
 
+subroutine fig_fill_rect(canva, x0, y0, w, h, rgb_color)
+    type(canvas), intent(inout) :: canva
+    integer, intent(in) :: x0, y0, w, h
+    type(RGB), intent(in) :: rgb_color
+    integer :: color
+    integer :: x, y, x_end, y_end
+    
+    color = rgb_to_int(rgb_color)
+    
+    x_end = min(x0 + w - 1, canva%width)
+    y_end = min(y0 + h - 1, canva%height)
+    
+    do y = max(y0, 0), min(y_end, canva%height - 1)
+        do x = max(x0, 0), min(x_end, canva%width - 1)
+            canva%pixels(x, y) = color
+        end do
+    end do
+end subroutine fig_fill_rect
+
+subroutine fig_draw_triangle(canva, x0, y0, x1, y1, x2, y2, rgb_color)
+    type(canvas), intent(inout) :: canva
+    integer, intent(in) :: x0, y0, x1, y1, x2, y2
+    type(RGB), intent(in) :: rgb_color
+    integer :: x, y, x_end, y_end
+
+    call fig_draw_line(canva,x0,y0,x1,y1,rgb_color)
+    call fig_draw_line(canva,x1,y1,x2,y2,rgb_color)
+    call fig_draw_line(canva,x0,y0,x2,y2,rgb_color)
+    
+    
+end subroutine fig_draw_triangle
 
 subroutine fig_fill_circle(canva, cx, cy, r, rgb_color)
     type(canvas), intent(inout) :: canva

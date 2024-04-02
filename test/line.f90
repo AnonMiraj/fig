@@ -1,4 +1,3 @@
-
 program radial_lines
     use fig_primitive
     use fig_canvas
@@ -62,9 +61,9 @@ contains
         call random_number(r)
         call random_number(g)
         call random_number(b)
-        color%red = int(r * 255)
-        color%green = int(g * 255)
-        color%blue = int(b * 255)
+        color%r = int(r * 255)
+        color%g = int(g * 255)
+        color%b = int(b * 255)
     end subroutine random_color
 end program radial_lines
 
