@@ -8,6 +8,11 @@ Below are some examples of images created using FIG:
 |---|---|
 | ![](./assets/Radial%20Lines.png) | ![](./assets/circles_pattern.png) |
 | ![](./assets/rect.png) | ![](./assets/checker.png)  |
-| ![](./assets/test_triangle.png)| ![](./assets/Smiley%20Face.png) |
+| ![](./assets/triangles.png)| ![](./assets/cool_triangle_pattern.png)|
 
 you can generate them yourself using `fpm test`
+
+### todo
+- [ ] better cirlces drawing and filling 
+- [ ] pro drawing for rectangle the supports rotating and such
+

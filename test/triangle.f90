@@ -1,5 +1,3 @@
-
-
 program test_fig_draw_triangle
     use fig_canvas
     use fig_primitive
@@ -13,7 +11,7 @@ program test_fig_draw_triangle
     integer :: triangle_size = 50
 
     ! Initialize canvas and colors
-    call canvas_init(test_canvas, 801, 801, "test_triangle")
+    call canvas_init(test_canvas, 801, 801, "triangles")
 
     ! Define colors in the array
     colors(0) = RED
@@ -25,8 +23,8 @@ program test_fig_draw_triangle
     colors(6) = MAGENTA
 
 
-    do i = 0, 800, triangle_size
-        do j = 0, 800, triangle_size
+    do i = 0, 799, triangle_size
+        do j = 0, 799, triangle_size
             ind =mod(i+j,7)
             call fig_draw_triangle(test_canvas, i, j, i + triangle_size, j, i + triangle_size, j + triangle_size,colors(ind))
             call fig_draw_triangle(test_canvas, i, j, i, j + triangle_size, i + triangle_size, j + triangle_size,colors(ind))
@@ -38,10 +36,8 @@ program test_fig_draw_triangle
     call fig_save_to_ppm_file(test_canvas, result)
 
     if (result == 0) then
-        print *, 'Image successfully saved to triangle.ppm'
+        print *, 'Image successfully saved to triangles.ppm'
     else
         print *, 'Error occurred while saving the image'
     end if
 end program test_fig_draw_triangle
-
-
