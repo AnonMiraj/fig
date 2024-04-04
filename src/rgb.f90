@@ -19,6 +19,8 @@ module fig_rgb
     type(RGB) :: CYAN = RGB(0, 255, 255, 255)
     type(RGB) :: MAGENTA = RGB(255, 0, 255, 255)
     type(RGB) :: PINK = RGB(255, 192, 203, 255)
+    type(RGB) :: ORANGE = RGB(255, 165, 0, 255)
+    type(RGB) :: PURPLE = RGB(128, 0, 128, 255)
 
 contains
 
