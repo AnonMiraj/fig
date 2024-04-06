@@ -1,4 +1,3 @@
-
 module fig_primitive
     use fig_rgb
     use fig_canvas
@@ -11,7 +10,6 @@ contains
         implicit none
         type(canvas), intent(inout) :: canva
         type(RGB), intent(in) :: background
-        integer :: i
         integer :: color 
         color = rgb_to_int(background)
 
@@ -20,84 +18,134 @@ contains
     end subroutine fig_fill
 
 
-subroutine fig_draw_line(canva, x1, y1, x2, y2, rgb_color)
-    ! The Bresenham's line algorithm
-    type(canvas), intent(inout) :: canva
-    integer, intent(in) :: x1, y1, x2, y2
-    type(RGB), intent(in) :: rgb_color
-    integer :: color
+    subroutine fig_draw_line(canva, x1, y1, x2, y2, rgb_color)
+        type(canvas), intent(inout) :: canva
+        integer, intent(in) :: x1, y1, x2, y2
+        type(vec2):: p1,p2
+        type(RGB), intent(in) :: rgb_color
     
-    integer :: dx, dy, x, y
-    integer :: sx, sy, err, e2
+        p1= vec2(x1,y1)
+        p2= vec2(x2,y2)
     
-    color = rgb_to_int(rgb_color)
+        call fig_draw_lineV(canva,p1,p2,rgb_color)
     
-    dx = abs(x2 - x1)
-    dy = abs(y2 - y1)
-    
-    sx = sign(1, x2 - x1)
-    sy = sign(1, y2 - y1)
-    
-    err = dx - dy
-    
-    x = x1
-    y = y1
-    
-    do while ((x /= x2 .or. y /= y2) .and. &
-              (x >= 0 .and. x < canva%width) .and. &
-              (y >= 0 .and. y < canva%height))
-        canva%pixels(x, y) = color 
-        e2 = 2 * err
-        if (e2 > -dy) then
-            err = err - dy
-            x = x + sx
-        end if
-        if (e2 < dx) then
-            err = err + dx
-            y = y + sy
-        end if
-    end do
-end subroutine fig_draw_line
+    end subroutine fig_draw_line
 
-subroutine fig_fill_rect(canva, x0, y0, w, h, rgb_color)
-    type(canvas), intent(inout) :: canva
-    integer, intent(in) :: x0, y0, w, h
-    type(RGB), intent(in) :: rgb_color
-    integer :: color
-    integer :: x, y, x_end, y_end
-    
-    color = rgb_to_int(rgb_color)
-    
-    x_end = min(x0 + w - 1, canva%width)
-    y_end = min(y0 + h - 1, canva%height)
-    
-    do y = max(y0, 0), min(y_end, canva%height - 1)
-        do x = max(x0, 0), min(x_end, canva%width - 1)
-            canva%pixels(x, y) = color
+    subroutine fig_draw_lineV(canva, p1, p2, rgb_color)
+        ! The Bresenham's line algorithm
+        type(canvas), intent(inout) :: canva
+        type(RGB), intent(in) :: rgb_color
+        type(vec2), intent(in) :: p1,p2
+        integer :: color
+        
+        integer :: dx, dy, x, y
+        integer :: sx, sy, err, e2
+        
+        color = rgb_to_int(rgb_color)
+        
+        dx = abs(p2%x - p1%x)
+        dy = abs(p2%y - p1%y)
+        
+        sx = sign(1, p2%x - p1%x)
+        sy = sign(1, p2%y - p1%y)
+        
+        err = dx - dy
+        
+        x = p1%x
+        y = p1%y
+        
+        do while ((x /= p2%x .or. y /= p2%y) .and. &
+                  (x >= 0 .and. x < canva%width) .and. &
+                  (y >= 0 .and. y < canva%height))
+            canva%pixels(x, y) = color 
+            e2 = 2 * err
+            if (e2 > -dy) then
+                err = err - dy
+                x = x + sx
+            end if
+            if (e2 < dx) then
+                err = err + dx
+                y = y + sy
+            end if
         end do
-    end do
-end subroutine fig_fill_rect
+    end subroutine fig_draw_lineV
 
-subroutine fig_draw_rect(canva, x0, y0, w, h, rgb_color)
-    type(canvas), intent(inout) :: canva
-    integer, intent(in) :: x0, y0, w, h
-    type(RGB), intent(in) :: rgb_color
+
+
+    subroutine fig_fill_rect(canva, x1, y1, w, h, rgb_color)
+        type(canvas), intent(inout) :: canva
+        integer, intent(in) :: x1, y1, w, h
+        type(RGB), intent(in) :: rgb_color
+
+        type(vec2) :: p
+
+        p=vec2(x1,y1)
+
+        call fig_fill_rectV(canva,p,w,h,rgb_color)
+
+    end subroutine fig_fill_rect
+
+    subroutine fig_fill_rectV(canva, p, w, h, rgb_color)
+        type(canvas), intent(inout) :: canva
+        integer, intent(in) ::  w, h
+        type(RGB), intent(in) :: rgb_color
+        type(vec2), intent(in) :: p
+        integer :: color
+        integer :: x, y, x_end, y_end
+        
+        color = rgb_to_int(rgb_color)
+        
+        x_end = min(p%x + w - 1, canva%width)
+        y_end = min(p%y + h - 1, canva%height)
+        
+        do y = max(p%y, 0), min(y_end, canva%height - 1)
+            do x = max(p%x, 0), min(x_end, canva%width - 1)
+                canva%pixels(x, y) = color
+            end do
+        end do
+    end subroutine fig_fill_rectV
+
+    subroutine fig_draw_rect(canva, x1, y1, w, h, rgb_color)
+        type(canvas), intent(inout) :: canva
+        integer, intent(in) :: x1, y1, w, h
+        type(RGB), intent(in) :: rgb_color
+        type(vec2) :: p
+
+        p=vec2(x1,y1)
+        call fig_draw_rectV(canva, p, w, h, rgb_color)
+        
+    end subroutine fig_draw_rect
+
+    subroutine fig_draw_rectV(canva, p, w, h, rgb_color)
+        type(canvas), intent(inout) :: canva
+        integer, intent(in) :: w, h
+        type(RGB), intent(in) :: rgb_color
+        type(vec2), intent(in) :: p
+        
+        call fig_draw_line(canva, p%x, p%y, p%x + w, p%y, rgb_color) ! Top line
+        call fig_draw_line(canva, p%x, p%y, p%x, p%y + h, rgb_color) ! Left line
+        call fig_draw_line(canva, p%x + w - 1, p%y + h - 1, p%x + w - 1, p%y, rgb_color) ! Right line
+        call fig_draw_line(canva, p%x + w - 1, p%y + h - 1, p%x, p%y + h - 1, rgb_color) ! Bottom line
+    end subroutine fig_draw_rectV
+
+    subroutine fig_draw_triangle(canva, x0, y0, x1, y1, x2, y2, rgb_color)
+        type(canvas), intent(inout) :: canva
+        integer, intent(in) :: x0, y0, x1, y1, x2, y2
+        type(RGB), intent(in) :: rgb_color
     
-    call fig_draw_line(canva, x0, y0, x0 + w, y0, rgb_color) ! Top line
-    call fig_draw_line(canva, x0, y0, x0, y0 + h, rgb_color) ! Left line
-    call fig_draw_line(canva, x0 + w - 1, y0 + h - 1, x0 + w - 1, y0, rgb_color) ! Right line
-    call fig_draw_line(canva, x0 + w - 1, y0 + h - 1, x0, y0 + h - 1, rgb_color) ! Bottom line
-end subroutine fig_draw_rect
+        call fig_draw_line(canva,x0,y0,x1,y1,rgb_color)
+        call fig_draw_line(canva,x1,y1,x2,y2,rgb_color)
+        call fig_draw_line(canva,x2,y2,x0,y0,rgb_color)
+    end subroutine fig_draw_triangle
 
-subroutine fig_draw_triangle(canva, x0, y0, x1, y1, x2, y2, rgb_color)
-    type(canvas), intent(inout) :: canva
-    integer, intent(in) :: x0, y0, x1, y1, x2, y2
-    type(RGB), intent(in) :: rgb_color
-
-    call fig_draw_line(canva,x0,y0,x1,y1,rgb_color)
-    call fig_draw_line(canva,x1,y1,x2,y2,rgb_color)
-    call fig_draw_line(canva,x2,y2,x0,y0,rgb_color)
-end subroutine fig_draw_triangle
+    subroutine fig_draw_triangleV(canva, p1, p2, p3, rgb_color)
+        type(canvas), intent(inout) :: canva
+        type(vec2), intent(in) :: p1, p2, p3
+        type(RGB), intent(in) :: rgb_color
+        call fig_draw_line(canva,p1%x,p1%y,p2%x,p2%y,rgb_color)
+        call fig_draw_line(canva,p2%x,p2%y,p3%x,p3%y,rgb_color)
+        call fig_draw_line(canva,p3%x,p3%y,p1%x,p1%y,rgb_color)
+    end subroutine fig_draw_triangleV
 
 subroutine swap_integers(a, b)
         integer, intent(inout) :: a, b
@@ -150,7 +198,7 @@ subroutine fig_fill_triangle(canva, x0, y0, x1, y1, x2, y2, rgb_color)
     dy01 = yn1 - yn0
     dx01 = xn1 - xn0
     dy02 = yn2 - yn0
-    dx02 = xn2 - xn0
+    dx02 = xn2 - xn1
 
     do y = max(yn0, 0), min(yn1, canva%height - 1), 1
         if (dy01 /= 0) then

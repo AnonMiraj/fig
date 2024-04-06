@@ -7,6 +7,13 @@ module fig_canvas
         integer, dimension(:,:), allocatable:: pixels
     end type canvas
     
+    type :: vec2
+        integer :: x, y
+    end type vec2
+
+    type :: vec3
+        integer :: x, y, z
+    end type vec3
 
 contains
 
