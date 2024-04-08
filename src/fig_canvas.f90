@@ -26,7 +26,7 @@ contains
         this%height = height
         this%title = title
         
-        allocate(this%pixels(0:width, 0:height))
+        allocate(this%pixels(0:width-1, 0:height-1))
         this%pixels = 0
     end subroutine canvas_init
 
