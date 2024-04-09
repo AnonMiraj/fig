@@ -95,14 +95,15 @@ contains
         
         color = rgb_to_int(rgb_color)
         
-        x_end = min(p%x + w - 1, canva%width)
-        y_end = min(p%y + h - 1, canva%height)
+        x_end = min(p%x + w - 1, canva%width-1)
+        y_end = min(p%y + h - 1, canva%height-1)
         
-        do y = max(p%y, 0), min(y_end, canva%height - 1)
-            do x = max(p%x, 0), min(x_end, canva%width - 1)
+        do y = max(p%y, 0), y_end 
+            do x = max(p%x, 0), x_end 
                 canva%pixels(x, y) = color
             end do
         end do
+
     end subroutine fig_fill_rectV
 
     subroutine fig_draw_rect(canva, x1, y1, w, h, rgb_color)
@@ -112,6 +113,7 @@ contains
         type(vec2) :: p
 
         p=vec2(x1,y1)
+
         call fig_draw_rectV(canva, p, w, h, rgb_color)
         
     end subroutine fig_draw_rect
@@ -128,170 +130,175 @@ contains
         call fig_draw_line(canva, p%x + w - 1, p%y + h - 1, p%x, p%y + h - 1, rgb_color) ! Bottom line
     end subroutine fig_draw_rectV
 
-    subroutine fig_draw_triangle(canva, x0, y0, x1, y1, x2, y2, rgb_color)
+    subroutine fig_draw_triangle(canva, x1, y1, x2, y2, x3, y3, rgb_color)
         type(canvas), intent(inout) :: canva
-        integer, intent(in) :: x0, y0, x1, y1, x2, y2
+        integer, intent(in) :: x1, y1, x2, y2, x3, y3
         type(RGB), intent(in) :: rgb_color
-    
-        call fig_draw_line(canva,x0,y0,x1,y1,rgb_color)
-        call fig_draw_line(canva,x1,y1,x2,y2,rgb_color)
-        call fig_draw_line(canva,x2,y2,x0,y0,rgb_color)
+        type(vec2) :: p1,p2,p3
+        
+        p1=vec2(x1,y1)
+        p2=vec2(x2,y2)
+        p3=vec2(x3,y3)
+
+        call fig_draw_triangleV(canva,p1,p2,p3,rgb_color)
     end subroutine fig_draw_triangle
 
     subroutine fig_draw_triangleV(canva, p1, p2, p3, rgb_color)
         type(canvas), intent(inout) :: canva
         type(vec2), intent(in) :: p1, p2, p3
         type(RGB), intent(in) :: rgb_color
+
         call fig_draw_line(canva,p1%x,p1%y,p2%x,p2%y,rgb_color)
         call fig_draw_line(canva,p2%x,p2%y,p3%x,p3%y,rgb_color)
         call fig_draw_line(canva,p3%x,p3%y,p1%x,p1%y,rgb_color)
     end subroutine fig_draw_triangleV
 
-subroutine swap_integers(a, b)
+    subroutine swap_integers(a, b)
         integer, intent(inout) :: a, b
         integer :: temp
         temp = a
         a = b
         b = temp
-end subroutine swap_integers
+    end subroutine swap_integers
 
-subroutine fig_fill_triangle(canva, x0, y0, x1, y1, x2, y2, rgb_color)
-    !! TODO relly need to clean this mess of a subroutine
-    type(canvas), intent(inout) :: canva
-    integer, intent(in) :: x0, y0, x1, y1, x2, y2
-    type(RGB), intent(in) :: rgb_color
-    integer :: xn0, yn0, xn1, yn1, xn2, yn2
-    integer :: x, y
-    integer :: s1, s2
-    integer :: c01, c12
-    integer :: dx01, dy01
-    integer :: dx02, dy02
-    integer :: dx21, dy21
-    integer :: dx20, dy20
-    integer :: color
-
-    color = rgb_to_int(rgb_color)
-
-    xn0 = x0
-    yn0 = y0 
-    xn1 = x1
-    yn1 = y1
-    xn2 = x2
-    yn2 = y2
-
-    ! Ensure yn0 <= yn1 <= yn2
-    if (yn0 > yn1) then
-        call swap_integers(xn0, xn1)
-        call swap_integers(yn0, yn1)
-    end if
+    subroutine fig_fill_triangle(canva, x0, y0, x1, y1, x2, y2, rgb_color)
+        !! TODO relly need to clean this mess of a subroutine
+        type(canvas), intent(inout) :: canva
+        integer, intent(in) :: x0, y0, x1, y1, x2, y2
+        type(RGB), intent(in) :: rgb_color
+        integer :: xn0, yn0, xn1, yn1, xn2, yn2
+        integer :: x, y
+        integer :: s1, s2
+        integer :: c01, c12
+        integer :: dx01, dy01
+        integer :: dx02, dy02
+        integer :: dx21, dy21
+        integer :: dx20, dy20
+        integer :: color
     
-    if (yn1 > yn2) then
-        call swap_integers(xn1, xn2)
-        call swap_integers(yn1, yn2)
-    end if
+        color = rgb_to_int(rgb_color)
     
-    if (yn0 > yn1) then
-        call swap_integers(xn0, xn1)
-        call swap_integers(yn0, yn1)
-    end if
-
-    dy01 = yn1 - yn0
-    dx01 = xn1 - xn0
-    dy02 = yn2 - yn0
-    dx02 = xn2 - xn1
-
-    do y = max(yn0, 0), min(yn1, canva%height - 1), 1
-        if (dy01 /= 0) then
-            s1 = (y - yn0) * dx01 / dy01 + xn0
-        else
-            s1 = xn0
-        end if
-
-        if (dy02 /= 0) then
-            s2 = (y - yn0) * dx02 / dy02 + xn0
-        else
-            s2 = xn0
-        end if
-
-        if (s1 > s2) then
-            call swap_integers(s1, s2)
-        end if
-
-        do x = max(s1, 0), min(s2, canva%width - 1), 1
-            canva%pixels(x, y) = color
-        end do
-    end do
-
-    dy21 = yn1 - yn2
-    dx21 = xn1 - xn2
-    dy20 = yn0 - yn2
-    dx20 = xn0 - xn2
-
-    do y = max(yn1, 0), min(yn2, canva%height - 1), 1
-        if (dy21 /= 0) then
-            s1 = (y - yn2) * dx21 / dy21 + xn2
-        else
-            s1 = xn2
-        end if
-
-        if (dy20 /= 0) then
-            s2 = (y - yn2) * dx20 / dy20 + xn2
-        else
-            s2 = xn2
-        end if
-
-        if (s1 > s2) then
-            call swap_integers(s1, s2)
-        end if
-
-        do x = max(s1, 0), min(s2, canva%width - 1), 1
-            canva%pixels(x, y) = color
-        end do
-    end do
-
-end subroutine fig_fill_triangle
-
-
-subroutine fig_fill_circle(canva, cx, cy, r, rgb_color)
-    type(canvas), intent(inout) :: canva
-    integer, intent(in) :: cx, cy, r
-    type(RGB), intent(in) :: rgb_color
-    integer :: color 
-    integer :: x, y, dx, dy
+        xn0 = x0
+        yn0 = y0 
+        xn1 = x1
+        yn1 = y1
+        xn2 = x2
+        yn2 = y2
     
-    color = rgb_to_int(rgb_color)
-
-    do y = max(cy - r, 0), min(cy + r, canva%height - 1)
-        do x = max(cx - r, 0), min(cx + r, canva%width - 1)
-            dx = x - cx
-            dy = y - cy
-            if (dx*dx + dy*dy <= r*r) then
-                canva%pixels(x, y) = color
+        ! Ensure yn0 <= yn1 <= yn2
+        if (yn0 > yn1) then
+            call swap_integers(xn0, xn1)
+            call swap_integers(yn0, yn1)
+        end if
+        
+        if (yn1 > yn2) then
+            call swap_integers(xn1, xn2)
+            call swap_integers(yn1, yn2)
+        end if
+        
+        if (yn0 > yn1) then
+            call swap_integers(xn0, xn1)
+            call swap_integers(yn0, yn1)
+        end if
+    
+        dy01 = yn1 - yn0
+        dx01 = xn1 - xn0
+        dy02 = yn2 - yn0
+        dx02 = xn2 - xn1
+    
+        do y = max(yn0, 0), min(yn1, canva%height - 1), 1
+            if (dy01 /= 0) then
+                s1 = (y - yn0) * dx01 / dy01 + xn0
+            else
+                s1 = xn0
             end if
-        end do
-    end do
-end subroutine fig_fill_circle
-
-
-
-
-subroutine fig_fill_ellipse(canva, cx, cy, r1, r2, rgb_color)
-    type(canvas), intent(inout) :: canva
-    integer, intent(in) :: cx, cy 
-    integer, intent(in) :: r1, r2
-    type(RGB), intent(in) :: rgb_color
-    integer :: color 
-    integer :: x, y
     
-    color = rgb_to_int(rgb_color)
-    
-    do y = max(cy - r2, 0), min(cy + r2, canva%height - 1)
-        do x = max(cx - r1, 0), min(cx + r1, canva%width - 1)
-            if (((x - cx) / real(r1))**2 + ((y - cy) / real(r2))**2 <= 1.0) then
-                canva%pixels(x, y) = color
+            if (dy02 /= 0) then
+                s2 = (y - yn0) * dx02 / dy02 + xn0
+            else
+                s2 = xn0
             end if
+    
+            if (s1 > s2) then
+                call swap_integers(s1, s2)
+            end if
+    
+            do x = max(s1, 0), min(s2, canva%width - 1), 1
+                canva%pixels(x, y) = color
+            end do
         end do
-    end do
-end subroutine fig_fill_ellipse
+    
+        dy21 = yn1 - yn2
+        dx21 = xn1 - xn2
+        dy20 = yn0 - yn2
+        dx20 = xn0 - xn2
+    
+        do y = max(yn1, 0), min(yn2, canva%height - 1), 1
+            if (dy21 /= 0) then
+                s1 = (y - yn2) * dx21 / dy21 + xn2
+            else
+                s1 = xn2
+            end if
+    
+            if (dy20 /= 0) then
+                s2 = (y - yn2) * dx20 / dy20 + xn2
+            else
+                s2 = xn2
+            end if
+    
+            if (s1 > s2) then
+                call swap_integers(s1, s2)
+            end if
+    
+            do x = max(s1, 0), min(s2, canva%width - 1), 1
+                canva%pixels(x, y) = color
+            end do
+        end do
+    
+    end subroutine fig_fill_triangle
+
+
+    subroutine fig_fill_circle(canva, cx, cy, r, rgb_color)
+        type(canvas), intent(inout) :: canva
+        integer, intent(in) :: cx, cy, r
+        type(RGB), intent(in) :: rgb_color
+        integer :: color 
+        integer :: x, y, dx, dy
+        
+        color = rgb_to_int(rgb_color)
+
+        do y = max(cy - r, 0), min(cy + r, canva%height - 1)
+            do x = max(cx - r, 0), min(cx + r, canva%width - 1)
+                dx = x - cx
+                dy = y - cy
+                if (dx*dx + dy*dy <= r*r) then
+                    canva%pixels(x, y) = color
+                end if
+            end do
+        end do
+    end subroutine fig_fill_circle
+
+
+
+
+    subroutine fig_fill_ellipse(canva, cx, cy, r1, r2, rgb_color)
+        type(canvas), intent(inout) :: canva
+        integer, intent(in) :: cx, cy 
+        integer, intent(in) :: r1, r2
+        type(RGB), intent(in) :: rgb_color
+        integer :: color 
+        integer :: x, y
+        
+        color = rgb_to_int(rgb_color)
+        
+        do y = max(cy - r2, 0), min(cy + r2, canva%height - 1)
+            do x = max(cx - r1, 0), min(cx + r1, canva%width - 1)
+                if (((x - cx) / real(r1))**2 + ((y - cy) / real(r2))**2 <= 1.0) then
+                    canva%pixels(x, y) = color
+                end if
+            end do
+        end do
+    end subroutine fig_fill_ellipse
+
 end module fig_primitive
 
