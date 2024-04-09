@@ -311,6 +311,14 @@ contains
         call fig_draw_pixel(canva, cx + r  , cy , color)
     end subroutine fig_draw_circle
 
+    subroutine fig_draw_circleV(canva,center,r,rgb_color)
+        type(canvas), intent(inout) :: canva
+        integer, intent(in) :: r
+        type(vec2):: center
+        type(RGB), intent(in) :: rgb_color
+        call fig_draw_circle(canva,center%x,center%y,r,rgb_color)
+    end subroutine fig_draw_circleV
+
     subroutine fig_fill_circle(canva, cx, cy, r, rgb_color)
         type(canvas), intent(inout) :: canva
         integer, intent(in) :: cx, cy, r
@@ -340,6 +348,14 @@ contains
         call fig_fill_rect(canva, cx - r, cy, 2*r+1, 1, rgb_color)
 
     end subroutine fig_fill_circle
+
+    subroutine fig_fill_circleV(canva,center,r,rgb_color)
+        type(canvas), intent(inout) :: canva
+        integer, intent(in) :: r
+        type(vec2):: center
+        type(RGB), intent(in) :: rgb_color
+        call fig_fill_circle(canva,center%x,center%y,r,rgb_color)
+    end subroutine fig_fill_circleV
 
     subroutine fig_fill_ellipse(canva, cx, cy, r1, r2, rgb_color)
         type(canvas), intent(inout) :: canva
