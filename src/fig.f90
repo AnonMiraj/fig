@@ -17,14 +17,14 @@ contains
 
     end subroutine fig_fill
 
-    subroutine fig_draw_pixel(canva, x, y, color)
+    subroutine fig_draw_pixel_i(canva, x, y, color)
         type(canvas), intent(inout) :: canva
         integer, intent(in) :: x, y, color
     
         if (x >= 0 .and. x < canva%width .and. y >= 0 .and. y < canva%height) then
             canva%pixels(x, y) = color
         end if
-    end subroutine fig_draw_pixel
+    end subroutine fig_draw_pixel_i
 
     subroutine fig_draw_line(canva, x1, y1, x2, y2, rgb_color)
         type(canvas), intent(inout) :: canva
@@ -295,20 +295,20 @@ contains
             end if
             x = x + 1
 
-            call fig_draw_pixel(canva, cx + x, cy + y, color)
-            call fig_draw_pixel(canva, cx - x, cy + y, color)
-            call fig_draw_pixel(canva, cx + x, cy - y, color)
-            call fig_draw_pixel(canva, cx - x, cy - y, color)
-            call fig_draw_pixel(canva, cx + y, cy + x, color)
-            call fig_draw_pixel(canva, cx - y, cy + x, color)
-            call fig_draw_pixel(canva, cx + y, cy - x, color)
-            call fig_draw_pixel(canva, cx - y, cy - x, color)
+            call fig_draw_pixel_i(canva, cx + x, cy + y, color)
+            call fig_draw_pixel_i(canva, cx - x, cy + y, color)
+            call fig_draw_pixel_i(canva, cx + x, cy - y, color)
+            call fig_draw_pixel_i(canva, cx - x, cy - y, color)
+            call fig_draw_pixel_i(canva, cx + y, cy + x, color)
+            call fig_draw_pixel_i(canva, cx - y, cy + x, color)
+            call fig_draw_pixel_i(canva, cx + y, cy - x, color)
+            call fig_draw_pixel_i(canva, cx - y, cy - x, color)
         end do
 
-        call fig_draw_pixel(canva, cx , cy - r, color)
-        call fig_draw_pixel(canva, cx , cy + r, color)
-        call fig_draw_pixel(canva, cx - r , cy , color)
-        call fig_draw_pixel(canva, cx + r  , cy , color)
+        call fig_draw_pixel_i(canva, cx , cy - r, color)
+        call fig_draw_pixel_i(canva, cx , cy + r, color)
+        call fig_draw_pixel_i(canva, cx - r , cy , color)
+        call fig_draw_pixel_i(canva, cx + r  , cy , color)
     end subroutine fig_draw_circle
 
     subroutine fig_draw_circleV(canva,center,r,rgb_color)
