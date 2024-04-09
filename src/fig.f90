@@ -161,102 +161,109 @@ contains
         b = temp
     end subroutine swap_integers
 
-    subroutine fig_fill_triangle(canva, x0, y0, x1, y1, x2, y2, rgb_color)
-        !! TODO relly need to clean this mess of a subroutine
+    subroutine fig_fill_triangle(canva, x1, y1, x2, y2, x3, y3, rgb_color)
         type(canvas), intent(inout) :: canva
-        integer, intent(in) :: x0, y0, x1, y1, x2, y2
+        integer, intent(in) :: x1, y1, x2, y2, x3, y3
         type(RGB), intent(in) :: rgb_color
-        integer :: xn0, yn0, xn1, yn1, xn2, yn2
-        integer :: x, y
-        integer :: s1, s2
-        integer :: c01, c12
-        integer :: dx01, dy01
-        integer :: dx02, dy02
-        integer :: dx21, dy21
-        integer :: dx20, dy20
-        integer :: color
-    
-        color = rgb_to_int(rgb_color)
-    
-        xn0 = x0
-        yn0 = y0 
-        xn1 = x1
-        yn1 = y1
-        xn2 = x2
-        yn2 = y2
-    
-        ! Ensure yn0 <= yn1 <= yn2
-        if (yn0 > yn1) then
-            call swap_integers(xn0, xn1)
-            call swap_integers(yn0, yn1)
-        end if
+        type(vec2) :: p1,p2,p3
         
-        if (yn1 > yn2) then
-            call swap_integers(xn1, xn2)
-            call swap_integers(yn1, yn2)
-        end if
-        
-        if (yn0 > yn1) then
-            call swap_integers(xn0, xn1)
-            call swap_integers(yn0, yn1)
-        end if
-    
-        dy01 = yn1 - yn0
-        dx01 = xn1 - xn0
-        dy02 = yn2 - yn0
-        dx02 = xn2 - xn1
-    
-        do y = max(yn0, 0), min(yn1, canva%height - 1), 1
-            if (dy01 /= 0) then
-                s1 = (y - yn0) * dx01 / dy01 + xn0
-            else
-                s1 = xn0
-            end if
-    
-            if (dy02 /= 0) then
-                s2 = (y - yn0) * dx02 / dy02 + xn0
-            else
-                s2 = xn0
-            end if
-    
-            if (s1 > s2) then
-                call swap_integers(s1, s2)
-            end if
-    
-            do x = max(s1, 0), min(s2, canva%width - 1), 1
-                canva%pixels(x, y) = color
-            end do
-        end do
-    
-        dy21 = yn1 - yn2
-        dx21 = xn1 - xn2
-        dy20 = yn0 - yn2
-        dx20 = xn0 - xn2
-    
-        do y = max(yn1, 0), min(yn2, canva%height - 1), 1
-            if (dy21 /= 0) then
-                s1 = (y - yn2) * dx21 / dy21 + xn2
-            else
-                s1 = xn2
-            end if
-    
-            if (dy20 /= 0) then
-                s2 = (y - yn2) * dx20 / dy20 + xn2
-            else
-                s2 = xn2
-            end if
-    
-            if (s1 > s2) then
-                call swap_integers(s1, s2)
-            end if
-    
-            do x = max(s1, 0), min(s2, canva%width - 1), 1
-                canva%pixels(x, y) = color
-            end do
-        end do
-    
+        p1=vec2(x1,y1)
+        p2=vec2(x2,y2)
+        p3=vec2(x3,y3)
+
+        call fig_fill_triangleV(canva,p1,p2,p3,rgb_color)
     end subroutine fig_fill_triangle
 
+
+    subroutine fig_fill_triangleV(canva, p1,p2,p3, rgb_color)
+        type(canvas), intent(inout) :: canva
+        type(vec2) :: p1,p2,p3
+        type(RGB), intent(in) :: rgb_color
+        integer :: y
+        integer :: x_start, x_end
+        integer :: dx12, dy12
+        integer :: dx13, dy13
+        integer :: dx32, dy32
+        integer :: dx31, dy31
+        integer :: color
+
+        color = rgb_to_int(rgb_color)
+
+        call sort_vertices(p1, p2, p3)
+
+        dx12 = p2%x - p1%x
+        dy12 = p2%y - p1%y
+        dx13 = p3%x - p2%x
+        dy13 = p3%y - p1%y
+
+        ! Fill the top part of the triangle
+        do y = max(p1%y, 0), min(p2%y, canva%height - 1), 1
+            if (dy12 /= 0) then
+                x_start = (y - p1%y) * dx12 / dy12 + p1%x
+            else
+                x_start = p1%x
+            end if
+    
+            if (dy13 /= 0) then
+                x_end = (y - p1%y) * dx13 / dy13 + p1%x
+            else
+                x_end = p1%x
+            end if
+    
+            x_start=max(x_start, 0)
+            x_end= min(x_end, canva%width - 1)
+            call fig_draw_lineV(canva,vec2(x_start,y),vec2(x_end,y),rgb_color)
+        end do
+    
+        dx32 = p2%x - p3%x
+        dy32 = p2%y - p3%y
+        dx31 = p1%x - p3%x
+        dy31 = p1%y - p3%y
+
+        ! Fill the bottom part of the triangle   
+        do y = max(p2%y, 0), min(p3%y, canva%height - 1), 1
+
+            if (dy32 /= 0) then
+                x_start = (y - p3%y) * dx32 / dy32 + p3%x
+            else
+                x_end = p3%x
+            end if
+    
+            if (dy31 /= 0) then
+                x_end = (y - p3%y) * dx31 / dy31 + p3%x
+            else
+                x_end = p3%x
+            end if
+    
+            x_start=max(x_start, 0)
+            x_end= min(x_end, canva%width - 1)
+            call fig_draw_lineV(canva,vec2(x_start,y),vec2(x_end,y),rgb_color)
+        end do
+    
+    end subroutine fig_fill_triangleV
+
+    subroutine sort_vertices(p1, p2, p3)
+        type(vec2), intent(inout) :: p1, p2, p3
+        type(vec2) :: temp
+    
+        if (p1%y > p2%y) then
+            temp = p1
+            p1 = p2
+            p2 = temp
+        end if
+    
+        if (p2%y > p3%y) then
+            temp = p2
+            p2 = p3
+            p3 = temp
+        end if
+    
+        if (p1%y > p2%y) then
+            temp = p1
+            p1 = p2
+            p2 = temp
+        end if
+    end subroutine sort_vertices
 
     subroutine fig_fill_circle(canva, cx, cy, r, rgb_color)
         type(canvas), intent(inout) :: canva
