@@ -220,7 +220,7 @@ contains
     
             x_start=max(x_start, 0)
             x_end= min(x_end, canva%width - 1)
-            call fig_draw_lineV(canva,vec2(x_start,y),vec2(x_end,y),rgb_color)
+            call fig_draw_rect(canva,x_start,y,x_end-x_start,1,rgb_color)
         end do
     
         dx32 = p2%x - p3%x
@@ -245,7 +245,7 @@ contains
     
             x_start=max(x_start, 0)
             x_end= min(x_end, canva%width - 1)
-            call fig_draw_lineV(canva,vec2(x_start,y),vec2(x_end,y),rgb_color)
+            call fig_draw_rect(canva,x_start,y,x_end-x_start,1,rgb_color)
         end do
     
     end subroutine fig_fill_triangleV
