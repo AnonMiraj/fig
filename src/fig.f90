@@ -17,6 +17,14 @@ contains
 
     end subroutine fig_fill
 
+    subroutine fig_draw_pixel(canva, x, y, color)
+        type(canvas), intent(inout) :: canva
+        integer, intent(in) :: x, y, color
+    
+        if (x >= 0 .and. x < canva%width .and. y >= 0 .and. y < canva%height) then
+            canva%pixels(x, y) = color
+        end if
+    end subroutine fig_draw_pixel
 
     subroutine fig_draw_line(canva, x1, y1, x2, y2, rgb_color)
         type(canvas), intent(inout) :: canva
@@ -265,28 +273,73 @@ contains
         end if
     end subroutine sort_vertices
 
+
+    subroutine fig_draw_circle(canva, cx, cy, r, rgb_color)
+        type(canvas), intent(inout) :: canva
+        integer, intent(in) :: cx, cy, r
+        type(RGB), intent(in) :: rgb_color
+
+        integer :: color, x, y, dx, dy, d
+
+        color = rgb_to_int(rgb_color)
+        x = 0
+        y = r
+        d = 1 - r
+
+        do while (x < y)
+            if (d < 0) then
+                d = d + 2 * x + 3
+            else
+                d = d + 2 * (x - y) + 5
+                y = y - 1
+            end if
+            x = x + 1
+
+            call fig_draw_pixel(canva, cx + x, cy + y, color)
+            call fig_draw_pixel(canva, cx - x, cy + y, color)
+            call fig_draw_pixel(canva, cx + x, cy - y, color)
+            call fig_draw_pixel(canva, cx - x, cy - y, color)
+            call fig_draw_pixel(canva, cx + y, cy + x, color)
+            call fig_draw_pixel(canva, cx - y, cy + x, color)
+            call fig_draw_pixel(canva, cx + y, cy - x, color)
+            call fig_draw_pixel(canva, cx - y, cy - x, color)
+        end do
+
+        call fig_draw_pixel(canva, cx , cy - r, color)
+        call fig_draw_pixel(canva, cx , cy + r, color)
+        call fig_draw_pixel(canva, cx - r , cy , color)
+        call fig_draw_pixel(canva, cx + r  , cy , color)
+    end subroutine fig_draw_circle
+
     subroutine fig_fill_circle(canva, cx, cy, r, rgb_color)
         type(canvas), intent(inout) :: canva
         integer, intent(in) :: cx, cy, r
         type(RGB), intent(in) :: rgb_color
-        integer :: color 
         integer :: x, y, dx, dy
-        
-        color = rgb_to_int(rgb_color)
+        integer :: d
+        x = 0
+        y = r
+        d = 1 - r
 
-        do y = max(cy - r, 0), min(cy + r, canva%height - 1)
-            do x = max(cx - r, 0), min(cx + r, canva%width - 1)
-                dx = x - cx
-                dy = y - cy
-                if (dx*dx + dy*dy <= r*r) then
-                    canva%pixels(x, y) = color
-                end if
-            end do
+        do while (x <= y)
+            if (d < 0) then
+                d = d + 2 * x + 3
+            else
+                d = d + 2 * (x - y) + 5
+                y = y - 1
+            end if
+            x = x + 1
+
+
+            call fig_fill_rect(canva, cx - x, cy + y, 2*x+1, 1, rgb_color)
+            call fig_fill_rect(canva, cx - x, cy - y, 2*x+1, 1, rgb_color)
+            call fig_fill_rect(canva, cx - y, cy + x, 2*y+1, 1, rgb_color)
+            call fig_fill_rect(canva, cx - y, cy - x, 2*y+1, 1, rgb_color)   
         end do
+
+        call fig_fill_rect(canva, cx - r, cy, 2*r+1, 1, rgb_color)
+
     end subroutine fig_fill_circle
-
-
-
 
     subroutine fig_fill_ellipse(canva, cx, cy, r1, r2, rgb_color)
         type(canvas), intent(inout) :: canva

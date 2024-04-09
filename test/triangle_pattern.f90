@@ -28,19 +28,21 @@ program test_fig_fill_triangle
             call fig_draw_triangle(test_canvas, i, j, i + triangle_size, j, i + triangle_size, j + triangle_size, BLACK)
             call fig_draw_triangle(test_canvas, i, j, i, j + triangle_size, i + triangle_size, j + triangle_size, BLACK)
 
-            call fig_fill_circle(test_canvas, i, j, 6, BLACK)
-            call fig_fill_circle(test_canvas, i + triangle_size, j, 6, BLACK)
-            call fig_fill_circle(test_canvas, i + triangle_size, j + triangle_size, 6, BLACK)
-            call fig_fill_circle(test_canvas, i, j + triangle_size, 6, BLACK)
-            call fig_fill_circle(test_canvas, i + triangle_size, j + triangle_size, 6, BLACK)
-            call fig_fill_circle(test_canvas, i + triangle_size / 2, j + triangle_size / 2, 6, BLACK)
-        
+       
             call fig_fill_circle(test_canvas, i, j, 5, colors(ind1))
             call fig_fill_circle(test_canvas, i + triangle_size, j, 5, colors(ind1))
             call fig_fill_circle(test_canvas, i + triangle_size, j + triangle_size, 5, colors(ind1))
             call fig_fill_circle(test_canvas, i, j + triangle_size, 5, colors(ind2))
             call fig_fill_circle(test_canvas, i + triangle_size, j + triangle_size, 5, colors(ind2))
             call fig_fill_circle(test_canvas, i + triangle_size / 2, j + triangle_size / 2, 5, colors(ind))
+
+            call fig_draw_circle(test_canvas, i, j, 6, BLACK)
+            call fig_draw_circle(test_canvas, i + triangle_size, j, 6, BLACK)
+            call fig_draw_circle(test_canvas, i + triangle_size, j + triangle_size, 6, BLACK)
+            call fig_draw_circle(test_canvas, i, j + triangle_size, 6, BLACK)
+            call fig_draw_circle(test_canvas, i + triangle_size, j + triangle_size, 6, BLACK)
+            call fig_draw_circle(test_canvas, i + triangle_size / 2, j + triangle_size / 2, 6, BLACK)
+ 
         end do
     end do
 
