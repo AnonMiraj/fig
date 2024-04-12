@@ -376,5 +376,96 @@ contains
         end do
     end subroutine fig_fill_ellipse
 
+    subroutine fig_fill_area(canva, cx, cy, rgb_color)
+        type(canvas), intent(inout) :: canva
+        integer, intent(in) :: cx, cy 
+        type(RGB), intent(in) :: rgb_color
+        integer:: color, oldcolor
+        integer:: x,y
+        integer, dimension (:,:), allocatable :: pixel_queue
+        logical, dimension(:,:) , allocatable :: pixel_mask
+        integer:: start_queue
+        integer:: end_queue
+        integer:: queue_size
+        
+        color = rgb_to_int(rgb_color)
+
+        if (cx < 0 .or. cx >= canva%width .or. cy < 0 .or. cy >= canva%height) &
+             return
+        
+        ! currently naive memory management, should really be improved
+        allocate (pixel_queue(1:2, canva%width*canva%height))
+        allocate (pixel_mask(0:canva%width - 1, 0:canva%height - 1))
+
+        pixel_mask = .false.
+        
+        !first pixel
+        pixel_queue(1,1) = cx
+        pixel_queue(2,1) = cy
+        queue_size  = 1
+        start_queue = 1
+        end_queue   = 1
+
+        oldcolor = canva%pixels(pixel_queue(1, start_queue) , pixel_queue(2, start_queue))
+
+        do while (end_queue - start_queue >= 0 )
+
+           ! process the first yet not processed item of the queue 
+           canva%pixels(pixel_queue(1, start_queue) , pixel_queue(2, start_queue)) = color
+           pixel_mask (pixel_queue(1, start_queue) , pixel_queue(2, start_queue)) = .true.
+
+           ! test for pixel to the right
+           if (pixel_queue(1, start_queue) < canva%width - 1) then
+              if (canva%pixels(pixel_queue(1, start_queue) + 1, pixel_queue(2, start_queue)) == oldcolor &
+                  .and. .not. pixel_mask(pixel_queue(1, start_queue) +1 , pixel_queue(2, start_queue) )) then
+                 end_queue = end_queue + 1
+                 pixel_queue(1, end_queue) = pixel_queue(1, start_queue) + 1
+                 pixel_queue(2, end_queue) = pixel_queue(2, start_queue)
+                 pixel_mask(pixel_queue(1, end_queue) , pixel_queue(2, end_queue) ) = .true. 
+              endif
+           end if
+
+           ! test for pixel to the left
+           if (pixel_queue(1, start_queue) > 0 ) then
+              if (canva%pixels(pixel_queue(1, start_queue) - 1, pixel_queue(2, start_queue)) == oldcolor &
+                  .and. .not. pixel_mask(pixel_queue(1, start_queue) -1 , pixel_queue(2, start_queue) )) then
+                 end_queue = end_queue + 1
+                 pixel_queue(1, end_queue) = pixel_queue(1, start_queue) - 1
+                 pixel_queue(2, end_queue) = pixel_queue(2, start_queue)
+                 pixel_mask(pixel_queue(1, end_queue) , pixel_queue(2, end_queue) ) = .true.                
+              endif
+           end if
+
+           ! test for pixel below
+           if (pixel_queue(2, start_queue) < canva%height - 1 ) then
+              if (canva%pixels(pixel_queue(1, start_queue) , pixel_queue(2, start_queue) + 1) == oldcolor &
+                  .and. .not. pixel_mask(pixel_queue(1, start_queue) , pixel_queue(2, start_queue) + 1 )) then
+                 end_queue = end_queue + 1
+                 pixel_queue(1, end_queue) = pixel_queue(1, start_queue)                 
+                 pixel_queue(2, end_queue) = pixel_queue(2, start_queue) + 1
+                 pixel_mask(pixel_queue(1, end_queue) , pixel_queue(2, end_queue) ) = .true. 
+              endif
+           end if
+
+           ! test for pixel above
+           if (pixel_queue(2, start_queue) > 0 ) then
+              if (canva%pixels(pixel_queue(1, start_queue) , pixel_queue(2, start_queue) - 1) == oldcolor &
+                  .and. .not. pixel_mask(pixel_queue(1, start_queue) , pixel_queue(2, start_queue) - 1 )) then
+                 end_queue = end_queue + 1
+                 pixel_queue(1, end_queue) = pixel_queue(1, start_queue)                                  
+                 pixel_queue(2, end_queue) = pixel_queue(2, start_queue)  - 1
+                 pixel_mask(pixel_queue(1, end_queue) , pixel_queue(2, end_queue) ) = .true. 
+              endif
+           end if
+
+           start_queue = start_queue + 1
+  
+        end do
+        
+        deallocate( pixel_queue )
+        deallocate( pixel_mask )
+        
+    end subroutine fig_fill_area
+
 end module fig_primitive
 
