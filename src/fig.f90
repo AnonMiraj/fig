@@ -357,24 +357,131 @@ contains
         call fig_fill_circle(canva,center%x,center%y,r,rgb_color)
     end subroutine fig_fill_circleV
 
-    subroutine fig_fill_ellipse(canva, cx, cy, r1, r2, rgb_color)
+    subroutine fig_draw_ellipse(canva, mx, my, ra, rb, rgb_color)
         type(canvas), intent(inout) :: canva
-        integer, intent(in) :: cx, cy 
-        integer, intent(in) :: r1, r2
+        integer, intent(in) :: mx, my, ra, rb
         type(RGB), intent(in) :: rgb_color
-        integer :: color 
-        integer :: x, y
         
+        integer :: color
+        integer :: x, y, cx, cy, dx, dy, err, two_a_square, two_b_square, x_end, y_end
+
         color = rgb_to_int(rgb_color)
-        
-        do y = max(cy - r2, 0), min(cy + r2, canva%height - 1)
-            do x = max(cx - r1, 0), min(cx + r1, canva%width - 1)
-                if (((x - cx) / real(r1))**2 + ((y - cy) / real(r2))**2 <= 1.0) then
-                    canva%pixels(x, y) = color
-                end if
-            end do
+
+        two_a_square = 2 * ra * ra
+        two_b_square = 2 * rb * rb
+        cx = ra
+        cy = 0
+        dx = rb * rb * (1 - 2 * ra)
+        dy = ra * ra
+        err = 0
+        x_end = two_b_square * ra
+        y_end = 0
+
+        do while (x_end >= y_end)
+            call fig_draw_pixel_i(canva, mx + cx, my + cy, color)
+            call fig_draw_pixel_i(canva, mx - cx, my + cy, color)
+            call fig_draw_pixel_i(canva, mx + cx, my - cy, color)
+            call fig_draw_pixel_i(canva, mx - cx, my - cy, color)
+            
+            cy = cy + 1
+            y_end = y_end + two_a_square
+            err = err + dy
+            dy = dy + two_a_square
+            if ( (2 * err + dx) > 0) then
+                cx = cx - 1
+                x_end = x_end - two_b_square
+                err = err + dx
+                dx = dx + two_b_square
+            end if
         end do
-    end subroutine fig_fill_ellipse
+
+        cx = 0
+        cy = rb
+        dx = rb * rb
+        dy = ra * ra * (1 - 2 * rb)
+        err = 0
+        x_end = 0
+        y_end = two_a_square * rb
+        do while (x_end <= y_end)
+            call fig_draw_pixel_i(canva, mx + cx, my + cy, color)
+            call fig_draw_pixel_i(canva, mx - cx, my + cy, color)
+            call fig_draw_pixel_i(canva, mx + cx, my - cy, color)
+            call fig_draw_pixel_i(canva, mx - cx, my - cy, color)
+            
+            cx = cx + 1
+            x_end = x_end + two_b_square
+            err = err + dx
+            dx = dx + two_b_square
+            if ( (2 * err + dy) > 0) then
+                cy = cy - 1
+                y_end = y_end - two_a_square
+                err = err + dy
+                dy = dy + two_a_square
+            end if
+        end do
+    End subroutine fig_draw_ellipse
+
+    subroutine fig_fill_ellipse(canva, cx, cy, ra, rb, rgb_color)
+        type(canvas), intent(inout) :: canva
+        integer, intent(in) :: cx, cy, ra, rb
+        type(RGB), intent(in) :: rgb_color
+        
+        integer :: color
+        integer :: x, y, dx, dy, err, two_a_square, two_b_square, x_end, y_end
+
+        color = rgb_to_int(rgb_color)
+
+        two_a_square = 2 * ra * ra
+        two_b_square = 2 * rb * rb
+        x = ra
+        y = 0
+        dx = rb * rb * (1 - 2 * ra)
+        dy = ra * ra
+        err = 0
+        x_end = two_b_square * ra
+        y_end = 0
+
+        do while (x_end >= y_end)
+            
+            call fig_fill_rect(canva, cx - x, cy + y, x*2+1,1, rgb_color)
+            call fig_fill_rect(canva, cx - x, cy - y, x*2+1,1, rgb_color)
+
+            y = y + 1
+            y_end = y_end + two_a_square
+            err = err + dy
+            dy = dy + two_a_square
+            if ( (2 * err + dx) > 0) then
+                x = x - 1
+                x_end = x_end - two_b_square
+                err = err + dx
+                dx = dx + two_b_square
+            end if
+        end do
+
+        x = 0
+        y = rb
+        dx = rb * rb
+        dy = ra * ra * (1 - 2 * rb)
+        err = 0
+        x_end = 0
+        y_end = two_a_square * rb
+        do while (x_end <= y_end)
+            call fig_fill_rect(canva, cx - x, cy + y, x*2+1,1, rgb_color)
+            call fig_fill_rect(canva, cx - x, cy - y, x*2+1,1, rgb_color)
+
+            x = x + 1
+            x_end = x_end + two_b_square
+            err = err + dx
+            dx = dx + two_b_square
+            if ( (2 * err + dy) > 0) then
+                y = y - 1
+                y_end = y_end - two_a_square
+                err = err + dy
+                dy = dy + two_a_square
+            end if
+        end do
+    End subroutine fig_fill_ellipse
+
 
     subroutine fig_fill_area(canva, cx, cy, rgb_color)
         type(canvas), intent(inout) :: canva
