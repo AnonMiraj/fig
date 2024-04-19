@@ -33,7 +33,7 @@ program smile
     call fig_fill_circle(canva, eye1_center_x, eye1_center_y, eye_radius/2, BLACK)
     call fig_fill_circle(canva, eye2_center_x, eye2_center_y, eye_radius/2, BLACk)
     
-    call fig_fill_ellipse(canva, face_center_x, face_center_y + face_radius / 3, mouth_radius_x, mouth_radius_y, RED)
+    call fig_draw_ellipse(canva, face_center_x, face_center_y + face_radius / 3, mouth_radius_x, mouth_radius_y, RED)
 
     call fig_save_to_ppm_file(canva, result)
      

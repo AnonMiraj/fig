@@ -357,20 +357,20 @@ contains
         call fig_fill_circle(canva,center%x,center%y,r,rgb_color)
     end subroutine fig_fill_circleV
 
-    subroutine fig_draw_ellipse(canva, mx, my, ra, rb, rgb_color)
+    subroutine fig_draw_ellipse(canva, cx, cy, ra, rb, rgb_color)
         type(canvas), intent(inout) :: canva
-        integer, intent(in) :: mx, my, ra, rb
+        integer, intent(in) :: cx, cy, ra, rb
         type(RGB), intent(in) :: rgb_color
         
         integer :: color
-        integer :: x, y, cx, cy, dx, dy, err, two_a_square, two_b_square, x_end, y_end
+        integer :: x, y, dx, dy, err, two_a_square, two_b_square, x_end, y_end
 
         color = rgb_to_int(rgb_color)
 
         two_a_square = 2 * ra * ra
         two_b_square = 2 * rb * rb
-        cx = ra
-        cy = 0
+        x = ra
+        y = 0
         dx = rb * rb * (1 - 2 * ra)
         dy = ra * ra
         err = 0
@@ -378,42 +378,42 @@ contains
         y_end = 0
 
         do while (x_end >= y_end)
-            call fig_draw_pixel_i(canva, mx + cx, my + cy, color)
-            call fig_draw_pixel_i(canva, mx - cx, my + cy, color)
-            call fig_draw_pixel_i(canva, mx + cx, my - cy, color)
-            call fig_draw_pixel_i(canva, mx - cx, my - cy, color)
+            call fig_draw_pixel_i(canva, cx + x, cy + y, color)
+            call fig_draw_pixel_i(canva, cx - x, cy + y, color)
+            call fig_draw_pixel_i(canva, cx + x, cy - y, color)
+            call fig_draw_pixel_i(canva, cx - x, cy - y, color)
             
-            cy = cy + 1
+            y = y + 1
             y_end = y_end + two_a_square
             err = err + dy
             dy = dy + two_a_square
             if ( (2 * err + dx) > 0) then
-                cx = cx - 1
+                x = x - 1
                 x_end = x_end - two_b_square
                 err = err + dx
                 dx = dx + two_b_square
             end if
         end do
 
-        cx = 0
-        cy = rb
+        x = 0
+        y = rb
         dx = rb * rb
         dy = ra * ra * (1 - 2 * rb)
         err = 0
         x_end = 0
         y_end = two_a_square * rb
         do while (x_end <= y_end)
-            call fig_draw_pixel_i(canva, mx + cx, my + cy, color)
-            call fig_draw_pixel_i(canva, mx - cx, my + cy, color)
-            call fig_draw_pixel_i(canva, mx + cx, my - cy, color)
-            call fig_draw_pixel_i(canva, mx - cx, my - cy, color)
+            call fig_draw_pixel_i(canva, cx + x, cy + y, color)
+            call fig_draw_pixel_i(canva, cx - x, cy + y, color)
+            call fig_draw_pixel_i(canva, cx + x, cy - y, color)
+            call fig_draw_pixel_i(canva, cx - x, cy - y, color)
             
-            cx = cx + 1
+            x = x + 1
             x_end = x_end + two_b_square
             err = err + dx
             dx = dx + two_b_square
             if ( (2 * err + dy) > 0) then
-                cy = cy - 1
+                y = y - 1
                 y_end = y_end - two_a_square
                 err = err + dy
                 dy = dy + two_a_square
