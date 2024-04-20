@@ -279,7 +279,7 @@ contains
         integer, intent(in) :: cx, cy, r
         type(RGB), intent(in) :: rgb_color
 
-        integer :: color, x, y, dx, dy, d
+        integer :: color, x, y, d
 
         color = rgb_to_int(rgb_color)
         x = 0
@@ -323,7 +323,7 @@ contains
         type(canvas), intent(inout) :: canva
         integer, intent(in) :: cx, cy, r
         type(RGB), intent(in) :: rgb_color
-        integer :: x, y, dx, dy
+        integer :: x, y
         integer :: d
         x = 0
         y = r
