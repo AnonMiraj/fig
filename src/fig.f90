@@ -421,6 +421,15 @@ contains
         end do
     End subroutine fig_draw_ellipse
 
+    subroutine fig_draw_ellipseV(canva,center,ra,rb,rgb_color)
+        type(canvas), intent(inout) :: canva
+        integer, intent(in) :: ra,rb
+        type(vec2):: center
+        type(RGB), intent(in) :: rgb_color
+        call fig_draw_ellipse(canva,center%x,center%y,ra,rb,rgb_color)
+    end subroutine fig_draw_ellipseV
+
+
     subroutine fig_fill_ellipse(canva, cx, cy, ra, rb, rgb_color)
         type(canvas), intent(inout) :: canva
         integer, intent(in) :: cx, cy, ra, rb
@@ -481,6 +490,15 @@ contains
             end if
         end do
     End subroutine fig_fill_ellipse
+
+    subroutine fig_fill_ellipseV(canva,center,ra,rb,rgb_color)
+        type(canvas), intent(inout) :: canva
+        integer, intent(in) :: ra,rb
+        type(vec2):: center
+        type(RGB), intent(in) :: rgb_color
+        call fig_fill_ellipse(canva,center%x,center%y,ra,rb,rgb_color)
+    end subroutine fig_fill_ellipseV
+
 
 
     subroutine fig_fill_area(canva, cx, cy, rgb_color)
