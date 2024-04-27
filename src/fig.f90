@@ -234,7 +234,7 @@ contains
             if (dy32 /= 0) then
                 x_start = (y - p3%y) * dx32 / dy32 + p3%x
             else
-                x_end = p3%x
+                x_start = p3%x
             end if
     
             if (dy31 /= 0) then
