@@ -35,10 +35,10 @@ contains
      function int_to_rgb(rgb_int) result(color)
        type(RGB):: color
        integer, intent(in):: rgb_int
-       color%a = ishft(ibits(rgb_int,24, 8),-24)
-       color%b = ishft(ibits(rgb_int,16,8),-16)
-       color%g = ishft(ibits(rgb_int,8, 8),-8)
-       color%r = ibits(rgb_int,0,8)       
+       color%a = ibits(rgb_int, 24, 8)
+       color%b = ibits(rgb_int, 16, 8)
+       color%g = ibits(rgb_int, 8, 8)
+       color%r = ibits(rgb_int, 0, 8)       
      end function int_to_rgb
       
 
