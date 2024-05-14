@@ -8,6 +8,10 @@ module fig_canvas
         integer(pixel), dimension(:,:), allocatable:: pixels
     end type canvas
     
+    type,abstract:: Tcanvas ! temproary until i modify all tests to use the bitmap canvas
+        real :: width, height
+        character(len=:), allocatable :: title
+    end type Tcanvas
     type :: vec2
         integer :: x, y
     end type vec2

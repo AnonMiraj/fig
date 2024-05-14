@@ -1,0 +1,20 @@
+module xml_helpers
+    implicit none
+contains
+
+    function real_to_str(value) result(str)
+        real, intent(in) :: value
+        character(len=100) :: str
+        write(str, '(F10.1)') value
+        return
+    end function real_to_str
+    
+    function attribute(attribute_name, value, unit) result(attribute_str)
+        character(len=*), intent(in) :: attribute_name, value, unit
+        character(len=:), allocatable :: attribute_str
+        attribute_str = trim(attribute_name) // '="' // trim(value) // trim(unit) // '" '
+        return
+    end function attribute
+
+end module xml_helpers
+
