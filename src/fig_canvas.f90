@@ -1,10 +1,11 @@
 module fig_canvas
+    use fig_config
     implicit none
     
     type :: canvas
         integer :: width, height
         character(len=:), allocatable :: title
-        integer, dimension(:,:), allocatable:: pixels
+        integer(pixel), dimension(:,:), allocatable:: pixels
     end type canvas
     
     type :: vec2
@@ -30,26 +31,31 @@ contains
         this%pixels = 0
     end subroutine canvas_init
 
-    subroutine fig_save_to_ppm_file(canva, result)
+    subroutine fig_save_to_ppm_file(canva, result,optional_file_path)
         implicit none
         type(canvas), intent(inout) :: canva
+        character(len=:), allocatable, optional :: optional_file_path
         character(len=:), allocatable :: file_path
         integer, intent(out) :: result
         integer :: iunit, i,j
         integer :: bytes(3)
 
         file_path=canva%title // '.ppm'
+
+        if(present(optional_file_path)) then
+            file_path=optional_file_path
+        end if
+
         open(newunit=iunit, file=file_path, status='replace')
 
         write(iunit, '(a2)') 'P6'
         write(iunit, '(i0," ",i0)')  canva%width, canva%height
-        write(iunit, '(i0)') 255
-
+        write(iunit, '(i0)') 2**rgb_bit_depth-1
         do j = 0, canva%height-1
             do i = 0, canva%width-1
-                bytes(1) = ibits(canva%pixels(i, j),  0, 8)
-                bytes(2) = ibits(canva%pixels(i, j),  8, 8)
-                bytes(3) = ibits(canva%pixels(i, j), 16, 8)
+                bytes(1) = ibits(canva%pixels(i, j), 0, rgb_bit_depth)
+                bytes(2) = ibits(canva%pixels(i, j), rgb_bit_depth, rgb_bit_depth)
+                bytes(3) = ibits(canva%pixels(i, j), 2*rgb_bit_depth, rgb_bit_depth)
         
                 write(iunit, '(3a1)', advance='no') bytes
             end do
@@ -61,4 +67,3 @@ contains
 
 
 end module fig_canvas
-

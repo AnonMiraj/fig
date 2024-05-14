@@ -1,8 +1,8 @@
 module fig_primitive
     use fig_rgb
     use fig_canvas
+    use fig_config
     implicit none
-    integer:: STROKE = 10
 
 contains
 
@@ -10,7 +10,7 @@ contains
         implicit none
         type(canvas), intent(inout) :: canva
         type(RGB), intent(in) :: background
-        integer :: color 
+        integer(pixel) :: color 
         color = rgb_to_int(background)
 
         canva%pixels = color
@@ -19,7 +19,8 @@ contains
 
     subroutine fig_draw_pixel_i(canva, x, y, color)
         type(canvas), intent(inout) :: canva
-        integer, intent(in) :: x, y, color
+        integer, intent(in) :: x, y
+        integer(pixel), intent(in) :: color
     
         if (x >= 0 .and. x < canva%width .and. y >= 0 .and. y < canva%height) then
             canva%pixels(x, y) = color
@@ -44,7 +45,7 @@ contains
         type(canvas), intent(inout) :: canva
         type(RGB), intent(in) :: rgb_color
         type(vec2), intent(in) :: p1,p2
-        integer :: color
+        integer(pixel) :: color
         
         integer :: dx, dy, x, y
         integer :: sx, sy, err, e2
@@ -98,7 +99,7 @@ contains
         integer, intent(in) ::  w, h
         type(RGB), intent(in) :: rgb_color
         type(vec2), intent(in) :: p
-        integer :: color
+        integer(pixel) :: color
         integer :: x, y, x_end, y_end
         
         color = rgb_to_int(rgb_color)
@@ -193,7 +194,7 @@ contains
         integer :: dx13, dy13
         integer :: dx32, dy32
         integer :: dx31, dy31
-        integer :: color
+        integer(pixel) :: color
 
         color = rgb_to_int(rgb_color)
 
@@ -279,7 +280,8 @@ contains
         integer, intent(in) :: cx, cy, r
         type(RGB), intent(in) :: rgb_color
 
-        integer :: color, x, y, d
+        integer(pixel) :: color
+        integer :: x, y, d
 
         color = rgb_to_int(rgb_color)
         x = 0
@@ -307,8 +309,8 @@ contains
 
         call fig_draw_pixel_i(canva, cx , cy - r, color)
         call fig_draw_pixel_i(canva, cx , cy + r, color)
-        call fig_draw_pixel_i(canva, cx - r , cy , color)
-        call fig_draw_pixel_i(canva, cx + r  , cy , color)
+        call fig_draw_pixel_i(canva, cx - r, cy , color)
+        call fig_draw_pixel_i(canva, cx + r, cy , color)
     end subroutine fig_draw_circle
 
     subroutine fig_draw_circleV(canva,center,r,rgb_color)
@@ -362,7 +364,7 @@ contains
         integer, intent(in) :: cx, cy, ra, rb
         type(RGB), intent(in) :: rgb_color
         
-        integer :: color
+        integer(pixel) :: color
         integer :: x, y, dx, dy, err, two_a_square, two_b_square, x_end, y_end
 
         color = rgb_to_int(rgb_color)
@@ -435,7 +437,7 @@ contains
         integer, intent(in) :: cx, cy, ra, rb
         type(RGB), intent(in) :: rgb_color
         
-        integer :: color
+        integer(pixel) :: color
         integer :: x, y, dx, dy, err, two_a_square, two_b_square, x_end, y_end
 
         color = rgb_to_int(rgb_color)
@@ -505,7 +507,7 @@ contains
         type(canvas), intent(inout) :: canva
         integer, intent(in) :: cx, cy 
         type(RGB), intent(in) :: rgb_color
-        integer:: color, oldcolor
+        integer(pixel):: color, oldcolor
         integer:: x,y
         integer, dimension (:,:), allocatable :: pixel_queue
         logical, dimension(:,:) , allocatable :: pixel_mask
