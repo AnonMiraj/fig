@@ -1,11 +1,11 @@
-module xml_helpers
+module fig_utils
     implicit none
 contains
 
     function real_to_str(value) result(str)
         real, intent(in) :: value
         character(len=100) :: str
-        write(str, '(F10.1)') value
+        write(str, '(F10.2)') value
         return
     end function real_to_str
     
@@ -16,5 +16,5 @@ contains
         return
     end function attribute
 
-end module xml_helpers
+end module fig_utils
 

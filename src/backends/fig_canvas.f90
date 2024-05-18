@@ -1,5 +1,6 @@
 module fig_canvas
     use fig_config
+    use fig_shapes
     implicit none
     
     type :: canvas
@@ -11,7 +12,16 @@ module fig_canvas
     type,abstract:: Tcanvas ! temproary until i modify all tests to use the bitmap canvas
         real :: width, height
         character(len=:), allocatable :: title
+        type(shapeWrapper), allocatable :: shapes(:)
+        integer :: shape_count
+    contains
+        procedure :: add_shape
     end type Tcanvas
+
+    type :: shapeWrapper
+      class(shape), allocatable :: sh
+    end type
+
     type :: vec2
         integer :: x, y
     end type vec2
@@ -34,6 +44,19 @@ contains
         allocate(this%pixels(0:width-1, 0:height-1))
         this%pixels = 0
     end subroutine canvas_init
+
+
+    subroutine add_shape(this, s)
+        class(Tcanvas), intent(inout) :: this
+        class(shape), intent(in), target :: s
+        type(shapeWrapper), allocatable :: temp_shapes(:)
+
+        this%shape_count = this%shape_count + 1
+        call move_alloc(this%shapes, temp_shapes)
+        allocate(this%shapes(this%shape_count))
+        this%shapes(1:this%shape_count-1) = temp_shapes
+        allocate(this%shapes(this%shape_count)%sh, source=s)
+    end subroutine add_shape
 
     subroutine fig_save_to_ppm_file(canva, result,optional_file_path)
         implicit none

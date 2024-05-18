@@ -1,5 +1,7 @@
+
 program test_svg_writer
-    use svg_module
+    use fig_svg
+    use fig_shapes
     implicit none
 
     type(svg_canvas) :: svg
