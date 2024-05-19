@@ -2,25 +2,15 @@ module fig_svg
     use fig_utils
     use fig_canvas
     use fig_shapes
+    use fig_rgb
     implicit none
     private
     public :: svg_canvas 
     type,extends(Tcanvas) :: svg_canvas
     contains
-        procedure :: init => init_svg
         procedure :: save_to_file
     end type svg_canvas
 contains
-
-    subroutine init_svg(this, fname)
-        class(svg_canvas), intent(inout) :: this
-        character(len=*), intent(in) :: fname
-
-        this%title = fname
-        this%shape_count = 0
-        allocate(this%shapes(0))
-    end subroutine init_svg
-
     subroutine save_to_file(this)
         class(svg_canvas), intent(inout) :: this
         call save_to_svg(this,this%shapes)
@@ -31,11 +21,13 @@ contains
         class(Tcanvas), intent(inout) :: this
         integer :: unit_num, ierr, i
         type(shapeWrapper), allocatable,intent(in) :: shapes(:)
+        character(len=:), allocatable :: file_path
         character(len=:), allocatable :: s_line
 
-        open(newunit=unit_num, file=this%title, status='replace', action='write', iostat=ierr)
+        file_path=this%title // '.svg'
+        open(newunit=unit_num, file=file_path, status='replace', action='write', iostat=ierr)
         if (ierr /= 0) then
-            print *, "Error opening file ", this%title
+            print *, "Error opening file ", file_path
             stop
         endif
 
@@ -58,7 +50,7 @@ contains
 
         res_str = '<circle ' // attribute('cx', trim(adjustl(real_to_str(this%cx))), '') &
              // attribute('cy', trim(adjustl(real_to_str(this%cy))), '') // attribute('r', trim(adjustl(real_to_str(this%r))), '') &
-             // attribute('fill', trim(adjustl(this%fill_color)), '') // '/>'
+             // attribute('fill', trim(adjustl(rgb_to_string(this%fill_color))), '') // '/>'
     end subroutine write_circle
 
     subroutine write_rectangle(this,res_str)
@@ -69,19 +61,19 @@ contains
              // attribute('y', trim(adjustl(real_to_str(this%y))), '') &
              // attribute('width', trim(adjustl(real_to_str(this%width))), '') &
              // attribute('height', trim(adjustl(real_to_str(this%height))), '') &
-             // attribute('fill', trim(adjustl(this%fill_color)), '') // '/>'
+             // attribute('fill', trim(adjustl(rgb_to_string(this%fill_color))), '') // '/>'
     end subroutine write_rectangle
     
 
-    subroutine write_shape(this,res_str)
-        class(shape), intent(in) :: this
+    subroutine write_shape(sh,res_str)
+        class(shape), intent(in) :: sh
         character(len=:), allocatable,intent(inout) :: res_str
 
-        select type(this)
+        select type(sh)
         type is (circle)
-            call write_circle(this, res_str)
+            call write_circle(sh, res_str)
         type is (rectangle)
-            call write_rectangle(this, res_str)
+            call write_rectangle(sh, res_str)
         end select
     end subroutine write_shape
 

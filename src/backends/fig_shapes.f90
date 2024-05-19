@@ -1,7 +1,8 @@
 module fig_shapes
 
+    use fig_rgb
     type, abstract :: shape
-        character(len=:), allocatable :: fill_color
+        type(RGB) :: fill_color
     end type shape
 
     type, extends(shape) :: circle
