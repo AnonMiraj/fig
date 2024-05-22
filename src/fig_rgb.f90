@@ -49,6 +49,7 @@ contains
          real :: alpha
 
          alpha = color%a / 255.0
+         alpha = min(1.0,alpha)
          write(color_string, '(A,I3,A,I3,A,I3,A,F5.3,A)') 'rgba(', color%r, ',', color%g, ',', color%b, ',', alpha, ')'
      end function rgb_to_string     
 

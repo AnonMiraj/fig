@@ -14,6 +14,7 @@ program test_general_canvas
     c%cy = 100.0
     c%r = 50.0
     c%fill_color = PINK
+    c%stroke_color = RED
     call canva%add_shape(c)
 
     r%x = 200.0

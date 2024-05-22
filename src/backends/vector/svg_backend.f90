@@ -1,5 +1,5 @@
 module fig_svg
-    use fig_utils
+    use fig_svg_utils
     use fig_canvas
     use fig_shapes
     use fig_rgb
@@ -33,7 +33,9 @@ contains
 
         write(unit_num, '(A)') '<svg '&
              // attribute('width', trim(adjustl(real_to_str(this%width))), '') &
-             // attribute('height', trim(adjustl(real_to_str(this%height))), '') //' >'
+             // attribute('height', trim(adjustl(real_to_str(this%height))), '') &
+             // attribute('xmlns', "http://www.w3.org/2000/svg", '') &
+             //' >'
         do i = 1, this%shape_count
             call write_shape(shapes(i)%sh,s_line)
             write(unit_num, '(A)') s_line
@@ -48,9 +50,12 @@ contains
         type(circle), intent(in) :: this
         character(len=:), allocatable,intent(inout) :: res_str
 
-        res_str = '<circle ' // attribute('cx', trim(adjustl(real_to_str(this%cx))), '') &
-             // attribute('cy', trim(adjustl(real_to_str(this%cy))), '') // attribute('r', trim(adjustl(real_to_str(this%r))), '') &
-             // attribute('fill', trim(adjustl(rgb_to_string(this%fill_color))), '') // '/>'
+        res_str = '<circle ' &
+            // attribute('cx', trim(adjustl(real_to_str(this%cx))), '') &
+            // attribute('cy', trim(adjustl(real_to_str(this%cy))), '') &
+            // attribute('r', trim(adjustl(real_to_str(this%r))), '') &
+            // attribute('fill', trim(adjustl(rgb_to_string(this%fill_color))), '') &
+            // attribute('stroke', trim(adjustl(rgb_to_string(this%stroke_color))), '') // '/>'
     end subroutine write_circle
 
     subroutine write_rectangle(this,res_str)

@@ -3,6 +3,7 @@ module fig_shapes
     use fig_rgb
     type, abstract :: shape
         type(RGB) :: fill_color
+        type(RGB) :: stroke_color
     end type shape
 
     type, extends(shape) :: circle

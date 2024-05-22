@@ -1,8 +1,8 @@
 module fig_bitmap
-    use fig_utils
     use fig_canvas
     use fig_shapes
     use fig_config
+    use fig_bitmap_utils
     use fig_rgb
     implicit none
     private
@@ -40,13 +40,11 @@ contains
 
         file_path=this%title // '.ppm'
 
-
         open(newunit=unit_num, file=file_path, status='replace', action='write', iostat=ierr)
         if (ierr /= 0) then
             print *, "Error opening file ", file_path
             stop
         endif
-
 
         write(unit_num, '(a2)') 'P6'
         write(unit_num, '(i0," ",i0)')  int(this%width), int(this%height)
@@ -64,30 +62,43 @@ contains
         close(unit_num)
     end subroutine save_to_ppm
 
-    subroutine fig_draw_pixel_i(canva, x, y, color)
-        !! very temporary
-        type(bitmap_canvas), intent(inout) :: canva
-        integer, intent(in) :: x, y
-        integer(pixel), intent(in) :: color
-    
-        if (x >= 0 .and. x < int(canva%width) .and. y >= 0 .and. y < int(canva%height)) then
-            canva%pixels(x, y) = color
-        end if
-    end subroutine fig_draw_pixel_i
-
-
     subroutine write_circle(canva,circ)
-        !! TODO will implement fill later when i do lines
         type(circle), intent(in) :: circ
         class(bitmap_canvas), intent(inout) :: canva
-        integer(pixel) :: color 
+        integer(pixel) :: stroke_color 
+        integer(pixel) :: fill_color 
         integer :: x, y, d
 
-        color = rgb_to_int(circ%fill_color)
+        stroke_color = rgb_to_int(circ%stroke_color)
+        fill_color = rgb_to_int(circ%fill_color)
         x = 0
         y = int(circ%r)
         d = 1 - int(circ%r)
 
+        do while (x <= y)
+            if (d < 0) then
+                d = d + 2 * x + 3
+            else
+                d = d + 2 * (x - y) + 5
+                y = y - 1
+            end if
+            x = x + 1
+
+
+            call fill_rect(canva, canva%pixels, int(circ%cx) - x, int(circ%cy) + y, 2*x+1, 1, fill_color)
+            call fill_rect(canva, canva%pixels, int(circ%cx) - x, int(circ%cy) - y, 2*x+1, 1, fill_color)
+            call fill_rect(canva, canva%pixels, int(circ%cx) - y, int(circ%cy) + x, 2*y+1, 1, fill_color)
+            call fill_rect(canva, canva%pixels, int(circ%cx) - y, int(circ%cy) - x, 2*y+1, 1, fill_color)   
+        end do                    
+                                  
+        call fill_rect(canva, canva%pixels, int (circ%cx) - int(circ%r), int(circ%cy), 2*int(circ%r)+1, 1, fill_color)
+        !! draw stroke            
+        !! TODO it is a bit messy for now 
+        !! I need to think of a better design and handle stroke_widht somehow
+
+        x = 0
+        y = int(circ%r)
+        d = 1 - int(circ%r)
         do while (x < y)
             if (d < 0) then
                 d = d + 2 * x + 3
@@ -97,47 +108,34 @@ contains
             end if
             x = x + 1
 
-            call fig_draw_pixel_i(canva, int(circ%cx) + x, int(circ%cy) + y, color)
-            call fig_draw_pixel_i(canva, int(circ%cx) - x, int(circ%cy) + y, color)
-            call fig_draw_pixel_i(canva, int(circ%cx) + x, int(circ%cy) - y, color)
-            call fig_draw_pixel_i(canva, int(circ%cx) - x, int(circ%cy) - y, color)
-            call fig_draw_pixel_i(canva, int(circ%cx) + y, int(circ%cy) + x, color)
-            call fig_draw_pixel_i(canva, int(circ%cx) - y, int(circ%cy) + x, color)
-            call fig_draw_pixel_i(canva, int(circ%cx) + y, int(circ%cy) - x, color)
-            call fig_draw_pixel_i(canva, int(circ%cx) - y, int(circ%cy) - x, color)
+            call draw_pixel(canva, canva%pixels, int(circ%cx) + x, int(circ%cy) + y, stroke_color)
+            call draw_pixel(canva, canva%pixels, int(circ%cx) - x, int(circ%cy) + y, stroke_color)
+            call draw_pixel(canva, canva%pixels, int(circ%cx) + x, int(circ%cy) - y, stroke_color)
+            call draw_pixel(canva, canva%pixels, int(circ%cx) - x, int(circ%cy) - y, stroke_color)
+            call draw_pixel(canva, canva%pixels, int(circ%cx) + y, int(circ%cy) + x, stroke_color)
+            call draw_pixel(canva, canva%pixels, int(circ%cx) - y, int(circ%cy) + x, stroke_color)
+            call draw_pixel(canva, canva%pixels, int(circ%cx) + y, int(circ%cy) - x, stroke_color)
+            call draw_pixel(canva, canva%pixels, int(circ%cx) - y, int(circ%cy) - x, stroke_color)
         end do
 
-        call fig_draw_pixel_i(canva, int(circ%cx) , int(circ%cy - circ%r), color)
-        call fig_draw_pixel_i(canva, int(circ%cx) , int(circ%cy + circ%r), color)
-        call fig_draw_pixel_i(canva, int(circ%cx - circ%r), int(circ%cy) , color)
-        call fig_draw_pixel_i(canva, int(circ%cx + circ%r), int(circ%cy) , color)
+        call draw_pixel(canva, canva%pixels, int(circ%cx) , int(circ%cy - circ%r), stroke_color)
+        call draw_pixel(canva, canva%pixels, int(circ%cx) , int(circ%cy + circ%r), stroke_color)
+        call draw_pixel(canva, canva%pixels, int(circ%cx - circ%r), int(circ%cy) , stroke_color)
+        call draw_pixel(canva, canva%pixels, int(circ%cx + circ%r), int(circ%cy) , stroke_color)
+
     end subroutine write_circle
 
     subroutine write_rectangle(canva,rect)
         class(bitmap_canvas), intent(inout) :: canva
         type(rectangle), intent(in) :: rect
-
         integer(pixel) :: color
-        integer :: x, y
-        integer :: x_start, y_start
-        integer :: x_end, y_end
         
         color = rgb_to_int(rect%fill_color)
+        call fill_rect(canva, canva%pixels, int(rect%x), int(rect%y), int(rect%width), int(rect%height), color)
         
-        x_start = max(int(rect%x),0)
-        y_start = max(int(rect%y),0)
-        x_end = int(min(rect%x + rect%width, canva%width))-1
-        y_end = int(min(rect%y + rect%height, canva%height))-1
-        
-        do y = y_start, y_end 
-            do x = x_start, x_end 
-                canva%pixels(x, y) = color
-            end do
-        end do
 
     end subroutine write_rectangle
     
-
     subroutine write_shape(canva,sh)
         class(shape), intent(in) :: sh
         class(bitmap_canvas), intent(inout) :: canva

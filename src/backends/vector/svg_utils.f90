@@ -1,4 +1,4 @@
-module fig_utils
+module fig_svg_utils
     implicit none
 contains
 
@@ -16,5 +16,5 @@ contains
         return
     end function attribute
 
-end module fig_utils
+end module fig_svg_utils
 
