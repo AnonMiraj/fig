@@ -12,7 +12,6 @@ contains
         type(RGB), intent(in) :: background
         integer(pixel) :: color 
         color = rgb_to_int(background)
-
         canva%pixels = color
 
     end subroutine fig_fill

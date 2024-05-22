@@ -1,5 +1,6 @@
 module fig_canvas
     use fig_config
+    use fig_shapes
     implicit none
     
     type :: canvas
@@ -8,6 +9,20 @@ module fig_canvas
         integer(pixel), dimension(:,:), allocatable:: pixels
     end type canvas
     
+    type:: base_canvas 
+        real :: width, height
+        character(len=:), allocatable :: title
+        type(shapeWrapper), allocatable :: shapes(:)
+        integer :: shape_count
+    contains
+        procedure :: add_shape
+        procedure :: init
+    end type base_canvas
+
+    type :: shapeWrapper
+      class(shape), allocatable :: sh
+    end type
+
     type :: vec2
         integer :: x, y
     end type vec2
@@ -30,6 +45,43 @@ contains
         allocate(this%pixels(0:width-1, 0:height-1))
         this%pixels = 0
     end subroutine canvas_init
+
+
+    subroutine init(this, width, height, fname)
+        class(base_canvas), intent(inout) :: this
+        real, intent(in) :: width, height
+        character(len=*), intent(in) :: fname
+
+        this%title = fname
+        this%width = width
+        this%height = height
+
+        this%shape_count = 0
+        allocate(this%shapes(10))
+    end subroutine init
+
+    subroutine add_shape(this, s)
+        class(base_canvas), intent(inout) :: this
+        class(shape), intent(in), target :: s
+        integer :: new_size, i
+        type(shapeWrapper), allocatable :: temp(:)
+
+        if (this%shape_count >= size(this%shapes)) then
+            new_size = 2 * size(this%shapes)
+
+            allocate(temp(this%shape_count))
+            temp = this%shapes(1:this%shape_count)
+            
+            deallocate(this%shapes)
+            allocate(this%shapes(new_size))
+            
+            this%shapes(1:this%shape_count) = temp
+            deallocate(temp)
+        endif
+
+        this%shape_count = this%shape_count + 1
+        allocate(this%shapes(this%shape_count)%sh, source=s)
+    end subroutine add_shape
 
     subroutine fig_save_to_ppm_file(canva, result,optional_file_path)
         implicit none

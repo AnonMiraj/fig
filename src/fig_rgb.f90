@@ -42,6 +42,15 @@ contains
        color%g = ibits(rgb_int, rgb_bit_depth  , rgb_bit_depth)
        color%r = ibits(rgb_int, 0, rgb_bit_depth)       
      end function int_to_rgb
-      
+
+     function rgb_to_string(color) result(color_string)
+         type(RGB), intent(in) :: color
+         character(len=50) :: color_string
+         real :: alpha
+
+         alpha = color%a / 255.0
+         alpha = min(1.0,alpha)
+         write(color_string, '(A,I3,A,I3,A,I3,A,F5.3,A)') 'rgba(', color%r, ',', color%g, ',', color%b, ',', alpha, ')'
+     end function rgb_to_string     
 
 end module fig_rgb

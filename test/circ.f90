@@ -1,7 +1,7 @@
 program circles_pattern
-    use fig_canvas
+    use fig_g_canvas
+    use fig_shapes
     use fig_rgb
-    use fig_primitive
     implicit none
     integer, parameter :: WIDTH = 800
     integer, parameter :: HEIGHT = 600
@@ -12,12 +12,12 @@ program circles_pattern
     integer :: result,x,y,center_x, center_y
     real :: u, v, t,shade
     integer :: radius
-    type(canvas) :: circ
+    type(g_canvas) :: canva
     type(RGB) :: color
     type(RGB), dimension(8) :: color_palette
-    call canvas_init(circ, WIDTH, HEIGHT, "circles_pattern")
+    type(circle) :: circ
+    call canva%init(real(WIDTH), real(HEIGHT), "circles_pattern")
     
-    call fig_fill(circ, BLACK)
     color_palette = [ RED,   & 
                       MAGENTA, &
                       YELLOW, &
@@ -35,17 +35,20 @@ program circles_pattern
             t = (real(x) + real(y)) / real(cols + rows - 2)
             radius = int(min(CELL_WIDTH, CELL_HEIGHT) * lerpf(0.125, 0.5, t))
             
-            call fig_fill_circle(circ, center_x, center_y, radius, color_palette(mod(3*x+2*y,8)+1))
+            circ%r=radius
+            circ%cx=center_x
+            circ%cy=center_y
+            circ%fill_color=color_palette(mod(3*x+2*y,8)+1)
+            circ%stroke_color=color_palette(mod(2*x+3*y,8)+1)
+            call canva%add_shape(circ)
         end do
     end do
 
-    call fig_save_to_ppm_file(circ, result)
+    call canva%save_to_file('ppm') 
+    call canva%save_to_file('svg') 
+    
      
-    if (result == 0) then
-        print *, 'Image successfully saved to circles_pattern.ppm'
-    else
-        print *, 'Error occurred while saving the image'
-    end if
+    print *, 'Image successfully saved to circles_pattern.(ppm\svg)'
  
 contains
     
