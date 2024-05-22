@@ -5,8 +5,8 @@ module fig_svg
     use fig_rgb
     implicit none
     private
-    public :: svg_canvas 
-    type,extends(Tcanvas) :: svg_canvas
+    public :: svg_canvas ,save_to_svg
+    type,extends(base_canvas) :: svg_canvas
     contains
         procedure :: save_to_file
     end type svg_canvas
@@ -18,7 +18,7 @@ contains
 
     subroutine save_to_svg(this,shapes)
         !! to be used in the general canvas
-        class(Tcanvas), intent(inout) :: this
+        class(base_canvas), intent(inout) :: this
         integer :: unit_num, ierr, i
         type(shapeWrapper), allocatable,intent(in) :: shapes(:)
         character(len=:), allocatable :: file_path

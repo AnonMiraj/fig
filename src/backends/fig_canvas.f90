@@ -9,7 +9,7 @@ module fig_canvas
         integer(pixel), dimension(:,:), allocatable:: pixels
     end type canvas
     
-    type:: Tcanvas ! temproary until i modify all tests to use the bitmap canvas
+    type:: base_canvas 
         real :: width, height
         character(len=:), allocatable :: title
         type(shapeWrapper), allocatable :: shapes(:)
@@ -17,7 +17,7 @@ module fig_canvas
     contains
         procedure :: add_shape
         procedure :: init
-    end type Tcanvas
+    end type base_canvas
 
     type :: shapeWrapper
       class(shape), allocatable :: sh
@@ -48,7 +48,7 @@ contains
 
 
     subroutine init(this, width, height, fname)
-        class(Tcanvas), intent(inout) :: this
+        class(base_canvas), intent(inout) :: this
         real, intent(in) :: width, height
         character(len=*), intent(in) :: fname
 
@@ -61,7 +61,7 @@ contains
     end subroutine init
 
     subroutine add_shape(this, s)
-        class(Tcanvas), intent(inout) :: this
+        class(base_canvas), intent(inout) :: this
         class(shape), intent(in), target :: s
         integer :: new_size
 
@@ -74,6 +74,7 @@ contains
         this%shape_count = this%shape_count + 1
         allocate(this%shapes(this%shape_count)%sh, source=s)
     end subroutine add_shape
+
 
     subroutine fig_save_to_ppm_file(canva, result,optional_file_path)
         implicit none

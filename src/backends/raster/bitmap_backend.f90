@@ -7,7 +7,7 @@ module fig_bitmap
     implicit none
     private
     public :: bitmap_canvas 
-    type,extends(Tcanvas) :: bitmap_canvas
+    type,extends(base_canvas) :: bitmap_canvas
         integer(pixel), dimension(:,:), allocatable:: pixels
     contains
         procedure :: init => init_bitmap
@@ -21,14 +21,13 @@ contains
         class(bitmap_canvas), intent(inout) :: this
         real, intent(in) :: width, height
         character(len=*), intent(in) :: fname
-        call this%Tcanvas%init(width, height, fname)
-
+        call this%base_canvas%init(width, height, fname)
         allocate(this%pixels(0:int(width)-1, 0:int(height)-1))
     end subroutine init_bitmap
 
     subroutine save_to_file(this)
         class(bitmap_canvas), intent(inout) :: this
-        call this%apply_shapes()
+        call this%apply_shapes(this%shapes)
         call this%save_to_ppm()
     end subroutine save_to_file
 
@@ -52,8 +51,8 @@ contains
         write(unit_num, '(a2)') 'P6'
         write(unit_num, '(i0," ",i0)')  int(this%width), int(this%height)
         write(unit_num, '(i0)') 2**rgb_bit_depth-1
-        do j = 0, this%height-1
-            do i = 0, this%width-1
+        do j = 0, int(this%height)-1
+            do i = 0, int(this%width)-1
                 bytes(1) = ibits(this%pixels(i, j), 0, rgb_bit_depth)
                 bytes(2) = ibits(this%pixels(i, j), rgb_bit_depth, rgb_bit_depth)
                 bytes(3) = ibits(this%pixels(i, j), 2*rgb_bit_depth, rgb_bit_depth)
@@ -77,7 +76,7 @@ contains
     end subroutine fig_draw_pixel_i
 
 
-    subroutine write_circle(circ,canva)
+    subroutine write_circle(canva,circ)
         !! TODO will implement fill later when i do lines
         type(circle), intent(in) :: circ
         class(bitmap_canvas), intent(inout) :: canva
@@ -114,9 +113,9 @@ contains
         call fig_draw_pixel_i(canva, int(circ%cx + circ%r), int(circ%cy) , color)
     end subroutine write_circle
 
-    subroutine write_rectangle(rect,canva)
-        type(rectangle), intent(in) :: rect
+    subroutine write_rectangle(canva,rect)
         class(bitmap_canvas), intent(inout) :: canva
+        type(rectangle), intent(in) :: rect
 
         integer(pixel) :: color
         integer :: x, y
@@ -139,24 +138,25 @@ contains
     end subroutine write_rectangle
     
 
-    subroutine write_shape(sh,canva)
+    subroutine write_shape(canva,sh)
         class(shape), intent(in) :: sh
         class(bitmap_canvas), intent(inout) :: canva
 
         select type(sh)
         type is (circle)
-            call write_circle(sh, canva)
+            call write_circle(canva,sh)
         type is (rectangle)
-            call write_rectangle(sh, canva)
+            call write_rectangle(canva,sh)
         end select
     end subroutine write_shape
 
-    subroutine apply_shapes(canva)
+    subroutine apply_shapes(canva,shapes)
         class(bitmap_canvas), intent(inout) :: canva
+        type(shapeWrapper), allocatable,intent(in) :: shapes(:)
         integer :: i
 
-        do i = 1, canva%shape_count
-            call write_shape(canva%shapes(i)%sh,canva)
+        do i = 1, size(shapes)
+            call write_shape(canva,shapes(i)%sh)
         end do
 
 
