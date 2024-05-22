@@ -1,7 +1,8 @@
 program chess_checker
     use fig_canvas
+    use fig_g_canvas
     use fig_rgb
-    use fig_primitive
+    use fig_shapes
     implicit none
     integer, parameter :: WIDTH = 800
     integer, parameter :: HEIGHT = 800
@@ -9,33 +10,42 @@ program chess_checker
     integer, parameter :: rows = 8
     integer, parameter :: CELL_WIDTH = (WIDTH/cols)
     integer, parameter :: CELL_HEIGHT =(HEIGHT/rows)
-    integer :: result,x,y
+    integer :: x,y
 
-    type(canvas) :: checker
+    type(g_canvas) :: checker
+    type(rectangle) :: rect
     type(RGB) ::ALTERNATE_COLOR,BACKGROUND_COLOR, color
-    call canvas_init(checker, WIDTH, HEIGHT, "checker")
+    call checker%init(real(WIDTH), real(HEIGHT), 'checker')
     
     BACKGROUND_COLOR = BLACK 
     ALTERNATE_COLOR = WHITE 
-    call fig_fill(checker, BACKGROUND_COLOR)
+    rect%x=0
+    rect%y=0
+    rect%width=WIDTH
+    rect%height=HEIGHT
+    rect%fill_color=BACKGROUND_COLOR
     
-    do y = 0, HEIGHT / CELL_HEIGHT
-        do x = 0, WIDTH / CELL_WIDTH
+    do y = 0, rows - 1
+        do x = 0, cols - 1
             if (mod(x + y, 2) == 0) then
                 color = ALTERNATE_COLOR
             else
                 color = BACKGROUND_COLOR
             endif
-            call fig_fill_rect(checker, (x - 1) * CELL_WIDTH, (y - 1) * CELL_HEIGHT, CELL_WIDTH, CELL_HEIGHT, color)
+
+            rect%x = x * CELL_WIDTH
+            rect%y = y * CELL_HEIGHT
+            rect%width = CELL_WIDTH
+            rect%height = CELL_HEIGHT
+            rect%fill_color = color
+
+            call checker%add_shape(rect)
         end do
     end do
     
-    call fig_save_to_ppm_file(checker, result)
+    call checker%save_to_file("svg")
+    call checker%save_to_file("ppm")
     
-    if (result == 0) then
-        print *, 'Image successfully saved to checker.ppm'
-    else
-        print *, 'Error occurred while saving the image'
-    end if
+    print *, 'Image successfully saved to checker.(ppm\svg)'
     
 end program chess_checker

@@ -6,7 +6,7 @@ contains
 
     subroutine draw_pixel(canva,pixels, x, y, color)
         class(base_canvas), intent(inout) :: canva
-        integer(pixel), dimension(:,:), intent(inout):: pixels
+        integer(pixel), dimension(0:,0:), intent(inout):: pixels
         integer, intent(in) :: x, y
         integer(pixel), intent(in) :: color
     
@@ -17,7 +17,7 @@ contains
 
     subroutine fill_rect(canva,pixels, x, y, w, h, color)
         class(base_canvas), intent(inout) :: canva
-        integer(pixel), dimension(:,:), intent(inout):: pixels
+        integer(pixel), dimension(0:,0:), intent(inout):: pixels
         integer, intent(in) :: x, y
         integer, intent(in) :: w, h
         integer(pixel), intent(in) :: color
@@ -27,8 +27,8 @@ contains
         
         x_start = max(int(x),0)
         y_start = max(int(y),0)
-        x_end = int(min(x + w, int(canva%width)))-1
-        y_end = int(min(y + h, int(canva%height)))-1
+        x_end = min(x + w, int(canva%width)-1)
+        y_end = min(y + h, int(canva%height)-1)
         
         do i = y_start, y_end 
             do j = x_start, x_end 

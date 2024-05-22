@@ -63,18 +63,25 @@ contains
     subroutine add_shape(this, s)
         class(base_canvas), intent(inout) :: this
         class(shape), intent(in), target :: s
-        integer :: new_size
+        integer :: new_size, i
+        type(shapeWrapper), allocatable :: temp(:)
 
         if (this%shape_count >= size(this%shapes)) then
             new_size = 2 * size(this%shapes)
+
+            allocate(temp(this%shape_count))
+            temp = this%shapes(1:this%shape_count)
+            
+            deallocate(this%shapes)
             allocate(this%shapes(new_size))
-            this%shapes(1:this%shape_count) = this%shapes(1:this%shape_count)
+            
+            this%shapes(1:this%shape_count) = temp
+            deallocate(temp)
         endif
 
         this%shape_count = this%shape_count + 1
         allocate(this%shapes(this%shape_count)%sh, source=s)
     end subroutine add_shape
-
 
     subroutine fig_save_to_ppm_file(canva, result,optional_file_path)
         implicit none

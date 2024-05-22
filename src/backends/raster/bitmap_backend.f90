@@ -85,13 +85,13 @@ contains
             x = x + 1
 
 
-            call fill_rect(canva, canva%pixels, int(circ%cx) - x, int(circ%cy) + y, 2*x+1, 1, fill_color)
-            call fill_rect(canva, canva%pixels, int(circ%cx) - x, int(circ%cy) - y, 2*x+1, 1, fill_color)
-            call fill_rect(canva, canva%pixels, int(circ%cx) - y, int(circ%cy) + x, 2*y+1, 1, fill_color)
-            call fill_rect(canva, canva%pixels, int(circ%cx) - y, int(circ%cy) - x, 2*y+1, 1, fill_color)   
+            call fill_rect(canva, canva%pixels, int(circ%cx) - x, int(circ%cy) + y-1, 2*x, 1, fill_color)
+            call fill_rect(canva, canva%pixels, int(circ%cx) - x, int(circ%cy) - y, 2*x, 1, fill_color)
+            call fill_rect(canva, canva%pixels, int(circ%cx) - y, int(circ%cy) + x-1, 2*y, 1, fill_color)
+            call fill_rect(canva, canva%pixels, int(circ%cx) - y, int(circ%cy) - x, 2*y, 1, fill_color)   
         end do                    
                                   
-        call fill_rect(canva, canva%pixels, int (circ%cx) - int(circ%r), int(circ%cy), 2*int(circ%r)+1, 1, fill_color)
+        call fill_rect(canva, canva%pixels, int (circ%cx) - int(circ%r), int(circ%cy), 2*int(circ%r), 1, fill_color)
         !! draw stroke            
         !! TODO it is a bit messy for now 
         !! I need to think of a better design and handle stroke_widht somehow
