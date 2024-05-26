@@ -1,5 +1,5 @@
 program circles_pattern
-    use fig_g_canvas
+    !!use fig_g_canvas
     use fig_shapes
     use fig_rgb
     implicit none
@@ -12,11 +12,11 @@ program circles_pattern
     integer :: result,x,y,center_x, center_y
     real :: u, v, t,shade
     integer :: radius
-    type(g_canvas) :: canva
+    !!type(g_canvas) :: canva
     type(RGB) :: color
     type(RGB), dimension(8) :: color_palette
     type(circle) :: circ
-    call canva%init(real(WIDTH), real(HEIGHT), "circles_pattern")
+    !!call canva%init(real(WIDTH), real(HEIGHT), "circles_pattern")
     
     color_palette = [ RED,   & 
                       MAGENTA, &
@@ -40,12 +40,12 @@ program circles_pattern
             circ%cy=center_y
             circ%fill_color=color_palette(mod(3*x+2*y,8)+1)
             circ%stroke_color=color_palette(mod(2*x+3*y,8)+1)
-            call canva%add_shape(circ)
+            !!call canva%add_shape(circ)
         end do
     end do
 
-    call canva%save_to_file('ppm') 
-    call canva%save_to_file('svg') 
+    !!call canva%save_to_file('ppm') 
+    !!call canva%save_to_file('svg') 
     
      
     print *, 'Image successfully saved to circles_pattern.(ppm\svg)'
