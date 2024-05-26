@@ -6,9 +6,11 @@ module fig_svg
     implicit none
     private
     public :: svg_canvas ,save_to_svg
+    integer :: unit_num
     type,extends(base_canvas) :: svg_canvas
     contains
         procedure :: save_to_file
+        procedure :: draw_shape => svg_write_shape
     end type svg_canvas
 contains
     subroutine save_to_file(this)
@@ -17,9 +19,8 @@ contains
     end subroutine save_to_file
 
     subroutine save_to_svg(this,shapes)
-        !! to be used in the general canvas
-        class(base_canvas), intent(inout) :: this
-        integer :: unit_num, ierr, i
+        class(svg_canvas), intent(inout) :: this
+        integer :: ierr, i
         type(shapeWrapper), allocatable,intent(in) :: shapes(:)
         character(len=:), allocatable :: file_path
         character(len=:), allocatable :: s_line
@@ -37,8 +38,7 @@ contains
              // attribute('xmlns', "http://www.w3.org/2000/svg", '') &
              //' >'
         do i = 1, this%shape_count
-            call write_shape(shapes(i)%sh,s_line)
-            write(unit_num, '(A)') s_line
+            call svg_write_shape(this,shapes(i)%sh)
         end do
 
         write(unit_num, '(A)') '</svg>'
@@ -46,11 +46,10 @@ contains
 
     end subroutine save_to_svg
 
-    subroutine write_circle(this,res_str)
+    subroutine write_circle(this)
         type(circle), intent(in) :: this
-        character(len=:), allocatable,intent(inout) :: res_str
 
-        res_str = '<circle ' &
+        write(unit_num, '(A)') '<circle ' &
             // attribute('cx', trim(adjustl(real_to_str(this%cx))), '') &
             // attribute('cy', trim(adjustl(real_to_str(this%cy))), '') &
             // attribute('r', trim(adjustl(real_to_str(this%r))), '') &
@@ -58,29 +57,29 @@ contains
             // attribute('stroke', trim(adjustl(rgb_to_string(this%stroke_color))), '') // '/>'
     end subroutine write_circle
 
-    subroutine write_rectangle(this,res_str)
+    subroutine write_rectangle(this)
         type(rectangle), intent(in) :: this
-        character(len=:), allocatable,intent(inout) :: res_str
 
-        res_str = '<rect ' // attribute('x', trim(adjustl(real_to_str(this%x))), '') &
-             // attribute('y', trim(adjustl(real_to_str(this%y))), '') &
-             // attribute('width', trim(adjustl(real_to_str(this%width))), '') &
-             // attribute('height', trim(adjustl(real_to_str(this%height))), '') &
-             // attribute('fill', trim(adjustl(rgb_to_string(this%fill_color))), '') // '/>'
+        write(unit_num, '(A)') '<rect ' &
+            // attribute('x', trim(adjustl(real_to_str(this%x))), '') &
+            // attribute('y', trim(adjustl(real_to_str(this%y))), '') &
+            // attribute('width', trim(adjustl(real_to_str(this%width))), '') &
+            // attribute('height', trim(adjustl(real_to_str(this%height))), '') &
+            // attribute('fill', trim(adjustl(rgb_to_string(this%fill_color))), '') // '/>'
     end subroutine write_rectangle
     
 
-    subroutine write_shape(sh,res_str)
+    subroutine svg_write_shape(canva,sh)
+        class(svg_canvas), intent(inout) :: canva
         class(shape), intent(in) :: sh
-        character(len=:), allocatable,intent(inout) :: res_str
 
         select type(sh)
         type is (circle)
-            call write_circle(sh, res_str)
+            call write_circle(sh)
         type is (rectangle)
-            call write_rectangle(sh, res_str)
+            call write_rectangle(sh)
         end select
-    end subroutine write_shape
+    end subroutine svg_write_shape
 
 end module fig_svg
 

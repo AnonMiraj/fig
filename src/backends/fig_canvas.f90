@@ -9,12 +9,13 @@ module fig_canvas
         integer(pixel), dimension(:,:), allocatable:: pixels
     end type canvas
     
-    type:: base_canvas 
+    type, abstract :: base_canvas 
         real :: width, height
         character(len=:), allocatable :: title
         type(shapeWrapper), allocatable :: shapes(:)
         integer :: shape_count
     contains
+        procedure(canvas_draw_shape), deferred :: draw_shape
         procedure :: add_shape
         procedure :: init
     end type base_canvas
@@ -22,6 +23,14 @@ module fig_canvas
     type :: shapeWrapper
       class(shape), allocatable :: sh
     end type
+
+    abstract interface
+       subroutine canvas_draw_shape(canva,sh)
+       import base_canvas, shape 
+       class(base_canvas), intent(inout) :: canva
+       class(shape), intent(in) :: sh
+       end subroutine canvas_draw_shape
+    end interface
 
     type :: vec2
         integer :: x, y
