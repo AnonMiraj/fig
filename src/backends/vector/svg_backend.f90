@@ -9,23 +9,17 @@ module fig_svg
     integer :: unit_num
     type,extends(base_canvas) :: svg_canvas
     contains
-        procedure :: save_to_file
+        procedure :: save_to_svg
         procedure :: draw_shape => svg_write_shape
     end type svg_canvas
 contains
-    subroutine save_to_file(this)
-        class(svg_canvas), intent(inout) :: this
-        call save_to_svg(this,this%shapes)
-    end subroutine save_to_file
 
-    subroutine save_to_svg(this,shapes)
+    subroutine save_to_svg(this,shapes,file_path)
         class(svg_canvas), intent(inout) :: this
-        integer :: ierr, i
         type(shapeWrapper), allocatable,intent(in) :: shapes(:)
-        character(len=:), allocatable :: file_path
-        character(len=:), allocatable :: s_line
+        character(len=*), intent(in) :: file_path
+        integer :: ierr, i
 
-        file_path=this%title // '.svg'
         open(newunit=unit_num, file=file_path, status='replace', action='write', iostat=ierr)
         if (ierr /= 0) then
             print *, "Error opening file ", file_path
@@ -37,7 +31,7 @@ contains
              // attribute('height', trim(adjustl(real_to_str(this%height))), '') &
              // attribute('xmlns', "http://www.w3.org/2000/svg", '') &
              //' >'
-        do i = 1, this%shape_count
+        do i = 1, size(shapes)
             call svg_write_shape(this,shapes(i)%sh)
         end do
 
