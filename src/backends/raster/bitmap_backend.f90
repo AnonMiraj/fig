@@ -14,6 +14,7 @@ module fig_bitmap
         procedure :: save_to_file
         procedure :: save_to_ppm
         procedure :: apply_shapes
+        procedure :: draw_shape=> bitmap_write_shape
     end type bitmap_canvas
 contains
 
@@ -21,7 +22,7 @@ contains
         class(bitmap_canvas), intent(inout) :: this
         real, intent(in) :: width, height
         character(len=*), intent(in) :: fname
-        call this%base_canvas%init(width, height, fname)
+        call init(this,width, height, fname)
         allocate(this%pixels(0:int(width)-1, 0:int(height)-1))
     end subroutine init_bitmap
 
@@ -136,9 +137,9 @@ contains
 
     end subroutine write_rectangle
     
-    subroutine write_shape(canva,sh)
-        class(shape), intent(in) :: sh
+    subroutine bitmap_write_shape(canva,sh)
         class(bitmap_canvas), intent(inout) :: canva
+        class(shape), intent(in) :: sh
 
         select type(sh)
         type is (circle)
@@ -146,7 +147,7 @@ contains
         type is (rectangle)
             call write_rectangle(canva,sh)
         end select
-    end subroutine write_shape
+    end subroutine bitmap_write_shape
 
     subroutine apply_shapes(canva,shapes)
         class(bitmap_canvas), intent(inout) :: canva
@@ -154,7 +155,7 @@ contains
         integer :: i
 
         do i = 1, size(shapes)
-            call write_shape(canva,shapes(i)%sh)
+            call bitmap_write_shape(canva,shapes(i)%sh)
         end do
 
 

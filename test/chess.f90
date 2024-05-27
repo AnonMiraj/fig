@@ -1,6 +1,6 @@
 program chess_checker
     use fig_canvas
-    use fig_g_canvas
+    !!use fig_g_canvas
     use fig_rgb
     use fig_shapes
     implicit none
@@ -12,10 +12,10 @@ program chess_checker
     integer, parameter :: CELL_HEIGHT =(HEIGHT/rows)
     integer :: x,y
 
-    type(g_canvas) :: checker
+    !!type(g_canvas) :: checker
     type(rectangle) :: rect
     type(RGB) ::ALTERNATE_COLOR,BACKGROUND_COLOR, color
-    call checker%init(real(WIDTH), real(HEIGHT), 'checker')
+    !!call checker%init(real(WIDTH), real(HEIGHT), 'checker')
     
     BACKGROUND_COLOR = BLACK 
     ALTERNATE_COLOR = WHITE 
@@ -39,13 +39,13 @@ program chess_checker
             rect%height = CELL_HEIGHT
             rect%fill_color = color
 
-            call checker%add_shape(rect)
+            !!call checker%add_shape(rect)
         end do
     end do
     
-    call checker%save_to_file("svg")
-    call checker%save_to_file("ppm")
+    !!call checker%save_to_file("svg")
+    !!call checker%save_to_file("ppm")
     
-    print *, 'Image successfully saved to checker.(ppm\svg)'
+    !!print *, 'Image successfully saved to checker.(ppm\svg)'
     
 end program chess_checker
