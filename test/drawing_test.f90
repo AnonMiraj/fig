@@ -7,8 +7,11 @@ program drawing_test_all
     type(drawing) :: canva
     type(circle) :: c
     type(rectangle) :: r
-
+    type(RGB):: bg
+    bg=GREEN
+    bg%a=50
     call canva%init(800.0,800.0,'output')
+    call canva%set_background(bg)
 
     c%cx = 100.0
     c%cy = 100.0

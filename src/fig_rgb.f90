@@ -11,6 +11,7 @@ module fig_rgb
     end type RGB
 
     type(RGB) :: RED = RGB(255, 0, 0, 255) 
+    type(RGB) :: BLANK = RGB(0, 0, 0, 0) 
     type(RGB) :: GREEN = RGB(0, 255, 0, 255)
     type(RGB) :: BLUE = RGB(0, 0, 255, 255)
     type(RGB) :: WHITE = RGB(255, 255, 255, 255)

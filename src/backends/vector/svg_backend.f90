@@ -14,9 +14,10 @@ module fig_svg
     end type svg_canvas
 contains
 
-    subroutine save_to_svg(this,shapes,file_path)
+    subroutine save_to_svg(this,shapes,shape_count,file_path)
         class(svg_canvas), intent(inout) :: this
         type(shapeWrapper), allocatable,intent(in) :: shapes(:)
+        integer, intent(in) :: shape_count
         character(len=*), intent(in) :: file_path
         integer :: ierr, i
 
@@ -31,7 +32,7 @@ contains
              // attribute('height', trim(adjustl(real_to_str(this%height))), '') &
              // attribute('xmlns', "http://www.w3.org/2000/svg", '') &
              //' >'
-        do i = 1, size(shapes)
+        do i = 1, shape_count
             call svg_write_shape(this,shapes(i)%sh)
         end do
 

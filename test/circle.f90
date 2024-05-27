@@ -8,18 +8,19 @@ program circle_test
     type(rectangle) :: rect
     type(circle) :: circ
     integer :: cx, cy, radius, result
+    type(RGB) :: color
     call c%init(400.0, 400.0, "green_blob")
 
+    color = GREEN
+    color%a =50
     cx = int(c%width) / 2 
     cy = int(c%height) / 3
     radius = min(int(c%width), int(c%height)) / 8 
 
+    
 
-    rect%width=400
-    rect%height=400
-    rect%fill_color=GREEN
+    call c%set_background(color)
 
-    call c%add_shape(rect)
     circ%stroke_color= BLACK
 
     circ%cx= cx+cx/2

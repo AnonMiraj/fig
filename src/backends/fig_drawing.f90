@@ -3,6 +3,7 @@ module fig_drawing
     use fig_shapes
     use fig_svg
     use fig_bitmap
+    use fig_rgb
     implicit none
  
     type :: drawing
@@ -12,6 +13,7 @@ module fig_drawing
         integer :: shape_count
     contains
         procedure :: add_shape
+        procedure :: set_background
         procedure :: init
         procedure :: save_to_file
     end type drawing
@@ -23,6 +25,7 @@ contains
         class(drawing), intent(inout) :: this
         real, intent(in) :: width, height
         character(len=*), intent(in) :: fname
+        type(rectangle):: bg
 
         this%title = fname
         this%width = width
@@ -30,7 +33,18 @@ contains
 
         this%shape_count = 1
         allocate(this%shapes(1))
+
+        bg%height=height
+        bg%width=width
+        bg%fill_color=BLANK
+        this%shapes(1)%sh=bg
     end subroutine init
+
+    subroutine set_background(this, bg_color)
+        class(drawing), intent(inout) :: this
+        type(RGB), intent(in), target :: bg_color
+        this%shapes(1)%sh%fill_color=bg_color
+    end subroutine set_background
 
     subroutine add_shape(this, s)
         class(drawing), intent(inout) :: this
@@ -64,10 +78,10 @@ contains
         select case (trim(output_ext))
         case ('svg')
             call temp_svg_canvas%init(this%width,this%height)
-            call temp_svg_canvas%save_to_svg(this%shapes,this%title // '.svg')
+            call temp_svg_canvas%save_to_svg(this%shapes,this%shape_count,this%title // '.svg')
         case default
             call temp_bitmap_canvas%init(this%width,this%height)
-            call temp_bitmap_canvas%apply_shapes(this%shapes)
+            call temp_bitmap_canvas%apply_shapes(this%shapes,this%shape_count)
             call temp_bitmap_canvas%save_to_file(this%title // '.ppm')
         end select
     end subroutine save_to_file

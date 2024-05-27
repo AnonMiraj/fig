@@ -147,12 +147,13 @@ contains
         end select
     end subroutine bitmap_write_shape
 
-    subroutine apply_shapes(canva,shapes)
+    subroutine apply_shapes(canva,shapes,shape_count)
         class(bitmap_canvas), intent(inout) :: canva
         type(shapeWrapper), allocatable,intent(in) :: shapes(:)
+        integer, intent(in) :: shape_count
         integer :: i
 
-        do i = 1, size(shapes)
+        do i = 1, shape_count
             call bitmap_write_shape(canva,shapes(i)%sh)
         end do
 

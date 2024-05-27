@@ -4,6 +4,7 @@ module fig_shapes
     type, abstract :: shape
         type(RGB) :: fill_color
         type(RGB) :: stroke_color
+
     end type shape
 
     type, extends(shape) :: circle
