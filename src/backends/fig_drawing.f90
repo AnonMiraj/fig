@@ -4,6 +4,7 @@ module fig_drawing
     use fig_svg
     use fig_bitmap
     use fig_rgb
+    use fig_rgb_color_constants
     implicit none
  
     type :: drawing
@@ -36,7 +37,7 @@ contains
 
         bg%height=height
         bg%width=width
-        bg%fill_color=BLANK
+        bg%fill_color=FIG_COLOR_BLANK
         this%shapes(1)%sh=bg
     end subroutine init
 

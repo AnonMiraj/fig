@@ -2,6 +2,7 @@ program circles_pattern
     use fig_drawing
     use fig_shapes
     use fig_rgb
+    use fig_rgb_color_constants
     implicit none
     integer, parameter :: WIDTH = 800
     integer, parameter :: HEIGHT = 600
@@ -18,14 +19,14 @@ program circles_pattern
     type(circle) :: circ
     call canva%init(real(WIDTH), real(HEIGHT), "circles_pattern")
     
-    color_palette = [ RED,   & 
-                      MAGENTA, &
-                      YELLOW, &
-                      GREEN,   &
-                      BLUE,   &
-                      CYAN,  &
-                      PINK, &
-                      WHITE ]
+    color_palette = [ FIG_COLOR_RED,   & 
+                      FIG_COLOR_MAGENTA, &
+                      FIG_COLOR_YELLOW, &
+                      FIG_COLOR_GREEN,   &
+                      FIG_COLOR_BLUE,   &
+                      FIG_COLOR_CYAN,  &
+                      FIG_COLOR_PINK, &
+                      FIG_COLOR_WHITE ]
     
     do y = 0, rows - 1
         do x = 0, cols - 1

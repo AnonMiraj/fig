@@ -3,6 +3,7 @@ program chess_checker
     use fig_drawing
     use fig_rgb
     use fig_shapes
+    use fig_rgb_color_constants
     implicit none
     integer, parameter :: WIDTH = 800
     integer, parameter :: HEIGHT = 800
@@ -17,8 +18,8 @@ program chess_checker
     type(RGB) ::ALTERNATE_COLOR,BACKGROUND_COLOR, color
     call checker%init(real(WIDTH), real(HEIGHT), 'checker')
     
-    BACKGROUND_COLOR = BLACK 
-    ALTERNATE_COLOR = WHITE 
+    BACKGROUND_COLOR = FIG_COLOR_BLACK 
+    ALTERNATE_COLOR = FIG_COLOR_WHITE 
     rect%x=0
     rect%y=0
     rect%width=WIDTH

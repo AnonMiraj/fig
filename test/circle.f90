@@ -2,6 +2,7 @@ program circle_test
     use fig_drawing
     use fig_shapes
     use fig_rgb
+    use fig_rgb_color_constants
     implicit none
 
     type(drawing)  :: c
@@ -11,7 +12,7 @@ program circle_test
     type(RGB) :: color
     call c%init(400.0, 400.0, "green_blob")
 
-    color = GREEN
+    color = FIG_COLOR_GREEN
     color%a =50
     cx = int(c%width) / 2 
     cy = int(c%height) / 3
@@ -21,30 +22,30 @@ program circle_test
 
     call c%set_background(color)
 
-    circ%stroke_color= BLACK
+    circ%stroke_color= FIG_COLOR_BLACK
 
     circ%cx= cx+cx/2
     circ%cy= cy
     circ%r= radius
-    circ%fill_color= WHITE
+    circ%fill_color= FIG_COLOR_WHITE
     call c%add_shape(circ)
     circ%r= radius/2
-    circ%fill_color= BLUE
+    circ%fill_color= FIG_COLOR_BLUE
     call c%add_shape(circ)
     circ%r= radius/4
-    circ%fill_color= CYAN
+    circ%fill_color= FIG_COLOR_CYAN
     call c%add_shape(circ)
 
     circ%cx= cx-cx/2
     circ%cy= cy
     circ%r= radius
-    circ%fill_color= WHITE
+    circ%fill_color= FIG_COLOR_WHITE
     call c%add_shape(circ)
     circ%r= radius/2
-    circ%fill_color= BLUE
+    circ%fill_color= FIG_COLOR_BLUE
     call c%add_shape(circ)
     circ%r= radius/4
-    circ%fill_color= CYAN
+    circ%fill_color= FIG_COLOR_CYAN
     call c%add_shape(circ)
 
 
