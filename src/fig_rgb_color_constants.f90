@@ -46,7 +46,7 @@ module fig_rgb_color_constants
    type(RGB), parameter :: FIG_COLOR_DEEPSKYBLUE = RGB( 0, 191, 255, 255)
    type(RGB), parameter :: FIG_COLOR_DIMGRAY = RGB(105, 105, 105, 255)
    type(RGB), parameter :: FIG_COLOR_DIMGREY = RGB(105, 105, 105, 255)
-   type(RGB), parameter :: FIG_COLOR_DODGERBLUE = RGB( 30, 144, 255)
+   type(RGB), parameter :: FIG_COLOR_DODGERBLUE = RGB( 30, 144, 255, 255)
    type(RGB), parameter :: FIG_COLOR_FIREBRICK = RGB(178, 34, 34, 255)
    type(RGB), parameter :: FIG_COLOR_FLORALWHITE = RGB(255, 250, 240, 255)
    type(RGB), parameter :: FIG_COLOR_FORESTGREEN = RGB( 34, 139, 34, 255)
@@ -149,5 +149,6 @@ module fig_rgb_color_constants
    type(RGB), parameter :: FIG_COLOR_WHITESMOKE = RGB(245, 245, 245, 255)
    type(RGB), parameter :: FIG_COLOR_YELLOW = RGB(255, 255, 0, 255)
    type(RGB), parameter :: FIG_COLOR_YELLOWGREEN = RGB(154, 205, 50, 255)        
+   type(RGB), parameter :: FIG_COLOR_BLANK = RGB(0, 0, 0, 0) 
 
 end module fig_rgb_color_constants
