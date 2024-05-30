@@ -4,6 +4,7 @@ module fig_shapes
     type, abstract :: shape
         type(RGB) :: fill_color
         type(RGB) :: stroke_color
+
     end type shape
 
     type, extends(shape) :: circle
@@ -14,4 +15,7 @@ module fig_shapes
         real :: x, y, width, height
     end type rectangle
 
+    type :: shapeWrapper
+      class(shape), allocatable :: sh
+    end type
 end module fig_shapes

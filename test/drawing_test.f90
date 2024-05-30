@@ -1,15 +1,17 @@
-
-program test_bitmap_writer
-    use fig_bitmap
+program drawing_test_all
+    use fig_drawing
     use fig_shapes
     use fig_rgb
     implicit none
 
-    type(bitmap_canvas) :: canva
+    type(drawing) :: canva
     type(circle) :: c
     type(rectangle) :: r
-
+    type(RGB):: bg
+    bg=GREEN
+    bg%a=50
     call canva%init(800.0,800.0,'output')
+    call canva%set_background(bg)
 
     c%cx = 100.0
     c%cy = 100.0
@@ -31,7 +33,8 @@ program test_bitmap_writer
     r%fill_color = RED
     call canva%add_shape(r)
 
-    call canva%save_to_file()
+    call canva%save_to_file('svg')
+    call canva%save_to_file('ppm')
 
-    print *, "bitmap file created successfully: output.ppm"
-end program test_bitmap_writer
+    print *, "drawing exported successfully: output.(ppm/svg)"
+end program drawing_test_all

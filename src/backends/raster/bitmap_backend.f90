@@ -18,28 +18,26 @@ module fig_bitmap
     end type bitmap_canvas
 contains
 
-    subroutine init_bitmap(this, width, height , fname)
+    subroutine init_bitmap(this, width, height)
         class(bitmap_canvas), intent(inout) :: this
         real, intent(in) :: width, height
-        character(len=*), intent(in) :: fname
-        call init(this,width, height, fname)
+        call init(this,width, height)
         allocate(this%pixels(0:int(width)-1, 0:int(height)-1))
     end subroutine init_bitmap
 
-    subroutine save_to_file(this)
+    subroutine save_to_file(this,file_path)
         class(bitmap_canvas), intent(inout) :: this
-        call this%apply_shapes(this%shapes)
-        call this%save_to_ppm()
+        character(len=*), intent(in) :: file_path
+        call this%save_to_ppm(file_path)
     end subroutine save_to_file
 
-    subroutine save_to_ppm(this)
+    subroutine save_to_ppm(this,file_path)
         class(bitmap_canvas), intent(inout) :: this
         integer :: unit_num, ierr
-        character(len=:), allocatable :: file_path
+        character(len=*), intent(in) :: file_path
         integer :: i,j
         integer :: bytes(3)
 
-        file_path=this%title // '.ppm'
 
         open(newunit=unit_num, file=file_path, status='replace', action='write', iostat=ierr)
         if (ierr /= 0) then
@@ -149,12 +147,13 @@ contains
         end select
     end subroutine bitmap_write_shape
 
-    subroutine apply_shapes(canva,shapes)
+    subroutine apply_shapes(canva,shapes,shape_count)
         class(bitmap_canvas), intent(inout) :: canva
         type(shapeWrapper), allocatable,intent(in) :: shapes(:)
+        integer, intent(in) :: shape_count
         integer :: i
 
-        do i = 1, size(shapes)
+        do i = 1, shape_count
             call bitmap_write_shape(canva,shapes(i)%sh)
         end do
 
