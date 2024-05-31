@@ -1,6 +1,8 @@
 module fig_bitmap
     use fig_canvas
     use fig_shapes
+    use fig_bitmap_circle
+    use fig_bitmap_rect
     use fig_config
     use fig_bitmap_utils
     use fig_rgb
@@ -61,89 +63,15 @@ contains
         close(unit_num)
     end subroutine save_to_ppm
 
-    subroutine write_circle(canva,circ)
-        type(circle), intent(in) :: circ
-        class(bitmap_canvas), intent(inout) :: canva
-        integer(pixel) :: stroke_color 
-        integer(pixel) :: fill_color 
-        integer :: x, y, d
-
-        stroke_color = rgb_to_int(circ%stroke_color)
-        fill_color = rgb_to_int(circ%fill_color)
-        x = 0
-        y = int(circ%r)
-        d = 1 - int(circ%r)
-
-        do while (x <= y)
-            if (d < 0) then
-                d = d + 2 * x + 3
-            else
-                d = d + 2 * (x - y) + 5
-                y = y - 1
-            end if
-            x = x + 1
-
-
-            call fill_rect(canva, canva%pixels, int(circ%cx) - x, int(circ%cy) + y-1, 2*x, 1, fill_color)
-            call fill_rect(canva, canva%pixels, int(circ%cx) - x, int(circ%cy) - y, 2*x, 1, fill_color)
-            call fill_rect(canva, canva%pixels, int(circ%cx) - y, int(circ%cy) + x-1, 2*y, 1, fill_color)
-            call fill_rect(canva, canva%pixels, int(circ%cx) - y, int(circ%cy) - x, 2*y, 1, fill_color)   
-        end do                    
-                                  
-        call fill_rect(canva, canva%pixels, int (circ%cx) - int(circ%r), int(circ%cy), 2*int(circ%r), 1, fill_color)
-        !! draw stroke            
-        !! TODO it is a bit messy for now 
-        !! I need to think of a better design and handle stroke_widht somehow
-
-        x = 0
-        y = int(circ%r)
-        d = 1 - int(circ%r)
-        do while (x < y)
-            if (d < 0) then
-                d = d + 2 * x + 3
-            else
-                d = d + 2 * (x - y) + 5
-                y = y - 1
-            end if
-            x = x + 1
-
-            call draw_pixel(canva, canva%pixels, int(circ%cx) + x, int(circ%cy) + y, stroke_color)
-            call draw_pixel(canva, canva%pixels, int(circ%cx) - x, int(circ%cy) + y, stroke_color)
-            call draw_pixel(canva, canva%pixels, int(circ%cx) + x, int(circ%cy) - y, stroke_color)
-            call draw_pixel(canva, canva%pixels, int(circ%cx) - x, int(circ%cy) - y, stroke_color)
-            call draw_pixel(canva, canva%pixels, int(circ%cx) + y, int(circ%cy) + x, stroke_color)
-            call draw_pixel(canva, canva%pixels, int(circ%cx) - y, int(circ%cy) + x, stroke_color)
-            call draw_pixel(canva, canva%pixels, int(circ%cx) + y, int(circ%cy) - x, stroke_color)
-            call draw_pixel(canva, canva%pixels, int(circ%cx) - y, int(circ%cy) - x, stroke_color)
-        end do
-
-        call draw_pixel(canva, canva%pixels, int(circ%cx) , int(circ%cy - circ%r), stroke_color)
-        call draw_pixel(canva, canva%pixels, int(circ%cx) , int(circ%cy + circ%r), stroke_color)
-        call draw_pixel(canva, canva%pixels, int(circ%cx - circ%r), int(circ%cy) , stroke_color)
-        call draw_pixel(canva, canva%pixels, int(circ%cx + circ%r), int(circ%cy) , stroke_color)
-
-    end subroutine write_circle
-
-    subroutine write_rectangle(canva,rect)
-        class(bitmap_canvas), intent(inout) :: canva
-        type(rectangle), intent(in) :: rect
-        integer(pixel) :: color
-        
-        color = rgb_to_int(rect%fill_color)
-        call fill_rect(canva, canva%pixels, int(rect%x), int(rect%y), int(rect%width), int(rect%height), color)
-        
-
-    end subroutine write_rectangle
-    
     subroutine bitmap_write_shape(canva,sh)
         class(bitmap_canvas), intent(inout) :: canva
         class(shape), intent(in) :: sh
 
         select type(sh)
         type is (circle)
-            call write_circle(canva,sh)
+            call write_circle(canva, canva%pixels, sh)
         type is (rectangle)
-            call write_rectangle(canva,sh)
+            call write_rectangle(canva ,canva%pixels,sh)
         end select
     end subroutine bitmap_write_shape
 
