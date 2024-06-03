@@ -1,6 +1,5 @@
 program radial_lines
     use fig_primitive
-    use fig_canvas
     use fig_drawing
     use fig_shapes
     use fig_rgb_color_constants
