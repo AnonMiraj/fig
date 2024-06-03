@@ -14,6 +14,12 @@ module fig_shapes
         real :: x, y, width, height
     end type rectangle
 
+    type, extends(shape) :: triangle
+        real :: x1, y1
+        real :: x2, y2
+        real :: x3, y3
+    end type triangle
+
     type, extends(shape) :: line
         real :: x1, y1
         real :: x2, y2
