@@ -47,6 +47,8 @@ contains
         select type(sh)
         type is (circle)
             call write_circle(sh, unit_num)
+        type is (ellipse)
+            call write_ellipse(sh, unit_num)
         type is (rectangle)
             call write_rectangle(sh, unit_num)
         end select

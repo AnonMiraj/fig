@@ -15,6 +15,20 @@ contains
             // attribute('stroke', trim(adjustl(rgb_to_string(sh%stroke_color))), '') // '/>'
     end subroutine write_circle
 
+    subroutine write_ellipse(sh,unit_num)
+        type(ellipse), intent(in) :: sh
+        integer,intent(in) :: unit_num
+
+        write(unit_num, '(A)') '<ellipse ' &
+            // attribute('cx', trim(adjustl(real_to_str(sh%cx))), '') &
+            // attribute('cy', trim(adjustl(real_to_str(sh%cy))), '') &
+            // attribute('rx', trim(adjustl(real_to_str(sh%rx))), '') &
+            // attribute('ry', trim(adjustl(real_to_str(sh%ry))), '') &
+            // attribute('fill', trim(adjustl(rgb_to_string(sh%fill_color))), '') &
+            // attribute('stroke', trim(adjustl(rgb_to_string(sh%stroke_color))), '') // '/>'
+    end subroutine write_ellipse
+
+
     subroutine write_rectangle(sh,unit_num)
         type(rectangle), intent(in) :: sh
         integer,intent(in) :: unit_num
