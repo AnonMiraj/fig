@@ -10,11 +10,11 @@ contains
         integer(pixel), dimension(:,:), intent(inout):: pixels
         class(base_canvas), intent(inout) :: canva
 
-        call draw_outer_circle(canva, pixels, circ)
         call draw_inner_circle(canva, pixels, circ)
+        call draw_outer_circle(canva, pixels, circ)
     end subroutine write_circle
 
-    subroutine draw_outer_circle(canva, pixels,circ)
+    subroutine draw_inner_circle(canva, pixels,circ)
         type(circle), intent(in) :: circ
         integer(pixel), dimension(:,:), intent(inout):: pixels
         class(base_canvas), intent(inout) :: canva
@@ -41,9 +41,9 @@ contains
         end do
 
         call fill_rect(canva, pixels, int(circ%cx) - int(circ%r), int(circ%cy), 2 * int(circ%r), 1, fill_color)
-    end subroutine draw_outer_circle
+    end subroutine draw_inner_circle
 
-    subroutine draw_inner_circle(canva, pixels, circ)
+    subroutine draw_outer_circle(canva, pixels, circ)
         type(circle), intent(in) :: circ
         integer(pixel), dimension(:,:), intent(inout):: pixels
         class(base_canvas), intent(inout) :: canva
@@ -78,6 +78,6 @@ contains
         call draw_pixel(canva, pixels, int(circ%cx), int(circ%cy + circ%r), stroke_color)
         call draw_pixel(canva, pixels, int(circ%cx - circ%r), int(circ%cy), stroke_color)
         call draw_pixel(canva, pixels, int(circ%cx + circ%r), int(circ%cy), stroke_color)
-    end subroutine draw_inner_circle
+    end subroutine draw_outer_circle
 
 end module fig_bitmap_circle
