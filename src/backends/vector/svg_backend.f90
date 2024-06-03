@@ -1,5 +1,5 @@
 module fig_svg
-    use fig_svg_utils
+    use fig_svg_shapes
     use fig_canvas
     use fig_shapes
     use fig_rgb
@@ -40,39 +40,15 @@ contains
         close(unit_num)
 
     end subroutine save_to_svg
-
-    subroutine write_circle(this)
-        type(circle), intent(in) :: this
-
-        write(unit_num, '(A)') '<circle ' &
-            // attribute('cx', trim(adjustl(real_to_str(this%cx))), '') &
-            // attribute('cy', trim(adjustl(real_to_str(this%cy))), '') &
-            // attribute('r', trim(adjustl(real_to_str(this%r))), '') &
-            // attribute('fill', trim(adjustl(rgb_to_string(this%fill_color))), '') &
-            // attribute('stroke', trim(adjustl(rgb_to_string(this%stroke_color))), '') // '/>'
-    end subroutine write_circle
-
-    subroutine write_rectangle(this)
-        type(rectangle), intent(in) :: this
-
-        write(unit_num, '(A)') '<rect ' &
-            // attribute('x', trim(adjustl(real_to_str(this%x))), '') &
-            // attribute('y', trim(adjustl(real_to_str(this%y))), '') &
-            // attribute('width', trim(adjustl(real_to_str(this%width))), '') &
-            // attribute('height', trim(adjustl(real_to_str(this%height))), '') &
-            // attribute('fill', trim(adjustl(rgb_to_string(this%fill_color))), '') // '/>'
-    end subroutine write_rectangle
-    
-
     subroutine svg_write_shape(canva,sh)
         class(svg_canvas), intent(inout) :: canva
         class(shape), intent(in) :: sh
 
         select type(sh)
         type is (circle)
-            call write_circle(sh)
+            call write_circle(sh, unit_num)
         type is (rectangle)
-            call write_rectangle(sh)
+            call write_rectangle(sh, unit_num)
         end select
     end subroutine svg_write_shape
 
