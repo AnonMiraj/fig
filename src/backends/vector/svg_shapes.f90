@@ -27,4 +27,15 @@ contains
             // attribute('fill', trim(adjustl(rgb_to_string(sh%fill_color))), '') // '/>'
     end subroutine write_rectangle
 
+    subroutine write_line(sh, unit_num)
+        type(line), intent(in) :: sh
+        integer, intent(in) :: unit_num
+
+        write(unit_num, '(A)') '<line ' &
+            // attribute('x1', trim(adjustl(real_to_str(sh%x1))), '') &
+            // attribute('y1', trim(adjustl(real_to_str(sh%y1))), '') &
+            // attribute('x2', trim(adjustl(real_to_str(sh%x2))), '') &
+            // attribute('y2', trim(adjustl(real_to_str(sh%y2))), '') &
+            // attribute('stroke', trim(adjustl(rgb_to_string(sh%stroke_color))), '') // '/>'
+    end subroutine write_line
 end module fig_svg_shapes
