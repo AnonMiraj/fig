@@ -11,6 +11,10 @@ module fig_shapes
         real :: cx, cy, r
     end type circle
 
+    type, extends(shape) :: ellipse
+        real :: cx, cy, rx,ry
+    end type ellipse
+
     type, extends(shape) :: rectangle
         real :: x, y, width, height
     end type rectangle
