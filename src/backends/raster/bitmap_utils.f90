@@ -1,8 +1,10 @@
 module fig_bitmap_utils
     use fig_canvas
+    use fig_rgb
     implicit none
     
 contains
+
 
     subroutine draw_pixel(canva,pixels, x, y, color)
         class(base_canvas), intent(inout) :: canva
@@ -11,7 +13,7 @@ contains
         integer(pixel), intent(in) :: color
     
         if (x >= 0 .and. x < int(canva%width) .and. y >= 0 .and. y < int(canva%height)) then
-            pixels(x, y) = color
+            pixels(x, y) = blend_color(pixels(x,y),color)
         end if
     end subroutine draw_pixel
 
@@ -32,7 +34,7 @@ contains
         
         do i = y_start, y_end 
             do j = x_start, x_end 
-                pixels(j, i) = color
+                pixels(j, i) =  blend_color(pixels(j,i),color)
             end do
         end do
 
@@ -61,7 +63,7 @@ contains
         do while ((x /= int(x2) .or. y /= int(y2)) .and. &
                   (x >= 0 .and. x < int(canva%width)) .and. &
                   (y >= 0 .and. y < int(canva%height)))
-            pixels(x, y) = color 
+            pixels(x, y) =  blend_color(pixels(x,y),color)
             e2 = 2 * err
             if (e2 > -dy) then
                 err = err - dy
@@ -117,7 +119,7 @@ contains
             x_end = min(x_end, int(canva%width) - 1)
 
             do x = x_start, x_end, 1
-                pixels(x,y)=color
+                pixels(x,y)= blend_color(pixels(x,y),color)
             end do
         end do
 
@@ -144,7 +146,7 @@ contains
             x_start = max(x_start, 0)
             x_end = min(x_end, int(canva%width) - 1)
             do x = x_start, x_end, 1
-                pixels(x,y)=color
+                pixels(x,y)= blend_color(pixels(x,y),color)
             end do
                 
         end do
@@ -181,6 +183,12 @@ contains
         end if 
 
     end subroutine sort_vertices
-   
+ 
+    subroutine blend_pixel(pixels, x, y, color)
+        integer(pixel), dimension(0:,0:), intent(inout) :: pixels
+        integer, intent(in) :: x, y, color
+
+        pixels(x, y) = blend_color(pixels(x, y), color)
+    end subroutine blend_pixel  
 end module fig_bitmap_utils
 

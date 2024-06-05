@@ -41,4 +41,24 @@ contains
          write(color_string, '(A,I3,A,I3,A,I3,A,F5.3,A)') 'rgba(', color%r, ',', color%g, ',', color%b, ',', alpha, ')'
      end function rgb_to_string     
 
+    function blend_color(c1, c2) result(blended)
+        integer(pixel), intent(in) :: c1, c2
+        integer(pixel) :: blended
+
+        type(RGB) :: color1, color2
+
+        color1 = int_to_rgb(c1)
+        color2 = int_to_rgb(c2)
+
+        color1%r = (color1%r * (255 - color2%a) + color2%r * color2%a) / 255
+        color1%g = (color1%g * (255 - color2%a) + color2%g * color2%a) / 255
+        color1%b = (color1%b * (255 - color2%a) + color2%b * color2%a) / 255
+
+        color1%r = min(255, max(0, color1%r))
+        color1%g = min(255, max(0, color1%g))
+        color1%b = min(255, max(0, color1%b))
+
+        blended = rgb_to_int(color1)
+    end function blend_color
+
 end module fig_rgb

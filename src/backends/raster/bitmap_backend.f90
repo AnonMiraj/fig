@@ -89,6 +89,7 @@ contains
         type(shapeWrapper), allocatable,intent(in) :: shapes(:)
         integer, intent(in) :: shape_count
         integer :: i
+        canva%pixels=0
 
         do i = 1, shape_count
             call bitmap_write_shape(canva,shapes(i)%sh)
