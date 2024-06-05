@@ -4,6 +4,7 @@ module fig_bitmap
     use fig_bitmap_circle
     use fig_bitmap_rect
     use fig_bitmap_line
+    use fig_bitmap_triangle
     use fig_config
     use fig_bitmap_utils
     use fig_rgb
@@ -75,6 +76,8 @@ contains
             call write_rectangle(canva ,canva%pixels,sh)
         type is (line)
             call write_line(canva ,canva%pixels,sh)
+        type is (triangle)
+            call write_triangle(canva ,canva%pixels,sh)
         end select
     end subroutine bitmap_write_shape
 
