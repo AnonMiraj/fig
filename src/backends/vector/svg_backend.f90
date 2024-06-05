@@ -51,6 +51,10 @@ contains
             call write_ellipse(sh, unit_num)
         type is (rectangle)
             call write_rectangle(sh, unit_num)
+        type is (triangle)
+            call write_triangle(sh, unit_num)
+        type is (line)
+            call write_line(sh, unit_num)
         end select
     end subroutine svg_write_shape
 
