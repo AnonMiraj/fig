@@ -66,6 +66,7 @@ contains
         color%r = int(r * 255)
         color%g = int(g * 255)
         color%b = int(b * 255)
+        color%a = 255
     end subroutine random_color
 end program radial_lines
 
