@@ -5,7 +5,6 @@ program smile
     use fig_rgb_color_constants
     use fig_drawing
     use fig_rgb
-    use fig_primitive
     implicit none
     
     type(drawing) :: canva
@@ -67,8 +66,8 @@ program smile
    
     ellip%cx=face_center_x
     ellip%cy=face_center_y+ face_radius / 3
-    ellip%ra=mouth_radius_x
-    ellip%rb=mouth_radius_y
+    ellip%rx=mouth_radius_x
+    ellip%ry=mouth_radius_y
     ellip%fill_color=FIG_COLOR_RED
     ellip%stroke_color=FIG_COLOR_RED
     call canva%add_shape(ellip)

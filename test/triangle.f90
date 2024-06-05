@@ -2,7 +2,6 @@ program test_fig_draw_triangle
     use fig_drawing
     use fig_shapes
     use fig_rgb_color_constants
-    use fig_primitive
     use fig_rgb
     implicit none
 
