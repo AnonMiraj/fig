@@ -2,6 +2,7 @@ module fig_bitmap
     use fig_canvas
     use fig_shapes
     use fig_bitmap_circle
+    use fig_bitmap_ellipse
     use fig_bitmap_rect
     use fig_bitmap_line
     use fig_bitmap_triangle
@@ -72,6 +73,8 @@ contains
         select type(sh)
         type is (circle)
             call write_circle(canva, canva%pixels, sh)
+        type is (ellipse)
+            call write_ellipse(canva ,canva%pixels,sh)
         type is (rectangle)
             call write_rectangle(canva ,canva%pixels,sh)
         type is (line)
