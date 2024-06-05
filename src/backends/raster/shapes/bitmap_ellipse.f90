@@ -34,10 +34,6 @@ contains
         y_end = 0
 
         do while (x_end >= y_end)
-            call draw_pixel(canva,pixels, int(ellips%cx) + x, int(ellips%cy) + y, stroke_color)
-            call draw_pixel(canva,pixels, int(ellips%cx) - x, int(ellips%cy) + y, stroke_color)
-            call draw_pixel(canva,pixels, int(ellips%cx) + x, int(ellips%cy) - y, stroke_color)
-            call draw_pixel(canva,pixels, int(ellips%cx) - x, int(ellips%cy) - y, stroke_color)
             
             y = y + 1
             y_end = y_end + two_a_square
@@ -49,6 +45,11 @@ contains
                 err = err + dx
                 dx = dx + two_b_square
             end if
+
+            call draw_pixel(canva,pixels, int(ellips%cx) + x, int(ellips%cy) + y, stroke_color)
+            call draw_pixel(canva,pixels, int(ellips%cx) - x, int(ellips%cy) + y, stroke_color)
+            call draw_pixel(canva,pixels, int(ellips%cx) + x, int(ellips%cy) - y, stroke_color)
+            call draw_pixel(canva,pixels, int(ellips%cx) - x, int(ellips%cy) - y, stroke_color)
         end do
 
         x = 0
@@ -59,10 +60,6 @@ contains
         x_end = 0
         y_end = two_a_square * ellips%ry
         do while (x_end <= y_end)
-            call draw_pixel(canva,pixels, int(ellips%cx)+ x, int(ellips%cy)+ y, stroke_color)
-            call draw_pixel(canva,pixels, int(ellips%cx)- x, int(ellips%cy)+ y, stroke_color)
-            call draw_pixel(canva,pixels, int(ellips%cx)+ x, int(ellips%cy)- y, stroke_color)
-            call draw_pixel(canva,pixels, int(ellips%cx)- x, int(ellips%cy)- y, stroke_color)
             
             x = x + 1
             x_end = x_end + two_b_square
@@ -74,7 +71,16 @@ contains
                 err = err + dy
                 dy = dy + two_a_square
             end if
+            call draw_pixel(canva,pixels, int(ellips%cx)+ x, int(ellips%cy)+ y, stroke_color)
+            call draw_pixel(canva,pixels, int(ellips%cx)- x, int(ellips%cy)+ y, stroke_color)
+            call draw_pixel(canva,pixels, int(ellips%cx)+ x, int(ellips%cy)- y, stroke_color)
+            call draw_pixel(canva,pixels, int(ellips%cx)- x, int(ellips%cy)- y, stroke_color)
         end do
+
+        call draw_pixel(canva,pixels, int(ellips%cx+ellips%rx), int(ellips%cy), stroke_color)
+        call draw_pixel(canva,pixels, int(ellips%cx), int(ellips%cy+ellips%ry), stroke_color)
+        call draw_pixel(canva,pixels, int(ellips%cx-ellips%rx), int(ellips%cy), stroke_color)
+        call draw_pixel(canva,pixels, int(ellips%cx), int(ellips%cy-ellips%ry), stroke_color)
     end subroutine draw_outer_ellipse
 
 
@@ -83,7 +89,7 @@ contains
         integer(pixel), dimension(:,:), intent(inout):: pixels
         class(base_canvas), intent(inout) :: canva
         integer(pixel) :: fill_color
-        integer :: x, y, d
+        integer :: x, y, d,i
         integer :: dx, dy, err, two_a_square, two_b_square, x_end, y_end
         fill_color = rgb_to_int(ellips%fill_color)
 
@@ -98,9 +104,12 @@ contains
         y_end = 0
 
         do while (x_end >= y_end)
-            call fill_rect(canva,pixels, int(ellips%cx)- x, int(ellips%cy) + y, x*2+1,1, fill_color)
-            call fill_rect(canva,pixels, int(ellips%cx)- x, int(ellips%cy) - y, x*2+1,1, fill_color)
-            
+            do i = int(ellips%cx) - x+1, int(ellips%cx) + x-1
+                call draw_pixel(canva, pixels, i, int(ellips%cy) + y, fill_color)
+                if (.not.( int(ellips%cy) .eq. int(ellips%cy) - y)) then
+                    call draw_pixel(canva, pixels, i, int(ellips%cy) - y, fill_color)
+                end if
+            end do           
             y = y + 1
             y_end = y_end + two_a_square
             err = err + dy
@@ -121,14 +130,15 @@ contains
         x_end = 0
         y_end = two_a_square * ellips%ry
         do while (x_end <= y_end)
-            call fill_rect(canva,pixels,int(ellips%cx) - x,int(ellips%cy) + y, x*2+1,1, fill_color)
-            call fill_rect(canva,pixels,int(ellips%cx) - x,int(ellips%cy) - y, x*2+1,1, fill_color)
-
             x = x + 1
             x_end = x_end + two_b_square
             err = err + dx
             dx = dx + two_b_square
             if ( (2 * err + dy) > 0) then
+                do i = int(ellips%cx) - x+1, int(ellips%cx) + x-1
+                    call draw_pixel(canva, pixels, i, int(ellips%cy) + y, fill_color)
+                    call draw_pixel(canva, pixels, i, int(ellips%cy) - y, fill_color)
+                end do           
                 y = y - 1
                 y_end = y_end - two_a_square
                 err = err + dy
@@ -136,4 +146,5 @@ contains
             end if
         end do
     end subroutine draw_inner_ellipse
+
 end module fig_bitmap_ellipse
