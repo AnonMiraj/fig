@@ -14,9 +14,3 @@ Below are some examples of images created using FIG:
 
 you can generate them yourself using `fpm test`
 
-### todo
-- [x] better cirlces drawing and filling 
-- [ ] pro drawing for rectangle the supports rotating and such
-- [ ] support png and the alpha channel
-
-

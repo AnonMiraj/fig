@@ -35,6 +35,8 @@ contains
         this%shape_count = 1
         allocate(this%shapes(1))
 
+        bg%x=0
+        bg%y=0
         bg%height=height
         bg%width=width
         bg%fill_color=FIG_COLOR_BLANK
