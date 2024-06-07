@@ -13,7 +13,7 @@ program circle_test
     call c%init(400.0, 400.0, "green_blob")
 
     color = FIG_COLOR_GREEN
-    color%a =50
+    color%a =150
     cx = int(c%width) / 2 
     cy = int(c%height) / 3
     radius = min(int(c%width), int(c%height)) / 8 
