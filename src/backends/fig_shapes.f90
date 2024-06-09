@@ -1,4 +1,5 @@
 module fig_shapes
+    use fig_types
 
     use fig_rgb
     type, abstract :: shape
@@ -7,26 +8,26 @@ module fig_shapes
     end type shape
 
     type, extends(shape) :: circle
-        real :: cx, cy, r
+        type(point) :: center
+        real :: r
     end type circle
 
     type, extends(shape) :: ellipse
-        real :: cx, cy, rx,ry
+        type(point) :: center
+        real :: rx, ry
     end type ellipse
 
     type, extends(shape) :: rectangle
-        real :: x, y, width, height
+        type(point) :: upper_left
+        real :: width, height
     end type rectangle
 
     type, extends(shape) :: triangle
-        real :: x1, y1
-        real :: x2, y2
-        real :: x3, y3
+        type(point) :: p1, p2, p3
     end type triangle
 
     type, extends(shape) :: line
-        real :: x1, y1
-        real :: x2, y2
+        type(point) :: p1
     end type line
 
     type :: shapeWrapper
