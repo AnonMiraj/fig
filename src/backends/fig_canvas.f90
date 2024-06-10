@@ -1,10 +1,11 @@
 module fig_canvas
     use fig_config
     use fig_shapes
+    use fig_types
     implicit none
     
     type, abstract :: base_canvas 
-        real :: width, height
+        type(canvas_size) :: size
     contains
         procedure(canvas_draw_shape), deferred :: draw_shape
         procedure :: init
@@ -22,10 +23,10 @@ contains
 
     subroutine init(this, width, height)
         class(base_canvas), intent(inout) :: this
-        real, intent(in) :: width, height
+        integer, intent(in) :: width, height
 
-        this%width = width
-        this%height = height
+        this%size%width = width
+        this%size%height = height
 
     end subroutine init
 

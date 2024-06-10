@@ -27,7 +27,7 @@ module fig_shapes
     end type triangle
 
     type, extends(shape) :: line
-        type(point) :: p1
+        type(point) :: p1,p2
     end type line
 
     type :: shapeWrapper

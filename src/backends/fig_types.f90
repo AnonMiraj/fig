@@ -23,10 +23,6 @@ contains
         type(point), intent(in) :: p
         type(canvas_size), intent(in) :: sz
 
-        if (p%x < 0.0 .or. p%x > 1.0 .or. p%y < 0.0 .or. p%y > 1.0) then
-            print *, "Warning: point is out of range [0, 1]"
-        end if
-
         pxl%x = nint(p%x * sz%width, kind=pixel)
         pxl%y = nint(p%y * sz%height, kind=pixel)
     end function to_canvas

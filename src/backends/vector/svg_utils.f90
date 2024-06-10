@@ -9,6 +9,12 @@ contains
         return
     end function real_to_str
     
+    function int_to_str(value) result(str)
+        integer, intent(in) :: value
+        character(len=100) :: str
+        write(str, '(I10)') value
+    end function int_to_str
+
     function attribute(attribute_name, value, unit) result(attribute_str)
         character(len=*), intent(in) :: attribute_name, value, unit
         character(len=:), allocatable :: attribute_str

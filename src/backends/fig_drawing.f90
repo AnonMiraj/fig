@@ -13,7 +13,6 @@ module fig_drawing
         procedure :: add_shape
         procedure :: set_background
         procedure :: init
-        procedure :: save_to_file
     end type drawing
 
 
