@@ -19,12 +19,16 @@ module fig_types
 
 contains
 
-    elemental type(canvas_point) function to_canvas(x, size) result(pxl)
-        type(point), intent(in) :: x
-        type(canvas_size), intent(in) :: size
+    elemental type(canvas_point) function to_canvas(p, sz) result(pxl)
+        type(point), intent(in) :: p
+        type(canvas_size), intent(in) :: sz
 
-        pxl%x = nint(x%x * size%width, kind=pixel)
-        pxl%y = nint(x%y * size%height, kind=pixel)
+        if (p%x < 0.0 .or. p%x > 1.0 .or. p%y < 0.0 .or. p%y > 1.0) then
+            print *, "Warning: point is out of range [0, 1]"
+        end if
+
+        pxl%x = nint(p%x * sz%width, kind=pixel)
+        pxl%y = nint(p%y * sz%height, kind=pixel)
     end function to_canvas
 
 end module fig_types
