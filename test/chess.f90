@@ -50,6 +50,6 @@ program chess_checker
     call bitmap_canva%save_to_file(checker,"checker")
 
 
-    print *, 'Image successfully saved to checker.(ppm\svg)'
+    print *, "Drawing exported successfully: checker.(ppm|svg)"
 
 end program chess_checker

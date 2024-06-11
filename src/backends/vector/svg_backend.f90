@@ -35,7 +35,7 @@ contains
              //' >'
 
         bg%height=this%size%height
-        bg%width=this%size%height
+        bg%width=this%size%width
         bg%upper_left%x=0
         bg%upper_left%y=0
         bg%fill_color=draw%background

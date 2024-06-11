@@ -93,8 +93,8 @@ contains
         class(bitmap_canvas), intent(inout) :: canva
         type(drawing), intent(in):: draw
         integer :: i
-        canva%pixels=0
 
+        call fill_rect(canva,canva%pixels,0,0,canva%size%width,canva%size%height,rgb_to_int(draw%background))
         do i = 1, draw%shape_count
             call bitmap_write_shape(canva,draw%shapes(i)%sh)
         end do

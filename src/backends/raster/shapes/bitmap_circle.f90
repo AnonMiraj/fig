@@ -72,7 +72,7 @@ contains
 
             do i = c%x - y, c%x + y
                 call draw_pixel(canva,pixels, i, c%y + x, fill_color)
-                if (.not.( i .eq. (c%y - x))) then
+                if (.not.(x==0)) then
                     call draw_pixel(canva,pixels, i, c%y - x, fill_color)
                 end if
             end do

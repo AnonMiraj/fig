@@ -8,7 +8,7 @@ contains
         type(canvas_size),intent(in) :: sz
         integer,intent(in) :: unit_num
         type(canvas_point) :: c
-        
+
         c=to_canvas(sh%center,sz)
 
         write(unit_num, '(A)') '<circle ' &

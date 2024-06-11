@@ -2,62 +2,87 @@ program test_fig_fill_triangle
     use fig_drawing
     use fig_shapes
     use fig_rgb
+    use fig_rgb_color_constants
+    use fig_svg
+    use fig_bitmap
     implicit none
 
-    integer :: result
+    integer, parameter :: CANVAS_WIDTH = 801
+    integer, parameter :: CANVAS_HEIGHT = 801
+    integer, parameter :: TRIANGLE_SIZE = 50
+
     type(drawing) :: test_canvas
-    type(RGB), dimension(0:6) :: colors
-    integer :: i, j, ind=0,ind1,ind2
-    integer :: triangle_size = 50
     type(triangle) :: tri
     type(circle) :: circ
+    type(RGB), dimension(0:6) :: colors
+    type(svg_canvas) :: svg_canva
+    type(bitmap_canvas) :: bitmap_canva
 
+    integer :: i, j, ind, ind1, ind2
 
-    call test_canvas%init( 801.0, 801.0, "cool_triangle_pattern")
+    ! Initialize the canvas
+    call test_canvas%init()
+    call test_canvas%set_background(FIG_COLOR_WHITE)
 
+    ! Initialize random colors
     do i = 0, 6
         call random_color(colors(i))
     end do
 
-    tri%stroke_color=FIG_COLOR_BLACK
-    circ%stroke_color=FIG_COLOR_BLACK
-    circ%r=5
-    do i = 0, 800, triangle_size
-        do j = 0, 800, triangle_size
+    tri%stroke_color = FIG_COLOR_BLACK
+    circ%stroke_color = FIG_COLOR_BLACK
+    circ%r = 5.0
+
+    ! Draw triangles and circles
+    do i = 0, CANVAS_WIDTH - 1, TRIANGLE_SIZE
+        do j = 0, CANVAS_HEIGHT - 1, TRIANGLE_SIZE
             ind = mod(i + 2 * j, 7)
             ind1 = mod(ind * 2, 7)
             ind2 = mod(ind * 3, 7)
 
-            tri%x1=i ;tri%y1= j
-            tri%x2=i +triangle_size;tri%y2= j
-            tri%x3=i +triangle_size;tri%y3= j +triangle_size
-            tri%fill_color=colors(ind1)
+            tri%p1%x = real(i) / CANVAS_WIDTH
+            tri%p1%y = real(j) / CANVAS_HEIGHT
+            tri%p2%x = real(i + TRIANGLE_SIZE) / CANVAS_WIDTH
+            tri%p2%y = real(j) / CANVAS_HEIGHT
+            tri%p3%x = real(i + TRIANGLE_SIZE) / CANVAS_WIDTH
+            tri%p3%y = real(j + TRIANGLE_SIZE) / CANVAS_HEIGHT
+            tri%fill_color = colors(ind1)
             call test_canvas%add_shape(tri)
 
-            tri%x2=i ;tri%y2= j+triangle_size
-            tri%fill_color=colors(ind2)
+            tri%p2%x = real(i) / CANVAS_WIDTH
+            tri%p2%y = real(j + TRIANGLE_SIZE) / CANVAS_HEIGHT
+            tri%fill_color = colors(ind2)
             call test_canvas%add_shape(tri)
 
-            circ%cx=i;circ%cy=j
-            circ%fill_color=colors(ind1)
-            call test_canvas%add_shape(circ)
-            circ%cx=i + triangle_size
-            call test_canvas%add_shape(circ)
-            circ%cy=j + triangle_size
-            call test_canvas%add_shape(circ)
-            circ%cx=i
+            circ%center%x = real(i) / CANVAS_WIDTH
+            circ%center%y = real(j) / CANVAS_HEIGHT
+            circ%fill_color = colors(ind1)
             call test_canvas%add_shape(circ)
 
-            circ%cx=i+triangle_size/2
-            circ%cy=j+triangle_size/2
+            circ%center%x = real(i + TRIANGLE_SIZE) / CANVAS_WIDTH
             call test_canvas%add_shape(circ)
- 
+
+            circ%center%y = real(j + TRIANGLE_SIZE) / CANVAS_HEIGHT
+            call test_canvas%add_shape(circ)
+
+            circ%center%x = real(i) / CANVAS_WIDTH
+            call test_canvas%add_shape(circ)
+
+            circ%center%x = real(i + TRIANGLE_SIZE / 2) / CANVAS_WIDTH
+            circ%center%y = real(j + TRIANGLE_SIZE / 2) / CANVAS_HEIGHT
+            call test_canvas%add_shape(circ)
         end do
     end do
 
-    call test_canvas%save_to_file('svg')
-    call test_canvas%save_to_file('ppm')
-    print *, "drawing exported successfully: cool_triangle_pattern.(ppm\svg)"
+    ! Save to bitmap and SVG
+    call bitmap_canva%init(CANVAS_WIDTH, CANVAS_HEIGHT)
+    call bitmap_canva%save_to_file(test_canvas, 'cool_triangle_pattern')
+
+    call svg_canva%init(CANVAS_WIDTH, CANVAS_HEIGHT)
+    call svg_canva%save_to_file(test_canvas, 'cool_triangle_pattern')
+
+    print *, "drawing exported successfully: cool_triangle_pattern.(ppm|svg)"
+
 contains 
     subroutine random_color(color)
         type(RGB) :: color
