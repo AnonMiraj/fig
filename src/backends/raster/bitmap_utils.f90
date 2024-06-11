@@ -12,7 +12,7 @@ contains
         integer, intent(in) :: x, y
         integer(pixel), intent(in) :: color
     
-        if (x >= 0 .and. x < int(canva%width) .and. y >= 0 .and. y < int(canva%height)) then
+        if (x >= 0 .and. x < canva%size%width .and. y >= 0 .and. y < canva%size%height) then
             pixels(x, y) = blend_color(pixels(x,y),color)
         end if
     end subroutine draw_pixel
@@ -29,8 +29,8 @@ contains
         
         x_start = max(int(x),0)
         y_start = max(int(y),0)
-        x_end = min(x + w, int(canva%width)-1)
-        y_end = min(y + h, int(canva%height)-1)
+        x_end = min(x + w, canva%size%width-1)
+        y_end = min(y + h, canva%size%height-1)
         
         do i = y_start, y_end 
             do j = x_start, x_end 
@@ -45,24 +45,24 @@ contains
         integer(pixel), dimension(0:,0:), intent(inout):: pixels
         integer(pixel), intent(in) :: color
 
-        real, intent(in) :: x1, y1, x2, y2
+        integer, intent(in) :: x1, y1, x2, y2
         integer :: dx, dy, x, y
         integer :: sx, sy, err, e2
         
-        dx = abs(int(x2 - x1))
-        dy = abs(int(y2 - y1))
+        dx = abs(x2 - x1)
+        dy = abs(y2 - y1)
         
-        sx = sign(1,int(x2 - x1))
-        sy = sign(1,int(y2 - y1))
+        sx = sign(1,x2 - x1)
+        sy = sign(1,y2 - y1)
         
         err = dx - dy
         
         x = x1
         y = y1
         
-        do while ((x /= int(x2) .or. y /= int(y2)) .and. &
-                  (x >= 0 .and. x < int(canva%width)) .and. &
-                  (y >= 0 .and. y < int(canva%height)))
+        do while ((x /= x2 .or. y /= y2) .and. &
+                  (x >= 0 .and. x < canva%size%width) .and. &
+                  (y >= 0 .and. y < canva%size%height))
             pixels(x, y) =  blend_color(pixels(x,y),color)
             e2 = 2 * err
             if (e2 > -dy) then
@@ -102,7 +102,7 @@ contains
         dy31 = p1(2) - p3(2)
 
         ! Fill the triangle   
-        do y = max(p1(2), 0), min(p3(2), int(canva%height) - 1), 1
+        do y = max(p1(2), 0), min(p3(2), int(canva%size%height) - 1), 1
             if (y <= p2(2)) then
                 ! Top part of triangle
                 if (dy12 /= 0) then
@@ -133,7 +133,7 @@ contains
 
             if (x_start > x_end) call swap_integers(x_start, x_end)
             x_start = max(x_start, 0)
-            x_end = min(x_end, int(canva%width) - 1)
+            x_end = min(x_end, int(canva%size%width) - 1)
 
             do x = x_start, x_end, 1
                 call blend_pixel(pixels,x,y,color)

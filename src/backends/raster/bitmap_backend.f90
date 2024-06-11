@@ -1,6 +1,7 @@
 module fig_bitmap
     use fig_canvas
     use fig_shapes
+    use fig_drawing
     use fig_bitmap_circle
     use fig_bitmap_ellipse
     use fig_bitmap_rect
@@ -25,36 +26,40 @@ contains
 
     subroutine init_bitmap(this, width, height)
         class(bitmap_canvas), intent(inout) :: this
-        real, intent(in) :: width, height
-        call init(this,width, height)
+        integer, intent(in) :: width, height
+        this%size%width=width
+        this%size%height=height
         allocate(this%pixels(0:int(width)-1, 0:int(height)-1))
     end subroutine init_bitmap
 
-    subroutine save_to_file(this,file_path)
+    subroutine save_to_file(this,draw,file_path)
         class(bitmap_canvas), intent(inout) :: this
         character(len=*), intent(in) :: file_path
+        type(drawing), intent(in):: draw
+        call this%apply_shapes(draw)
+
         call this%save_to_ppm(file_path)
     end subroutine save_to_file
 
     subroutine save_to_ppm(this,file_path)
         class(bitmap_canvas), intent(inout) :: this
-        integer :: unit_num, ierr
         character(len=*), intent(in) :: file_path
+        integer :: unit_num, ierr
         integer :: i,j
         integer :: bytes(3)
 
 
-        open(newunit=unit_num, file=file_path, status='replace', action='write', iostat=ierr)
+        open(newunit=unit_num, file=file_path//'.ppm', status='replace', action='write', iostat=ierr)
         if (ierr /= 0) then
             print *, "Error opening file ", file_path
             stop
         endif
 
         write(unit_num, '(a2)') 'P6'
-        write(unit_num, '(i0," ",i0)')  int(this%width), int(this%height)
+        write(unit_num, '(i0," ",i0)')  int(this%size%width), int(this%size%height)
         write(unit_num, '(i0)') 2**rgb_bit_depth-1
-        do j = 0, int(this%height)-1
-            do i = 0, int(this%width)-1
+        do j = 0, int(this%size%height)-1
+            do i = 0, int(this%size%width)-1
                 bytes(1) = ibits(this%pixels(i, j), 0, rgb_bit_depth)
                 bytes(2) = ibits(this%pixels(i, j), rgb_bit_depth, rgb_bit_depth)
                 bytes(3) = ibits(this%pixels(i, j), 2*rgb_bit_depth, rgb_bit_depth)
@@ -84,15 +89,14 @@ contains
         end select
     end subroutine bitmap_write_shape
 
-    subroutine apply_shapes(canva,shapes,shape_count)
+    subroutine apply_shapes(canva,draw)
         class(bitmap_canvas), intent(inout) :: canva
-        type(shapeWrapper), allocatable,intent(in) :: shapes(:)
-        integer, intent(in) :: shape_count
+        type(drawing), intent(in):: draw
         integer :: i
         canva%pixels=0
 
-        do i = 1, shape_count
-            call bitmap_write_shape(canva,shapes(i)%sh)
+        do i = 1, draw%shape_count
+            call bitmap_write_shape(canva,draw%shapes(i)%sh)
         end do
 
 

@@ -1,4 +1,3 @@
-
 program chess_checker
     use fig_canvas
     use fig_drawing
@@ -6,6 +5,7 @@ program chess_checker
     use fig_shapes
     use fig_rgb_color_constants
     use fig_svg
+    use fig_bitmap
     implicit none
     integer, parameter :: WIDTH = 800
     integer, parameter :: HEIGHT = 800
@@ -17,6 +17,7 @@ program chess_checker
 
     type(drawing) :: checker
     type(svg_canvas) :: svg_canva
+    type(bitmap_canvas) :: bitmap_canva
     type(rectangle) :: rect
     type(RGB) :: ALTERNATE_COLOR, BACKGROUND_COLOR, color
 
@@ -45,9 +46,10 @@ program chess_checker
     end do
     call svg_canva%init(HEIGHT,WIDTH)
     call svg_canva%save_to_file(checker,"checker")
+    call bitmap_canva%init(HEIGHT,WIDTH)
+    call bitmap_canva%save_to_file(checker,"checker")
 
 
     print *, 'Image successfully saved to checker.(ppm\svg)'
 
 end program chess_checker
-

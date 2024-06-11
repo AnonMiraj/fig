@@ -10,10 +10,13 @@ contains
         integer(pixel), dimension(:,:), intent(inout):: pixels
         type(line), intent(in) :: l
         integer(pixel) :: color
-        
+        type(canvas_point) :: p1,p2
+        p1= to_canvas(l%p1,canva%size)
+        p2= to_canvas(l%p2,canva%size)
         color = rgb_to_int(l%stroke_color)
 
-        call draw_line(canva,pixels,l%x1,l%y1,l%x2,l%y2,color)
+
+        call draw_line(canva,pixels,p1%x,p1%y,p2%x,p2%y,color)
        
     end subroutine write_line
     
