@@ -12,19 +12,18 @@ module fig_rgb
 
 contains
 
-    function rgb_to_int(color) result(rgb_int)
+    elemental type(integer(pixel)) function rgb_to_int(color) result(rgb_int)
         type(RGB), intent(in) :: color
-        integer(pixel) :: rgb_int
-      
+
         rgb_int = ior(ishft(color%a, rgb_bit_depth*3),&
                   ior(ishft(color%b, rgb_bit_depth*2),&
                   ior(ishft(color%g, rgb_bit_depth), color%r)))
 
      end function rgb_to_int
       
-     function int_to_rgb(rgb_int) result(color)
-       type(RGB):: color
+     elemental type(RGB) function int_to_rgb(rgb_int) result(color)
        integer(pixel), intent(in):: rgb_int
+
        color%a = ibits(rgb_int, 3*rgb_bit_depth, rgb_bit_depth)
        color%b = ibits(rgb_int, 2*rgb_bit_depth, rgb_bit_depth)
        color%g = ibits(rgb_int, rgb_bit_depth  , rgb_bit_depth)
@@ -38,12 +37,11 @@ contains
 
          alpha = color%a / 255.0
          alpha = min(1.0,alpha)
-         write(color_string, '(A,I3,A,I3,A,I3,A,F5.3,A)') 'rgba(', color%r, ',', color%g, ',', color%b, ',', alpha, ')'
+         write(color_string, '(A,I0,A,I0,A,I0,A,F5.3,A)') 'rgba(', color%r, ',', color%g, ',', color%b, ',', alpha, ')'
      end function rgb_to_string     
 
-    function blend_color(c1, c2) result(blended)
+     elemental type(integer(pixel)) function blend_color(c1, c2) result(blended)
         integer(pixel), intent(in) :: c1, c2
-        integer(pixel) :: blended
 
         type(RGB) :: color1, color2
 
