@@ -70,7 +70,30 @@ program drawing_test_all
     l%p2%x = 550.0 / CANVAS_WIDTH
     l%p2%y = 450.0 / CANVAS_HEIGHT
     l%stroke_color = FIG_COLOR_BLACK
+    l%stroke_width = 10
     call canva%add_shape(l)
+    l%stroke_width = 2
+    l%stroke_color = FIG_COLOR_RED
+    l%stroke_color%a=100
+
+    call canva%add_shape(l)
+
+
+    ! Line
+    l%p1%x = 400.0 / CANVAS_WIDTH
+    l%p1%y = 400.0 / CANVAS_HEIGHT
+    l%p2%x = 550.0 / CANVAS_WIDTH
+    l%p2%y = 400.0 / CANVAS_HEIGHT
+    l%stroke_color = FIG_COLOR_BLACK
+    l%stroke_color%a=100
+    l%stroke_width = 50
+    call canva%add_shape(l)
+    l%stroke_width = 2
+    l%stroke_color = FIG_COLOR_RED
+    l%stroke_color%a=100
+
+    call canva%add_shape(l)
+
 
     ! Triangle
     tri%p1%x = 450.0 / CANVAS_WIDTH

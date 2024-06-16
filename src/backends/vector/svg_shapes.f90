@@ -67,7 +67,9 @@ contains
             // attribute('y1', trim(adjustl(int_to_str(p1%y))), '') &
             // attribute('x2', trim(adjustl(int_to_str(p2%x))), '') &
             // attribute('y2', trim(adjustl(int_to_str(p2%y))), '') &
-            // attribute('stroke', trim(adjustl(rgb_to_string(sh%stroke_color))), '') // '/>'
+            // attribute('stroke', trim(adjustl(rgb_to_string(sh%stroke_color))), '')&
+            // attribute('stroke-width', trim(adjustl(int_to_str(sh%stroke_width))), '')&
+            //'/>'
     end subroutine write_line
 
 
