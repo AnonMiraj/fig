@@ -49,31 +49,47 @@ contains
         integer :: dx, dy, x, y
         integer :: sx, sy, err, e2
         
-        dx = abs(x2 - x1)
-        dy = abs(y2 - y1)
+        dx = x2 - x1
+        dy = y2 - y1
         
-        sx = sign(1,x2 - x1)
-        sy = sign(1,y2 - y1)
-        
-        err = dx - dy
-        
-        x = x1
-        y = y1
-        
-        do while ((x /= x2 .or. y /= y2) .and. &
-                  (x >= 0 .and. x < canva%size%width) .and. &
-                  (y >= 0 .and. y < canva%size%height))
-            pixels(x, y) =  blend_color(pixels(x,y),color)
-            e2 = 2 * err
-            if (e2 > -dy) then
-                err = err - dy
+        if (dx < 0) then
+            dx = -dx
+            sx = -1
+        else
+            sx = 1
+        endif
+        if (dy < 0) then
+            dy = -dy
+            sy = -1
+        else
+            sy = 1
+        endif
+        x = min(x1,canva%size%width-1)
+        y = min(y1,canva%size%height-1)
+        pixels(x, y) =  blend_color(pixels(x,y),color)
+        if (dx > dy) then
+            err = dy*2 - dx
+            do while (x /= min(x2,canva%size%width-1))
+                if (err >= 0) then
+                    y = y + sy
+                    err = err - dx*2
+                endif
                 x = x + sx
-            end if
-            if (e2 < dx) then
-                err = err + dx
+                err = err + dy*2
+                pixels(x, y) =  blend_color(pixels(x,y),color)
+            end do
+        else
+            err = dx*2 - dy
+            do while (y /= min(y2,canva%size%height-1))
+                if (err >= 0) then
+                    x = x + sx
+                    err = err - dy*2
+                endif
                 y = y + sy
-            end if
-        end do
+                err = err + dx*2
+                pixels(x, y) =  blend_color(pixels(x,y),color)
+            end do
+        endif 
     end subroutine draw_line
  
     subroutine fill_triangle(canva, pixels, x1, y1, x2, y2, x3, y3, color)
