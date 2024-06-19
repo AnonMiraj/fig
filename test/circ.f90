@@ -5,6 +5,7 @@ program circles_pattern
     use fig_rgb_color_constants
     use fig_svg
     use fig_bitmap
+    use fig_test
     implicit none
     integer, parameter :: WIDTH = 800
     integer, parameter :: HEIGHT = 600
@@ -12,6 +13,7 @@ program circles_pattern
     integer, parameter :: rows = 6*2
     integer, parameter :: CELL_WIDTH = (WIDTH/cols)
     integer, parameter :: CELL_HEIGHT =(HEIGHT/rows)
+    character(len=:), allocatable  :: file_name
     integer :: result,x,y
     real :: center_x, center_y
     real :: u, v, t,shade
@@ -23,6 +25,7 @@ program circles_pattern
 
     type(svg_canvas) :: svg_canva
     type(bitmap_canvas) :: bitmap_canva
+    file_name= "circles_pattern"
     call canva%init()
     
     color_palette = [ FIG_COLOR_RED,   & 
@@ -52,11 +55,11 @@ program circles_pattern
     end do
 
     call svg_canva%init(WIDTH,HEIGHT)
-    call svg_canva%save_to_file(canva,"circles_pattern") 
+    call svg_canva%save_to_file(canva,file_name) 
     call bitmap_canva%init(WIDTH,HEIGHT)
-    call bitmap_canva%save_to_file(canva,"circles_pattern") 
+    call bitmap_canva%save_to_file(canva,file_name) 
 
-    print *, "Drawing exported successfully: circles_pattern.(ppm|svg)"
+    call test_both(file_name,bitmap_canva)
 contains
     
     function lerpf(a, b, t)

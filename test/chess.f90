@@ -15,13 +15,14 @@ program chess_checker
     integer, parameter :: CELL_WIDTH = (WIDTH/cols)
     integer, parameter :: CELL_HEIGHT =(HEIGHT/rows)
     integer :: x, y
+    character(len=:), allocatable  :: file_name
 
     type(drawing) :: checker
     type(svg_canvas) :: svg_canva
     type(bitmap_canvas) :: bitmap_canva
     type(rectangle) :: rect
     type(RGB) :: ALTERNATE_COLOR, BACKGROUND_COLOR, color
-
+    file_name = "checker"
     call checker%init()
 
     BACKGROUND_COLOR = FIG_COLOR_BLACK
@@ -46,10 +47,10 @@ program chess_checker
         end do
     end do
     call svg_canva%init(HEIGHT,WIDTH)
-    call svg_canva%save_to_file(checker,"checker")
+    call svg_canva%save_to_file(checker,file_name)
     call bitmap_canva%init(HEIGHT,WIDTH)
-    call bitmap_canva%save_to_file(checker,"checker")
+    call bitmap_canva%save_to_file(checker,file_name)
 
-    call test_both("checker",bitmap_canva)
+    call test_both(file_name,bitmap_canva)
 
 end program chess_checker

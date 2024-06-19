@@ -6,10 +6,12 @@ program drawing_test_all
     use fig_rgb_color_constants
     use fig_svg
     use fig_bitmap
+    use fig_test
     implicit none
 
     integer, parameter :: CANVAS_WIDTH = 600.0
     integer, parameter :: CANVAS_HEIGHT = 600.0
+    character(len=:), allocatable  :: file_name
     type(drawing) :: canva
     type(circle) :: c
     type(rectangle) :: r
@@ -19,6 +21,7 @@ program drawing_test_all
     type(RGB) :: bg, color
     type(svg_canvas) :: svg_canva
     type(bitmap_canvas) :: bitmap_canva
+    file_name='test_all'
     bg = FIG_COLOR_WHITE
 
     call canva%init()
@@ -108,11 +111,10 @@ program drawing_test_all
     call canva%add_shape(tri)
     
     call bitmap_canva%init(CANVAS_WIDTH, CANVAS_HEIGHT)
-    call bitmap_canva%save_to_file(canva,'test_all')
+    call bitmap_canva%save_to_file(canva,file_name)
 
     call svg_canva%init(CANVAS_WIDTH, CANVAS_HEIGHT)
-    call svg_canva%save_to_file(canva,'test_all')
+    call svg_canva%save_to_file(canva,file_name)
 
-    print *, "Drawing exported successfully: test_all.(ppm|svg)"
 end program drawing_test_all
 

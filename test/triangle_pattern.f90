@@ -5,11 +5,13 @@ program test_fig_fill_triangle
     use fig_rgb_color_constants
     use fig_svg
     use fig_bitmap
+    use fig_test
     implicit none
 
     integer, parameter :: CANVAS_WIDTH = 801
     integer, parameter :: CANVAS_HEIGHT = 801
     integer, parameter :: TRIANGLE_SIZE = 50
+    character(len=:), allocatable  :: file_name
 
     type(drawing) :: test_canvas
     type(triangle) :: tri
@@ -20,14 +22,19 @@ program test_fig_fill_triangle
 
     integer :: i, j, ind, ind1, ind2
 
+    file_name= "cool_triangle_pattern"
     ! Initialize the canvas
     call test_canvas%init()
     call test_canvas%set_background(FIG_COLOR_WHITE)
 
-    ! Initialize random colors
-    do i = 0, 6
-        call random_color(colors(i))
-    end do
+    colors = [ FIG_COLOR_RED,   & 
+               FIG_COLOR_MAGENTA, &
+               FIG_COLOR_YELLOW, &
+               FIG_COLOR_GREEN,   &
+               FIG_COLOR_CYAN,  &
+               FIG_COLOR_PINK, &
+               FIG_COLOR_TAN ]
+     
 
     tri%stroke_color = FIG_COLOR_BLACK
     circ%stroke_color = FIG_COLOR_BLACK
@@ -76,13 +83,12 @@ program test_fig_fill_triangle
 
     ! Save to bitmap and SVG
     call bitmap_canva%init(CANVAS_WIDTH, CANVAS_HEIGHT)
-    call bitmap_canva%save_to_file(test_canvas, 'cool_triangle_pattern')
+    call bitmap_canva%save_to_file(test_canvas, file_name)
 
     call svg_canva%init(CANVAS_WIDTH, CANVAS_HEIGHT)
-    call svg_canva%save_to_file(test_canvas, 'cool_triangle_pattern')
+    call svg_canva%save_to_file(test_canvas, file_name)
 
-    print *, "drawing exported successfully: cool_triangle_pattern.(ppm|svg)"
-
+    call test_both(file_name,bitmap_canva)
 contains 
     subroutine random_color(color)
         type(RGB) :: color

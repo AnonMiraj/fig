@@ -6,11 +6,13 @@ program test_fig_draw_triangle
     use fig_rgb
     use fig_svg
     use fig_bitmap
+    use fig_test
     implicit none
 
     integer, parameter :: CANVAS_WIDTH = 801
     integer, parameter :: CANVAS_HEIGHT = 801
     integer, parameter :: TRIANGLE_SIZE = 50
+    character(len=:), allocatable  :: file_name
 
     type(drawing) :: test_canvas
     type(triangle) :: tri
@@ -20,6 +22,7 @@ program test_fig_draw_triangle
 
     integer :: i, j, ind
 
+    file_name= "triangles"
     ! Initialize the canvas
     call test_canvas%init()
     call test_canvas%set_background(FIG_COLOR_WHITE)
@@ -57,11 +60,11 @@ program test_fig_draw_triangle
 
     ! Save to bitmap and SVG
     call bitmap_canva%init(CANVAS_WIDTH, CANVAS_HEIGHT)
-    call bitmap_canva%save_to_file(test_canvas, 'triangles')
+    call bitmap_canva%save_to_file(test_canvas, file_name)
 
     call svg_canva%init(CANVAS_WIDTH, CANVAS_HEIGHT)
-    call svg_canva%save_to_file(test_canvas, 'triangles')
+    call svg_canva%save_to_file(test_canvas, file_name)
 
-    print *, "drawing exported successfully: Triangles.(ppm|svg)"
+    call test_both(file_name,bitmap_canva)
 end program test_fig_draw_triangle
 
