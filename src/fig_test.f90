@@ -1,5 +1,11 @@
 module fig_test
+    use fig_bitmap
+    use fig_config
+    use fig_rgb_color_constants
+    use fig_rgb
     implicit none
+
+    
 contains
     subroutine test_svg(canvas_name)
         character(len=*), intent(in) :: canvas_name
@@ -20,10 +26,60 @@ contains
             print *, "See differences in file: ", trim(diff_file)
         end if
     end subroutine test_svg
+
+    subroutine test_bitmap(canvas_name,current_canvas)
+        character(len=*), intent(in) :: canvas_name
+        type(bitmap_canvas), intent(inout) ::current_canvas
+        type(bitmap_canvas)::expected_canvas
+        type(bitmap_canvas)::diff_canvas
+        integer :: status
+        logical :: failed = .false.
+        character(len=256) :: current_file, expected_file, diff_command, diff_file
+        character(:),allocatable :: diff_output
+        integer :: i , j
+        integer(pixel) :: diff_color 
+
+        current_file = canvas_name // ".ppm"
+        expected_file = "test/expected/" // canvas_name // ".ppm"
+        diff_file = canvas_name // ".diff"
+        diff_color = rgb_to_int(FIG_COLOR_RED)
+
+        call expected_canvas%load_from_ppm(expected_file)
+        call diff_canvas%init(expected_canvas%size%width,expected_canvas%size%height)
+
+        diff_canvas%pixels= diff_color
+
+        if (expected_canvas%size%width/=current_canvas%size%width&
+            .or. expected_canvas%size%width/=current_canvas%size%width )  then
+            failed = .true.
+        end if
+        
+
+        do j = 0, min(current_canvas%size%height,expected_canvas%size%height) - 1
+            do i = 0,min(current_canvas%size%width,expected_canvas%size%width) - 1
+                if (expected_canvas%pixels(i,j)==current_canvas%pixels(i,j)) then
+                    diff_canvas%pixels(i,j)=expected_canvas%pixels(i,j)
+                else 
+                    failed = .true.
+                    diff_canvas%pixels(i,j)=diff_color
+                end if
+            end do
+        end do
+
+         if (failed) then
+             call diff_canvas%save_to_ppm(diff_file)
+             print *, "bitmap test failed."
+             print *, "See differences in file: ", trim(diff_file)//".ppm"
+         else
+             print *, canvas_name," bitmap test passed."
+         end if
+    end subroutine test_bitmap
+
     subroutine test_both(canvas_name,current_canvas)
         character(len=*), intent(in) :: canvas_name
         type(bitmap_canvas), intent(inout) ::current_canvas
         call test_svg(canvas_name)
+        call test_bitmap(canvas_name,current_canvas)
 
 
     end subroutine test_both
