@@ -16,6 +16,7 @@ contains
             // attribute('cy', trim(adjustl(int_to_str(c%y))), '') &
             // attribute('r', trim(adjustl(real_to_str(sh%r))), '') &
             // attribute('fill', trim(adjustl(rgb_to_string(sh%fill_color))), '') &
+            // attribute('stroke', trim(adjustl(rgb_to_string(sh%stroke_color))), '')&
             // '/>'
     end subroutine write_circle
 
@@ -33,6 +34,7 @@ contains
             // attribute('rx', trim(adjustl(real_to_str(sh%rx))), '') &
             // attribute('ry', trim(adjustl(real_to_str(sh%ry))), '') &
             // attribute('fill', trim(adjustl(rgb_to_string(sh%fill_color))), '') &
+            // attribute('stroke', trim(adjustl(rgb_to_string(sh%stroke_color))), '')&
             // '/>'
     end subroutine write_ellipse
 
