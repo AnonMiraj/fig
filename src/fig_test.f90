@@ -7,8 +7,9 @@ module fig_test
 
     
 contains
-    subroutine test_svg(canvas_name)
+    subroutine test_svg(canvas_name,err)
         character(len=*), intent(in) :: canvas_name
+        integer,intent(out) :: err
         integer :: status
         character(len=256) :: current_file, expected_file, diff_command, diff_file
         character(:),allocatable :: diff_output
@@ -21,15 +22,16 @@ contains
         if (status == 0) then
             print *, canvas_name," Svg test passed."
         else
-            call execute_command_line(trim(diff_command // ">"//diff_file))
-            print *, "Svg Test failed."
-            print *, "See differences in file: ", trim(diff_file)
+            call execute_command_line(trim(diff_command)// ">" //diff_file)
+            print *, "!!Svg Test failed."//"See differences in file: "//trim(diff_file)
+            err = 1 
         end if
     end subroutine test_svg
 
-    subroutine test_bitmap(canvas_name,current_canvas)
+    subroutine test_bitmap(canvas_name,current_canvas,err)
         character(len=*), intent(in) :: canvas_name
         type(bitmap_canvas), intent(inout) ::current_canvas
+        integer,intent(out) :: err
         type(bitmap_canvas)::expected_canvas
         type(bitmap_canvas)::diff_canvas
         integer :: status
@@ -68,8 +70,8 @@ contains
 
          if (failed) then
              call diff_canvas%save_to_ppm(diff_file)
-             print *, "bitmap test failed."
-             print *, "See differences in file: ", trim(diff_file)//".ppm"
+             print *, "!!bitmap test failed." // "See differences in file: "// trim(diff_file)//".ppm"
+             err = 1
          else
              print *, canvas_name," bitmap test passed."
          end if
@@ -78,8 +80,10 @@ contains
     subroutine test_both(canvas_name,current_canvas)
         character(len=*), intent(in) :: canvas_name
         type(bitmap_canvas), intent(inout) ::current_canvas
-        call test_svg(canvas_name)
-        call test_bitmap(canvas_name,current_canvas)
+        integer :: svg_err,bitmap_err
+        call test_svg(canvas_name,svg_err)
+        call test_bitmap(canvas_name,current_canvas,bitmap_err)
+        if (svg_err==1 .or. bitmap_err==1 ) error stop
 
 
     end subroutine test_both
