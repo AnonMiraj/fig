@@ -6,6 +6,7 @@ program chess_checker
     use fig_rgb_color_constants
     use fig_svg
     use fig_bitmap
+    use fig_test
     implicit none
     integer, parameter :: WIDTH = 800
     integer, parameter :: HEIGHT = 800
@@ -49,7 +50,6 @@ program chess_checker
     call bitmap_canva%init(HEIGHT,WIDTH)
     call bitmap_canva%save_to_file(checker,"checker")
 
-
-    print *, "Drawing exported successfully: checker.(ppm|svg)"
+    call test_both("checker",bitmap_canva)
 
 end program chess_checker
