@@ -1,10 +1,11 @@
 module fig_shapes
     use fig_types
-
+    use fig_rgb_color_constants
     use fig_rgb
+
     type, abstract :: shape
-        type(RGB) :: fill_color
-        type(RGB) :: stroke_color
+        type(RGB) :: fill_color = FIG_COLOR_BLACK
+        type(RGB) :: stroke_color = FIG_COLOR_BLANK
     end type shape
 
     type, extends(shape) :: circle
