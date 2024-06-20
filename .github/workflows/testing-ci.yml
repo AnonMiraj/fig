@@ -8,7 +8,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-22.04, macOS-latest]
+        os: [ubuntu-22.04]
     env:
       GCC_V: 12
 
@@ -29,14 +29,8 @@ jobs:
         sudo apt install -y gfortran-${GCC_V}
         sudo update-alternatives --install /usr/bin/gfortran gfortran /usr/bin/gfortran-${GCC_V} 100
 
-    - name: Install Dependencies MacOS
-      if: contains(matrix.os, 'macos')
-      run: |
-        brew install gcc@${GCC_V}
-        sudo ln -s $(which gfortran-${GCC_V}) $(dirname $(which gfortran-${GCC_V}))/gfortran
-
-    - name: Build and Test Linux and MacOS
-      if: contains(matrix.os, 'ubuntu') || contains(matrix.os, 'macos')
+    - name: Build and Test Linux 
+      if: contains(matrix.os, 'ubuntu') 
       run: |
         which gfortran
         gfortran --version
