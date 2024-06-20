@@ -63,6 +63,7 @@ program circle_test
     call svg_canva%init(CANVAS_WIDTH, CANVAS_HEIGHT)
     call svg_canva%save_to_file(canva, file_name)
 
+    call test_both(file_name,bitmap_canva)
 
 end program circle_test
 
