@@ -24,8 +24,7 @@ program int_to_RGB_to_int
          rgb_old%g /= rgb_new%g .or.  &
          rgb_old%b /= rgb_new%b .or.  &
          rgb_old%a /= rgb_new%a ) then
-        print *, "converting between RGB and int or vice versa went wrong"
-        exit
+        error stop "converting between RGB and int or vice versa went wrong"
      endif
      
   end do

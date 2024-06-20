@@ -5,16 +5,19 @@ program circle_test
     use fig_rgb_color_constants
     use fig_svg
     use fig_bitmap
+    use fig_test
     implicit none
 
     integer, parameter :: CANVAS_WIDTH = 400
     integer, parameter :: CANVAS_HEIGHT = 400
+    character(len=:), allocatable  :: file_name
     type(drawing) :: canva
     type(circle) :: circ
     type(RGB) :: bg, color
     type(svg_canvas) :: svg_canva
     type(bitmap_canvas) :: bitmap_canva
     real :: cx, cy, radius
+    file_name = "green_blob"
 
     call canva%init()
     bg = FIG_COLOR_GREEN
@@ -55,12 +58,12 @@ program circle_test
 
     ! Save to bitmap and SVG
     call bitmap_canva%init(CANVAS_WIDTH, CANVAS_HEIGHT)
-    call bitmap_canva%save_to_file(canva, 'green_blob')
+    call bitmap_canva%save_to_file(canva, file_name)
 
     call svg_canva%init(CANVAS_WIDTH, CANVAS_HEIGHT)
-    call svg_canva%save_to_file(canva, 'green_blob')
+    call svg_canva%save_to_file(canva, file_name)
 
-    print *, 'Image successfully saved to green_blob.(ppm|svg)'
+    call test_both(file_name,bitmap_canva)
 
 end program circle_test
 

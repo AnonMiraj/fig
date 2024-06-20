@@ -1,4 +1,7 @@
 *.ppm
+*.svg
+!test/expected/*.ppm
+!test/expected/*.svg
 ./build/
 ./.fortlsrc
 ./test/test.f90
