@@ -52,7 +52,7 @@ contains
         diff_canvas%pixels= diff_color
 
         if (expected_canvas%size%width/=current_canvas%size%width&
-            .or. expected_canvas%size%width/=current_canvas%size%width )  then
+            .or. expected_canvas%size%height/=current_canvas%size%height )  then
             failed = .true.
         end if
         
