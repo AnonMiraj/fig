@@ -2,6 +2,7 @@ module fig_bitmap_line
     use fig_shapes
     use fig_canvas
     use fig_bitmap_utils
+    use fig_bitmap_line_utils
 
 contains
 
@@ -16,7 +17,7 @@ contains
         color = rgb_to_int(l%stroke_color)
 
 
-        call draw_line(canva,pixels,p1%x,p1%y,p2%x,p2%y,color)
+        call draw_thick_line(canva,pixels,p1%x,p1%y,p2%x,p2%y,l%stroke_width,color)
        
     end subroutine write_line
     

@@ -6,6 +6,7 @@ program smile
     use fig_rgb
     use fig_svg
     use fig_bitmap
+    use fig_test
     implicit none
 
     integer, parameter :: CANVAS_WIDTH = 400
@@ -14,6 +15,7 @@ program smile
     integer, parameter :: EYE_RADIUS = 25
     integer, parameter :: MOUTH_RADIUS_X = 50
     integer, parameter :: MOUTH_RADIUS_Y = 25
+    character(len=:), allocatable  :: file_name
 
     type(drawing) :: canva
     type(circle) :: circ
@@ -25,6 +27,7 @@ program smile
     real:: eye1_center_x, eye1_center_y
     real:: eye2_center_x, eye2_center_y
 
+    file_name= "smiley_face"
     ! Initialize the canvas
     call canva%init()
     call canva%set_background(FIG_COLOR_WHITE)
@@ -78,12 +81,12 @@ program smile
 
     ! Save to bitmap and SVG
     call bitmap_canva%init(CANVAS_WIDTH, CANVAS_HEIGHT)
-    call bitmap_canva%save_to_file(canva, 'smiley_face')
+    call bitmap_canva%save_to_file(canva, file_name)
 
     call svg_canva%init(CANVAS_WIDTH, CANVAS_HEIGHT)
-    call svg_canva%save_to_file(canva, 'smiley_face')
+    call svg_canva%save_to_file(canva, file_name)
 
-    print *, "drawing exported successfully: Smiley Face.(ppm|svg)"
+    call test_both(file_name,bitmap_canva)
 
 end program smile
 

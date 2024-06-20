@@ -29,6 +29,7 @@ module fig_shapes
 
     type, extends(shape) :: line
         type(point) :: p1,p2
+        integer :: stroke_width  =1
     end type line
 
     type :: shapeWrapper

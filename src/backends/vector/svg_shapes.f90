@@ -16,7 +16,8 @@ contains
             // attribute('cy', trim(adjustl(int_to_str(c%y))), '') &
             // attribute('r', trim(adjustl(real_to_str(sh%r))), '') &
             // attribute('fill', trim(adjustl(rgb_to_string(sh%fill_color))), '') &
-            // attribute('stroke', trim(adjustl(rgb_to_string(sh%stroke_color))), '') // '/>'
+            // attribute('stroke', trim(adjustl(rgb_to_string(sh%stroke_color))), '')&
+            // '/>'
     end subroutine write_circle
 
     subroutine write_ellipse(sh,sz,unit_num)
@@ -33,7 +34,8 @@ contains
             // attribute('rx', trim(adjustl(real_to_str(sh%rx))), '') &
             // attribute('ry', trim(adjustl(real_to_str(sh%ry))), '') &
             // attribute('fill', trim(adjustl(rgb_to_string(sh%fill_color))), '') &
-            // attribute('stroke', trim(adjustl(rgb_to_string(sh%stroke_color))), '') // '/>'
+            // attribute('stroke', trim(adjustl(rgb_to_string(sh%stroke_color))), '')&
+            // '/>'
     end subroutine write_ellipse
 
 
@@ -50,7 +52,9 @@ contains
             // attribute('y', trim(adjustl(int_to_str(p%y))), '') &
             // attribute('width', trim(adjustl(real_to_str(sh%width))), '') &
             // attribute('height', trim(adjustl(real_to_str(sh%height))), '') &
-            // attribute('fill', trim(adjustl(rgb_to_string(sh%fill_color))), '') // '/>'
+            // attribute('fill', trim(adjustl(rgb_to_string(sh%fill_color))), '') &
+            // attribute('stroke', trim(adjustl(rgb_to_string(sh%stroke_color))), '')&
+            // '/>'
     end subroutine write_rectangle
 
     subroutine write_line(sh,sz,unit_num)
@@ -67,7 +71,9 @@ contains
             // attribute('y1', trim(adjustl(int_to_str(p1%y))), '') &
             // attribute('x2', trim(adjustl(int_to_str(p2%x))), '') &
             // attribute('y2', trim(adjustl(int_to_str(p2%y))), '') &
-            // attribute('stroke', trim(adjustl(rgb_to_string(sh%stroke_color))), '') // '/>'
+            // attribute('stroke', trim(adjustl(rgb_to_string(sh%stroke_color))), '')&
+            // attribute('stroke-width', trim(adjustl(int_to_str(sh%stroke_width))), '')&
+            //'/>'
     end subroutine write_line
 
 
@@ -89,7 +95,8 @@ contains
             // trim(adjustl(int_to_str(p3%x))) // ',' &
             // trim(adjustl(int_to_str(p3%y))),'') // ' ' &
             // attribute('fill', trim(adjustl(rgb_to_string(sh%fill_color))),'') &
-            // attribute('stroke', trim(adjustl(rgb_to_string(sh%stroke_color))), '') // '/>'
+            // attribute('stroke', trim(adjustl(rgb_to_string(sh%stroke_color))), '')&
+            // '/>'
     end subroutine write_triangle
 
 end module fig_svg_shapes
