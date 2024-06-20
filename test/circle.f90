@@ -3,57 +3,67 @@ program circle_test
     use fig_shapes
     use fig_rgb
     use fig_rgb_color_constants
+    use fig_svg
+    use fig_bitmap
+    use fig_test
     implicit none
 
-    type(drawing)  :: c
-    type(rectangle) :: rect
+    integer, parameter :: CANVAS_WIDTH = 400
+    integer, parameter :: CANVAS_HEIGHT = 400
+    character(len=:), allocatable  :: file_name
+    type(drawing) :: canva
     type(circle) :: circ
-    integer :: cx, cy, radius, result
-    type(RGB) :: color
-    call c%init(400.0, 400.0, "green_blob")
+    type(RGB) :: bg, color
+    type(svg_canvas) :: svg_canva
+    type(bitmap_canvas) :: bitmap_canva
+    real :: cx, cy, radius
+    file_name = "green_blob"
 
-    color = FIG_COLOR_GREEN
-    color%a =150
-    cx = int(c%width) / 2 
-    cy = int(c%height) / 3
-    radius = min(int(c%width), int(c%height)) / 8 
+    call canva%init()
+    bg = FIG_COLOR_GREEN
+    bg%a = 150
+    call canva%set_background(bg)
 
-    
+    ! Circle parameters
+    cx = CANVAS_WIDTH / 2
+    cy = CANVAS_HEIGHT / 3
+    radius = min(CANVAS_WIDTH, CANVAS_HEIGHT) / 8
 
-    call c%set_background(color)
+    circ%stroke_color = FIG_COLOR_BLACK
 
-    circ%stroke_color= FIG_COLOR_BLACK
+    circ%center%x = (cx + cx / 2) / CANVAS_WIDTH
+    circ%center%y = cy / CANVAS_HEIGHT
+    circ%r = radius
+    circ%fill_color = FIG_COLOR_WHITE
+    call canva%add_shape(circ)
+    circ%r = radius / 2
+    circ%fill_color = FIG_COLOR_BLUE
+    call canva%add_shape(circ)
+    circ%r = radius / 4
+    circ%fill_color = FIG_COLOR_CYAN
+    call canva%add_shape(circ)
 
-    circ%cx= cx+cx/2
-    circ%cy= cy
-    circ%r= radius
-    circ%fill_color= FIG_COLOR_WHITE
-    call c%add_shape(circ)
-    circ%r= radius/2
-    circ%fill_color= FIG_COLOR_BLUE
-    call c%add_shape(circ)
-    circ%r= radius/4
-    circ%fill_color= FIG_COLOR_CYAN
-    call c%add_shape(circ)
+    ! Left set of circles
+    circ%center%x = (cx - cx / 2) / CANVAS_WIDTH
+    circ%center%y = cy / CANVAS_HEIGHT
+    circ%r = radius
+    circ%fill_color = FIG_COLOR_WHITE
+    call canva%add_shape(circ)
+    circ%r = radius / 2
+    circ%fill_color = FIG_COLOR_BLUE
+    call canva%add_shape(circ)
+    circ%r = radius / 4
+    circ%fill_color = FIG_COLOR_CYAN
+    call canva%add_shape(circ)
 
-    circ%cx= cx-cx/2
-    circ%cy= cy
-    circ%r= radius
-    circ%fill_color= FIG_COLOR_WHITE
-    call c%add_shape(circ)
-    circ%r= radius/2
-    circ%fill_color= FIG_COLOR_BLUE
-    call c%add_shape(circ)
-    circ%r= radius/4
-    circ%fill_color= FIG_COLOR_CYAN
-    call c%add_shape(circ)
+    ! Save to bitmap and SVG
+    call bitmap_canva%init(CANVAS_WIDTH, CANVAS_HEIGHT)
+    call bitmap_canva%save_to_file(canva, file_name)
 
+    call svg_canva%init(CANVAS_WIDTH, CANVAS_HEIGHT)
+    call svg_canva%save_to_file(canva, file_name)
 
-
-
-    call c%save_to_file('svg')
-    call c%save_to_file('ppm')
-
-    print *, 'Image successfully saved to green_blob.(ppm\svg)'
+    call test_both(file_name,bitmap_canva)
 
 end program circle_test
+

@@ -18,11 +18,15 @@ contains
         integer(pixel), dimension(:,:), intent(inout):: pixels
         type(triangle), intent(in) :: tri
         integer(pixel) :: color
+        type(canvas_point) :: p1,p2,p3
+        p1= to_canvas(tri%p1,canva%size)
+        p2= to_canvas(tri%p2,canva%size)
+        p3= to_canvas(tri%p3,canva%size)
         color = rgb_to_int(tri%stroke_color)
 
-        call draw_line(canva,pixels,tri%x1,tri%y1,tri%x2,tri%y2,color)
-        call draw_line(canva,pixels,tri%x2,tri%y2,tri%x3,tri%y3,color)
-        call draw_line(canva,pixels,tri%x3,tri%y3,tri%x1,tri%y1,color)
+        call draw_line(canva,pixels,p1%x,p1%y,p2%x,p2%y,color)
+        call draw_line(canva,pixels,p2%x,p2%y,p3%x,p3%y,color)
+        call draw_line(canva,pixels,p3%x,p3%y,p1%x,p1%y,color)
         
     end subroutine draw_outer_triangle
 
@@ -31,9 +35,13 @@ contains
         integer(pixel), dimension(:,:), intent(inout):: pixels
         type(triangle), intent(in) :: tri
         integer(pixel) :: color
+        type(canvas_point) :: p1,p2,p3
+        p1= to_canvas(tri%p1,canva%size)
+        p2= to_canvas(tri%p2,canva%size)
+        p3= to_canvas(tri%p3,canva%size)
         color = rgb_to_int(tri%fill_color)
 
-        call fill_triangle(canva,pixels,int(tri%x1),int(tri%y1),int(tri%x2),int(tri%y2),int(tri%x3),int(tri%y3),color)
+        call fill_triangle(canva,pixels,int(p1%x),int(p1%y),int(p2%x),int(p2%y),int(p3%x),int(p3%y),color)
         
     end subroutine draw_inner_triangle
 

@@ -3,6 +3,9 @@ program circles_pattern
     use fig_shapes
     use fig_rgb
     use fig_rgb_color_constants
+    use fig_svg
+    use fig_bitmap
+    use fig_test
     implicit none
     integer, parameter :: WIDTH = 800
     integer, parameter :: HEIGHT = 600
@@ -10,14 +13,20 @@ program circles_pattern
     integer, parameter :: rows = 6*2
     integer, parameter :: CELL_WIDTH = (WIDTH/cols)
     integer, parameter :: CELL_HEIGHT =(HEIGHT/rows)
-    integer :: result,x,y,center_x, center_y
+    character(len=:), allocatable  :: file_name
+    integer :: result,x,y
+    real :: center_x, center_y
     real :: u, v, t,shade
-    integer :: radius
+    real :: radius
     type(drawing) :: canva
     type(RGB) :: color
     type(RGB), dimension(8) :: color_palette
     type(circle) :: circ
-    call canva%init(real(WIDTH), real(HEIGHT), "circles_pattern")
+
+    type(svg_canvas) :: svg_canva
+    type(bitmap_canvas) :: bitmap_canva
+    file_name= "circles_pattern"
+    call canva%init()
     
     color_palette = [ FIG_COLOR_RED,   & 
                       FIG_COLOR_MAGENTA, &
@@ -27,30 +36,30 @@ program circles_pattern
                       FIG_COLOR_CYAN,  &
                       FIG_COLOR_PINK, &
                       FIG_COLOR_WHITE ]
-    
+     
     do y = 0, rows - 1
         do x = 0, cols - 1
-            center_x = (x + 0.5) * CELL_WIDTH
-            center_y = (y + 0.5) * CELL_HEIGHT
+            center_x = (x + 0.5) / real(cols)
+            center_y = (y + 0.5) / real(rows)
             
             t = (real(x) + real(y)) / real(cols + rows - 2)
-            radius = int(min(CELL_WIDTH, CELL_HEIGHT) * lerpf(0.125, 0.5, t))
+            radius = min(CELL_WIDTH, CELL_HEIGHT) * lerpf(0.125, 0.5, t) 
             
-            circ%r=radius
-            circ%cx=center_x
-            circ%cy=center_y
-            circ%fill_color=color_palette(mod(3*x+2*y,8)+1)
-            circ%stroke_color=color_palette(mod(2*x+3*y,8)+1)
+            circ%r = radius
+            circ%center%x = center_x
+            circ%center%y = center_y
+            circ%fill_color = color_palette(mod(3*x + 2*y, 8) + 1)
+            circ%stroke_color = color_palette(mod(2*x + 3*y, 8) + 1)
             call canva%add_shape(circ)
         end do
     end do
 
-    call canva%save_to_file('ppm') 
-    call canva%save_to_file('svg') 
-    
-     
-    print *, 'Image successfully saved to circles_pattern.(ppm\svg)'
- 
+    call svg_canva%init(WIDTH,HEIGHT)
+    call svg_canva%save_to_file(canva,file_name) 
+    call bitmap_canva%init(WIDTH,HEIGHT)
+    call bitmap_canva%save_to_file(canva,file_name) 
+
+    call test_both(file_name,bitmap_canva)
 contains
     
     function lerpf(a, b, t)
