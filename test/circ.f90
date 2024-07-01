@@ -59,6 +59,7 @@ program circles_pattern
     call bitmap_canva%init(WIDTH,HEIGHT)
     call bitmap_canva%save_to_file(canva,file_name) 
 
+    call bitmap_canva%destroy()
     call test_both(file_name,bitmap_canva)
 contains
     
