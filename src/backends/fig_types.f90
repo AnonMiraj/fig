@@ -8,8 +8,8 @@ module fig_types
     end type point
 
     type :: canvas_point
-        integer(pixel) :: x
-        integer(pixel) :: y
+        real(kind=8) :: x
+        real(kind=8) :: y
     end type canvas_point
 
     type :: canvas_size

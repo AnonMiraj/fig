@@ -16,3 +16,5 @@ implicit-typing = false
 implicit-external = false
 source-form = "free"
 
+[dependencies]
+plutovg-fortran = {git = "https://github.com/AnonMiraj/plutovg-fortran.git" }

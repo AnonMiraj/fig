@@ -65,6 +65,7 @@ program test_fig_draw_triangle
     call svg_canva%init(CANVAS_WIDTH, CANVAS_HEIGHT)
     call svg_canva%save_to_file(test_canvas, file_name)
 
+    call bitmap_canva%destroy()
     call test_both(file_name,bitmap_canva)
 end program test_fig_draw_triangle
 

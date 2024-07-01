@@ -12,8 +12,8 @@ contains
         c=to_canvas(sh%center,sz)
 
         write(unit_num, '(A)') '<circle ' &
-            // attribute('cx', trim(adjustl(int_to_str(c%x))), '') &
-            // attribute('cy', trim(adjustl(int_to_str(c%y))), '') &
+            // attribute('cx', trim(adjustl(real_to_str(c%x))), '') &
+            // attribute('cy', trim(adjustl(real_to_str(c%y))), '') &
             // attribute('r', trim(adjustl(real_to_str(sh%r))), '') &
             // attribute('fill', trim(adjustl(rgb_to_string(sh%fill_color))), '') &
             // attribute('stroke', trim(adjustl(rgb_to_string(sh%stroke_color))), '')&
@@ -29,8 +29,8 @@ contains
         c=to_canvas(sh%center,sz)
 
         write(unit_num, '(A)') '<ellipse ' &
-            // attribute('cx', trim(adjustl(int_to_str(c%x))), '') &
-            // attribute('cy', trim(adjustl(int_to_str(c%y))), '') &
+            // attribute('cx', trim(adjustl(real_to_str(c%x))), '') &
+            // attribute('cy', trim(adjustl(real_to_str(c%y))), '') &
             // attribute('rx', trim(adjustl(real_to_str(sh%rx))), '') &
             // attribute('ry', trim(adjustl(real_to_str(sh%ry))), '') &
             // attribute('fill', trim(adjustl(rgb_to_string(sh%fill_color))), '') &
@@ -48,8 +48,8 @@ contains
         p=to_canvas(sh%upper_left,sz)
 
         write(unit_num, '(A)') '<rect ' &
-            // attribute('x', trim(adjustl(int_to_str(p%x))), '') &
-            // attribute('y', trim(adjustl(int_to_str(p%y))), '') &
+            // attribute('x', trim(adjustl(real_to_str(p%x))), '') &
+            // attribute('y', trim(adjustl(real_to_str(p%y))), '') &
             // attribute('width', trim(adjustl(real_to_str(sh%width))), '') &
             // attribute('height', trim(adjustl(real_to_str(sh%height))), '') &
             // attribute('fill', trim(adjustl(rgb_to_string(sh%fill_color))), '') &
@@ -67,12 +67,12 @@ contains
         p2=to_canvas(sh%p2,sz)
 
         write(unit_num, '(A)') '<line ' &
-            // attribute('x1', trim(adjustl(int_to_str(p1%x))), '') &
-            // attribute('y1', trim(adjustl(int_to_str(p1%y))), '') &
-            // attribute('x2', trim(adjustl(int_to_str(p2%x))), '') &
-            // attribute('y2', trim(adjustl(int_to_str(p2%y))), '') &
+            // attribute('x1', trim(adjustl(real_to_str(p1%x))), '') &
+            // attribute('y1', trim(adjustl(real_to_str(p1%y))), '') &
+            // attribute('x2', trim(adjustl(real_to_str(p2%x))), '') &
+            // attribute('y2', trim(adjustl(real_to_str(p2%y))), '') &
             // attribute('stroke', trim(adjustl(rgb_to_string(sh%stroke_color))), '')&
-            // attribute('stroke-width', trim(adjustl(int_to_str(sh%stroke_width))), '')&
+            // attribute('stroke-width', trim(adjustl(real_to_str(sh%stroke_width))), '')&
             //'/>'
     end subroutine write_line
 
@@ -88,12 +88,12 @@ contains
         p3=to_canvas(sh%p3,sz)
 
         write(unit_num, '(A)') '<polygon ' // attribute('points', &
-               trim(adjustl(int_to_str(p1%x))) // ',' &
-            // trim(adjustl(int_to_str(p1%y))) // ' ' &
-            // trim(adjustl(int_to_str(p2%x))) // ',' &
-            // trim(adjustl(int_to_str(p2%y))) // ' ' &
-            // trim(adjustl(int_to_str(p3%x))) // ',' &
-            // trim(adjustl(int_to_str(p3%y))),'') // ' ' &
+               trim(adjustl(real_to_str(p1%x))) // ',' &
+            // trim(adjustl(real_to_str(p1%y))) // ' ' &
+            // trim(adjustl(real_to_str(p2%x))) // ',' &
+            // trim(adjustl(real_to_str(p2%y))) // ' ' &
+            // trim(adjustl(real_to_str(p3%x))) // ',' &
+            // trim(adjustl(real_to_str(p3%y))),'') // ' ' &
             // attribute('fill', trim(adjustl(rgb_to_string(sh%fill_color))),'') &
             // attribute('stroke', trim(adjustl(rgb_to_string(sh%stroke_color))), '')&
             // '/>'
