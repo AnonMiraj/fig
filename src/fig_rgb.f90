@@ -16,8 +16,8 @@ contains
         type(RGB), intent(in) :: color
 
         rgb_int = ior(ishft(color%a, rgb_bit_depth*3),&
-                  ior(ishft(color%b, rgb_bit_depth*2),&
-                  ior(ishft(color%g, rgb_bit_depth), color%r)))
+                  ior(ishft(color%r, rgb_bit_depth*2),&
+                  ior(ishft(color%g, rgb_bit_depth), color%b)))
 
      end function rgb_to_int
       
@@ -25,9 +25,9 @@ contains
        integer(pixel), intent(in):: rgb_int
 
        color%a = ibits(rgb_int, 3*rgb_bit_depth, rgb_bit_depth)
-       color%b = ibits(rgb_int, 2*rgb_bit_depth, rgb_bit_depth)
+       color%r = ibits(rgb_int, 2*rgb_bit_depth, rgb_bit_depth)
        color%g = ibits(rgb_int, rgb_bit_depth  , rgb_bit_depth)
-       color%r = ibits(rgb_int, 0, rgb_bit_depth)       
+       color%b = ibits(rgb_int, 0, rgb_bit_depth)
      end function int_to_rgb
 
      function rgb_to_string(color) result(color_string)

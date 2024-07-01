@@ -91,7 +91,7 @@ contains
             green = ichar(ccode)
             read(unit_num) ccode
             blue = ichar(ccode)
-            this%pixels(i, j) = red + shiftl(green, 8) + shiftl(blue, 16)
+            this%pixels(i, j) = blue + shiftl(green, 8) + shiftl(red, 16)
             end do
         end do
 
@@ -117,9 +117,9 @@ contains
         write(unit_num, '(i0)') 2**rgb_bit_depth-1
         do j = 0, int(this%size%height)-1
             do i = 0, int(this%size%width)-1
-                bytes(1) = ibits(this%pixels(i, j), 0, rgb_bit_depth)
+                bytes(3) = ibits(this%pixels(i, j), 0, rgb_bit_depth)
                 bytes(2) = ibits(this%pixels(i, j), rgb_bit_depth, rgb_bit_depth)
-                bytes(3) = ibits(this%pixels(i, j), 2*rgb_bit_depth, rgb_bit_depth)
+                bytes(1) = ibits(this%pixels(i, j), 2*rgb_bit_depth, rgb_bit_depth)
         
                 write(unit_num, '(3a1)', advance='no') bytes
             end do
