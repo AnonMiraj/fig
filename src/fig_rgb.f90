@@ -2,8 +2,10 @@ module fig_rgb
     use fig_config
     implicit none
 
-    type :: RGB
-        sequence
+    type, abstract :: pattern
+    end type
+
+    type,extends(pattern) :: RGB
         integer(rgb_level) :: r
         integer(rgb_level) :: g
         integer(rgb_level) :: b
