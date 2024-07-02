@@ -83,7 +83,7 @@ program test_fig_fill_triangle
 
     ! Save to bitmap and SVG
     call bitmap_canva%init(CANVAS_WIDTH, CANVAS_HEIGHT)
-    call bitmap_canva%save_to_file(test_canvas, file_name)
+    call bitmap_canva%save_to_file(test_canvas, file_name,"png   ")
 
     call svg_canva%init(CANVAS_WIDTH, CANVAS_HEIGHT)
     call svg_canva%save_to_file(test_canvas, file_name)

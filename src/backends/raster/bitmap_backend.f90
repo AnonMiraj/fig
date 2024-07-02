@@ -46,13 +46,22 @@ contains
         call plutovg_destroy(this%pluto)
     end subroutine destroy
 
-    subroutine save_to_file(this,draw,file_path)
+    subroutine save_to_file(this,draw,file_path,ext)
         class(bitmap_canvas), intent(inout) :: this
-        character(len=*), intent(in) :: file_path
         type(drawing), intent(in):: draw
+        character(len=*), intent(in) :: file_path
+        character(len=*), intent(in) :: ext
+
         call this%apply_shapes(draw)
 
-        call this%save_to_ppm(file_path)
+        select case (trim(ext))
+        case ('ppm')
+            call this%save_to_ppm(trim(file_path)//".ppm")
+        case ('png')
+            call plutovg_surface_write_to_png(this%surface, trim(file_path) // ".png" // c_null_char)
+        case default
+            error stop 'Unsupported file extension: ' // ext
+        end select
     end subroutine save_to_file
 
     subroutine load_from_ppm(this,file_path)
