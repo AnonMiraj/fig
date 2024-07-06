@@ -19,22 +19,22 @@ contains
         res= real(ch,kind=8)/real(2**rgb_bit_depth-1,kind=8)
     end function normalize_ch
 
-    subroutine fill(cr,color)
+    subroutine fill(cr,sh)
         type(c_ptr), intent(inout) :: cr
-        type(RGB) :: color
-        if (color%a .ne. 0) then
-            call set_rgba(cr,color)
+        class(shape), intent(in) :: sh
+        if (sh%fill_color%a .ne. 0) then
+            call set_rgba(cr,sh%fill_color)
             call cairo_fill_preserve(cr)
-        end if
+        end if               
     end subroutine fill
 
-    subroutine stroke(cr,color,width)
+    subroutine stroke(cr,sh)
         type(c_ptr), intent(inout) :: cr
-        type(RGB) :: color
-        real(kind=8) :: width
-        if (color%a .ne. 0) then
-            call set_rgba(cr,color)
-            call cairo_set_line_width(cr,width)
+        class(shape), intent(in) :: sh
+
+        if (sh%stroke_color%a .ne. 0) then
+            call set_rgba(cr,sh%stroke_color)
+            call cairo_set_line_width(cr,sh%stroke_width)
             call cairo_stroke(cr)
         else 
             call cairo_new_path(cr)

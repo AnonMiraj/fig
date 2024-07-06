@@ -21,8 +21,8 @@ contains
         call cairo_line_to(cr,p3%x,p3%y)
         call cairo_line_to(cr,p1%x,p1%y)
         call cairo_close_path(cr)
-        call fill(cr,tri%fill_color)
-        call stroke(cr,tri%stroke_color,tri%stroke_width)
+        call fill(cr,tri)
+        call stroke(cr,tri)
 
     end subroutine write_triangle
    
