@@ -31,8 +31,8 @@ contains
         call cairo_curve_to(cr, c%x - cpx, bottom, left, c%y + cpy, left, c%y);
         call cairo_curve_to(cr, left, c%y - cpy, c%x - cpx, top, c%x, top);
         call cairo_close_path(cr);
-        call fill(cr,circ%fill_color)
-        call stroke(cr,circ%stroke_color,circ%stroke_width)
+        call fill(cr,circ)
+        call stroke(cr,circ)
 
     end subroutine write_circle
 

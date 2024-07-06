@@ -31,8 +31,8 @@ contains
         call cairo_curve_to(cr, c%x - cpx, bottom, left, c%y + cpy, left, c%y);
         call cairo_curve_to(cr, left, c%y - cpy, c%x - cpx, top, c%x, top);
         call cairo_close_path(cr);
-        call fill(cr,ellip%fill_color)
-        call stroke(cr,ellip%stroke_color,ellip%stroke_width)
+        call fill(cr,ellip)
+        call stroke(cr,ellip)
 
     end subroutine write_ellipse
 

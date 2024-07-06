@@ -18,7 +18,7 @@ contains
         call cairo_move_to(cr,p1%x,p1%y)
         call cairo_line_to(cr,p2%x,p2%y)
         call cairo_close_path(cr)
-        call stroke(cr,l%stroke_color,l%stroke_width)
+        call stroke(cr,l)
 
        
     end subroutine write_line

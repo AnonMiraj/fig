@@ -16,8 +16,8 @@ contains
 
 
         call cairo_rectangle(cr, p%x, p%y, rect%width, rect%height)
-        call fill(cr,rect%fill_color)
-        call stroke(cr,rect%stroke_color, rect%stroke_width)
+        call fill(cr,rect)
+        call stroke(cr,rect)
 
    
     end subroutine write_rectangle

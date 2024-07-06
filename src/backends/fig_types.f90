@@ -23,8 +23,8 @@ contains
         type(point), intent(in) :: p
         type(canvas_size), intent(in) :: sz
 
-        pxl%x = nint(p%x * sz%width, kind=pixel)
-        pxl%y = nint(p%y * sz%height, kind=pixel)
+        pxl%x = p%x * sz%width
+        pxl%y = p%y * sz%height
     end function to_canvas
 
 end module fig_types
