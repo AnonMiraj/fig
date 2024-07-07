@@ -17,6 +17,7 @@ contains
             // attribute('r', trim(adjustl(real_to_str(sh%r))), '') &
             // attribute('fill', trim(adjustl(rgb_to_string(sh%fill_color))), '') &
             // attribute('stroke', trim(adjustl(rgb_to_string(sh%stroke_color))), '')&
+            // attribute('stroke-width', trim(adjustl(real_to_str(sh%stroke_width))), '')&
             // '/>'
     end subroutine write_circle
 
@@ -35,6 +36,7 @@ contains
             // attribute('ry', trim(adjustl(real_to_str(sh%ry))), '') &
             // attribute('fill', trim(adjustl(rgb_to_string(sh%fill_color))), '') &
             // attribute('stroke', trim(adjustl(rgb_to_string(sh%stroke_color))), '')&
+            // attribute('stroke-width', trim(adjustl(real_to_str(sh%stroke_width))), '')&
             // '/>'
     end subroutine write_ellipse
 
@@ -52,8 +54,11 @@ contains
             // attribute('y', trim(adjustl(real_to_str(p%y))), '') &
             // attribute('width', trim(adjustl(real_to_str(sh%width))), '') &
             // attribute('height', trim(adjustl(real_to_str(sh%height))), '') &
+            // attribute('rx', trim(adjustl(real_to_str(sh%rx))), '') &
+            // attribute('ry', trim(adjustl(real_to_str(sh%ry))), '') &
             // attribute('fill', trim(adjustl(rgb_to_string(sh%fill_color))), '') &
             // attribute('stroke', trim(adjustl(rgb_to_string(sh%stroke_color))), '')&
+            // attribute('stroke-width', trim(adjustl(real_to_str(sh%stroke_width))), '')&
             // '/>'
     end subroutine write_rectangle
 
@@ -96,6 +101,7 @@ contains
             // trim(adjustl(real_to_str(p3%y))),'') // ' ' &
             // attribute('fill', trim(adjustl(rgb_to_string(sh%fill_color))),'') &
             // attribute('stroke', trim(adjustl(rgb_to_string(sh%stroke_color))), '')&
+            // attribute('stroke-width', trim(adjustl(real_to_str(sh%stroke_width))), '')&
             // '/>'
     end subroutine write_triangle
 

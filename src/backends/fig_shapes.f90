@@ -22,6 +22,7 @@ module fig_shapes
     type, extends(shape) :: rectangle
         type(point) :: upper_left
         real (kind=8):: width, height
+        real (kind=8):: rx=0, ry=0
     end type rectangle
 
     type, extends(shape) :: triangle

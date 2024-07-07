@@ -56,6 +56,8 @@ program drawing_test_all
     r%height = 50.0 
     r%fill_color = FIG_COLOR_BLUE
     r%fill_color%a = 100
+    r%stroke_width = 10
+    r%stroke_color = FIG_COLOR_GOLD
     call canva%add_shape(r)
 
     ! Rectangle 2
@@ -65,6 +67,11 @@ program drawing_test_all
     r%height = 50.0 
     r%fill_color = FIG_COLOR_RED
     r%fill_color%a = 100
+    r%rx=5
+    r%ry=5
+    r%stroke_width = 6
+    r%stroke_color = FIG_COLOR_SEAGREEN
+    r%stroke_color%a=150
     call canva%add_shape(r)
 
     ! Line
@@ -78,7 +85,6 @@ program drawing_test_all
     l%stroke_width = 2
     l%stroke_color = FIG_COLOR_RED
     l%stroke_color%a=100
-
     call canva%add_shape(l)
 
 
