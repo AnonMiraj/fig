@@ -49,7 +49,8 @@ program chess_checker
     call svg_canva%init(HEIGHT,WIDTH)
     call svg_canva%save_to_file(checker,file_name)
     call bitmap_canva%init(HEIGHT,WIDTH)
-    call bitmap_canva%save_to_file(checker,file_name)
+    call bitmap_canva%save_to_file(checker,file_name,"ppm")
+    call bitmap_canva%destroy()
 
     call test_both(file_name,bitmap_canva)
 

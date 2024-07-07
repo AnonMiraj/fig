@@ -33,18 +33,13 @@ contains
     subroutine add_shape(this, s)
         class(drawing), intent(inout) :: this
         class(shape), intent(in), target :: s
-        integer :: new_size, i
+        integer :: new_size
         type(shapeWrapper), allocatable :: temp(:)
 
         if (this%shape_count >= size(this%shapes)) then
             new_size = max(1, 2 * size(this%shapes))
 
-            if (this%shape_count > 0) then
-                allocate(temp(this%shape_count))
-                temp = this%shapes(1:this%shape_count)
-            endif
-            
-            deallocate(this%shapes)
+            call move_alloc(from=this%shapes,to=temp)
             allocate(this%shapes(new_size))
             
             if (this%shape_count > 0) then

@@ -8,8 +8,8 @@ module fig_types
     end type point
 
     type :: canvas_point
-        integer(pixel) :: x
-        integer(pixel) :: y
+        real(kind=8) :: x
+        real(kind=8) :: y
     end type canvas_point
 
     type :: canvas_size
@@ -23,8 +23,8 @@ contains
         type(point), intent(in) :: p
         type(canvas_size), intent(in) :: sz
 
-        pxl%x = nint(p%x * sz%width, kind=pixel)
-        pxl%y = nint(p%y * sz%height, kind=pixel)
+        pxl%x = p%x * sz%width
+        pxl%y = p%y * sz%height
     end function to_canvas
 
 end module fig_types

@@ -2,13 +2,19 @@ module fig_rgb
     use fig_config
     implicit none
 
-    type :: RGB
-        sequence
+    type, abstract :: pattern
+    end type
+
+    type,extends(pattern) :: RGB
         integer(rgb_level) :: r
         integer(rgb_level) :: g
         integer(rgb_level) :: b
         integer(rgb_level) :: a
     end type RGB
+
+    type:: pattern_wrapper
+        class(pattern) ,allocatable :: pat
+    end type
 
 contains
 
@@ -31,13 +37,17 @@ contains
      end function int_to_rgb
 
      function rgb_to_string(color) result(color_string)
-         type(RGB), intent(in) :: color
+         class(pattern), intent(in) :: color
          character(len=50) :: color_string
          real :: alpha
 
-         alpha = color%a / 255.0
-         alpha = min(1.0,alpha)
-         write(color_string, '(A,I0,A,I0,A,I0,A,F5.3,A)') 'rgba(', color%r, ',', color%g, ',', color%b, ',', alpha, ')'
+         select type (color)
+            type is (RGB)
+                alpha = color%a / 255.0
+                alpha = min(1.0,alpha)
+                write(color_string, '(A,I0,A,I0,A,I0,A,F5.3,A)') 'rgba(', color%r, ',', color%g, ',', color%b, ',', alpha, ')'
+                
+         end select
      end function rgb_to_string     
 
      elemental type(integer(pixel)) function blend_color(c1, c2) result(blended)

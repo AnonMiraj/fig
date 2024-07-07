@@ -16,3 +16,5 @@ implicit-typing = false
 implicit-external = false
 source-form = "free"
 
+[dependencies]
+cairo-fortran = {git = "https://github.com/vmagnin/cairo-fortran" }

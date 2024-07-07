@@ -3,7 +3,7 @@ module fig_svg_utils
 contains
 
     function real_to_str(value) result(str)
-        real, intent(in) :: value
+        real(kind=8), intent(in) :: value
         character(len=100) :: str
         write(str, '(F10.2)') value
         return
