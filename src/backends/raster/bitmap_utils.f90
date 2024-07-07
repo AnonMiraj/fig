@@ -4,6 +4,7 @@ module fig_bitmap_utils
     use cairo
     use fig_config
     implicit none
+    real(kind=8),parameter :: kappa = 0.55228474983079339840
     
 contains
     
