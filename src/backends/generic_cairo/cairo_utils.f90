@@ -1,4 +1,4 @@
-module fig_bitmap_utils
+module fig_cairo_utils
     use fig_canvas
     use fig_rgb
     use cairo
@@ -44,5 +44,4 @@ contains
     end subroutine stroke
 
   
-end module fig_bitmap_utils
-
+end module fig_cairo_utils

@@ -1,8 +1,8 @@
-module fig_bitmap_rect
+module fig_cairo_rect
     use cairo
     use fig_shapes
     use fig_canvas
-    use fig_bitmap_utils
+    use fig_cairo_utils
 
 contains
 
@@ -44,4 +44,4 @@ contains
             call stroke(cr,rect)
     end subroutine write_rectangle
 
-end module fig_bitmap_rect
+end module fig_cairo_rect

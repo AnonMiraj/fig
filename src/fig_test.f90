@@ -48,7 +48,7 @@ contains
         diff_color = rgb_to_int(FIG_COLOR_RED)
 
         call expected_canvas%load_from_ppm(expected_file)
-        call diff_canvas%init(expected_canvas%size%width,expected_canvas%size%height)
+        call diff_canvas%init(expected_canvas%size%width,expected_canvas%size%height,"diff")
 
 
         do j = 0, expected_canvas%size%height - 1
@@ -77,7 +77,7 @@ contains
         end do
 
          if (failed) then
-             call diff_canvas%save_to_ppm(diff_file)
+             call diff_canvas%save_to_ppm()
              print *, "!!bitmap test failed." // "See differences in file: "// trim(diff_file)//".ppm"
              err = 1
          else
