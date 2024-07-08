@@ -33,6 +33,22 @@ module fig_shapes
         type(point) :: p1,p2
     end type line
 
+
+    integer, parameter :: FIG_FONT_SLANT_NORMAL = 0
+    integer, parameter :: FIG_FONT_SLANT_ITALIC = 1
+    integer, parameter :: FIG_FONT_SLANT_OBLIQUE = 2
+
+    integer, parameter :: FIG_FONT_WEIGHT_NORMAL = 0
+    integer, parameter :: FIG_FONT_WEIGHT_BOLD = 1
+
+    type, extends(shape) :: text
+        type(point) :: p
+        character(len=:),allocatable ::content
+        character(len=:),allocatable ::font_family
+        integer :: slant,weight
+        real (kind=8):: size
+    end type text
+
     type :: shapeWrapper
       class(shape), allocatable :: sh
     end type
