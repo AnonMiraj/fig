@@ -43,5 +43,18 @@ contains
 
     end subroutine stroke
 
-  
+    subroutine quad_to(cr, cx, cy, x1, y1, x2, y2)
+        type(c_ptr), intent(inout) :: cr
+        real(kind=8),intent(in) :: cx, cy, x1, y1, x2, y2
+        real(kind=8):: cx1, cy1
+        real(kind=8):: cx2, cy2
+
+        cx1 = 2.0 / 3.0 * x1 + 1.0 / 3.0 * cx
+        cy1 = 2.0 / 3.0 * y1 + 1.0 / 3.0 * cy
+        cx2 = 2.0 / 3.0 * x1 + 1.0 / 3.0 * x2
+        cy2 = 2.0 / 3.0 * y1 + 1.0 / 3.0 * y2
+        call cairo_curve_to(cr,cx1, cy1, cx2, cy2, x2, y2)
+
+    end subroutine quad_to
+
 end module fig_cairo_utils
