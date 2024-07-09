@@ -37,8 +37,6 @@ program path_test
     call bitmap_canva%save_to_ppm()
     call bitmap_canva%destroy()
 
-
-
     call svg_canva%init(CANVAS_WIDTH,CANVAS_HEIGHT,file_name)
     call svg_canva%apply_shapes(canva)
     call svg_canva%save_to_svg()

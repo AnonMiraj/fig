@@ -26,7 +26,7 @@ contains
 
         do char_ind = 1, char_count, 1
 
-        print * , real_ind
+        !! TODO need some error handling
         select case (char_array(char_ind))
             case ("M")
                 temp_p%x=real_array(real_ind)
