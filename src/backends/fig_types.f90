@@ -3,8 +3,8 @@ module fig_types
     implicit none
 
     type :: point
-        real :: x
-        real :: y
+        real(kind=8) :: x
+        real(kind=8) :: y
     end type point
 
     type :: canvas_point
