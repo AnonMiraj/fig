@@ -28,7 +28,6 @@ program path_test
     my_path%fill_color = FIG_COLOR_LIGHTGOLDENRODYELLOW
     my_path%stroke_color = FIG_COLOR_AQUA
     call canva%add_shape(my_path)
-    print *,my_path%path_string
     
     ! Save to bitmap and SVG
     call bitmap_canva%init(CANVAS_WIDTH,CANVAS_HEIGHT,file_name)
