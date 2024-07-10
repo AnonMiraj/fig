@@ -27,6 +27,29 @@ contains
         call fill(cr,pl)
         call stroke(cr,pl)
     end subroutine write_polyline
+ 
+    subroutine write_polygon(canva, cr, pl)
+        class(base_canvas), intent(inout) :: canva
+        type(c_ptr), intent(inout):: cr
+        type(polygon), intent(in) :: pl
+        type(point), allocatable:: points(:)
+        integer :: p_count,i
+        type(canvas_point) :: p
+        type(canvas_size):: s
+        call parse_string(pl%poly_string, points, p_count)
+
+        p = to_canvas(points(1), canva%size)
+        call cairo_move_to(cr, p%x, p%y)
+        do i = 2, p_count, 1
+            p = to_canvas(points(i), canva%size)
+            call cairo_line_to(cr, p%x, p%y)
+        end do
+        p = to_canvas(points(1), canva%size)
+        call cairo_line_to(cr, p%x, p%y)
+
+        call fill(cr,pl)
+        call stroke(cr,pl)
+    end subroutine write_polygon
    
     subroutine parse_string(input_str, points, p_count)
         implicit none

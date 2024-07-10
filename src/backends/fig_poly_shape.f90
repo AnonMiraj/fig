@@ -6,6 +6,9 @@ module fig_poly
         procedure :: add_points
     end type polyline
 
+    type, extends(polyline) :: polygon
+    end type polygon
+
 contains
 
     subroutine add_points(this, x, y, n)

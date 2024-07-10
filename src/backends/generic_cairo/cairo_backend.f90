@@ -70,6 +70,8 @@ contains
             call write_path(canva, canva%cairo, sh)
         type is (polyline)
             call write_polyline(canva, canva%cairo, sh)
+        type is (polygon)
+            call write_polygon(canva, canva%cairo, sh)
         end select
 
     end subroutine cairo_write_shape
