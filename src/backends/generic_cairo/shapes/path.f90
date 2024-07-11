@@ -78,7 +78,18 @@ contains
             case ("Z")
                 real_ind = real_ind + 1
                 call cairo_close_path(cr)
-                
+            case ("H")
+                temp_p%x = real_array(real_ind)
+                p1 = to_canvas(temp_p, canva%size)
+                cur_p%x=p1%x
+                call cairo_line_to(cr, cur_p%x, cur_p%y)
+                real_ind = real_ind + 1
+            case ("V")
+                temp_p%y = real_array(real_ind)
+                p1 = to_canvas(temp_p, canva%size)
+                cur_p%y=p1%y
+                call cairo_line_to(cr, cur_p%x, cur_p%y)
+                real_ind = real_ind + 1
         end select
 
             
