@@ -28,20 +28,47 @@ contains
 
         !! TODO need some error handling
         select case (char_array(char_ind))
-            case ("M")
+            case ("M", "m")
                 temp_p%x=real_array(real_ind)
                 temp_p%y=real_array(real_ind+1)
-                cur_p= to_canvas(temp_p,canva%size)
+                if (char_array(char_ind)=="m") then
+                    cur_p= to_canvas(temp_p,canva%size) +cur_p
+                else
+                    cur_p= to_canvas(temp_p,canva%size)
+                end if
                 call cairo_move_to(cr,cur_p%x ,cur_p%y)
                 real_ind = real_ind + 2
-            case ("L")
+            case ("L", "l")
                 temp_p%x=real_array(real_ind)
                 temp_p%y=real_array(real_ind+1)
-                cur_p= to_canvas(temp_p,canva%size)
+                if (char_array(char_ind)=="l") then
+                    cur_p= to_canvas(temp_p,canva%size) +cur_p
+                else
+                    cur_p= to_canvas(temp_p,canva%size)
+                end if
                 call cairo_line_to(cr,cur_p%x ,cur_p%y)
                 real_ind = real_ind + 2
-            case ("C")
-
+            case ("H","h")
+                temp_p%x = real_array(real_ind)
+                p1 = to_canvas(temp_p, canva%size)
+                if (char_array(char_ind)=="h") then
+                    cur_p%x=p1%x+cur_p%x
+                else 
+                    cur_p%x=p1%x
+                end if
+                call cairo_line_to(cr, cur_p%x, cur_p%y)
+                real_ind = real_ind + 1
+            case ("V","v")
+                temp_p%y = real_array(real_ind)
+                p1 = to_canvas(temp_p, canva%size)
+                if (char_array(char_ind)=="v") then
+                    cur_p%y=p1%y+cur_p%y
+                else 
+                    cur_p%y=p1%y
+                end if
+                call cairo_line_to(cr, cur_p%x, cur_p%y)
+                real_ind = real_ind + 1
+            case ("C", "c")
                 temp_p%x=real_array(real_ind)
                 temp_p%y=real_array(real_ind+1)
                 p1= to_canvas(temp_p,canva%size)
@@ -50,46 +77,48 @@ contains
                 p2= to_canvas(temp_p,canva%size)
                 temp_p%x=real_array(real_ind+4)
                 temp_p%y=real_array(real_ind+5)
-                cur_p= to_canvas(temp_p,canva%size)
+                if (char_array(char_ind)=="c") then
+                    p1= p1+cur_p
+                    p2= p2+cur_p
+                    cur_p= to_canvas(temp_p,canva%size)+cur_p
+                else
+                    cur_p= to_canvas(temp_p,canva%size)
+                end if
                 call cairo_curve_to(cr, p1%x, p1%y, p2%x, p2%y, cur_p%x, cur_p%y)
                 real_ind = real_ind + 6
-            case ("Q")
+            case ("Q","q")
                 temp_p%x=real_array(real_ind)
                 temp_p%y=real_array(real_ind+1)
                 p1= to_canvas(temp_p,canva%size)
                 temp_p%x=real_array(real_ind+2)
                 temp_p%y=real_array(real_ind+3)
                 p2= to_canvas(temp_p,canva%size)
+                if (char_array(char_ind)=="q") then
+                    p1= p1+cur_p
+                    p2= p2+cur_p
+                end if
                 call quad_to(cr, cur_p%x, cur_p%y, p1%x, p1%y, p2%x, p2%y)
                 cur_p = p2
                 real_ind = real_ind + 4
-            case ("A")
+            case ("A",'a')
                 temp_p%x=real_array(real_ind)
                 temp_p%y=real_array(real_ind+1)
                 p1= to_canvas(temp_p,canva%size)
                 temp_p%x=real_array(real_ind+5)
                 temp_p%y=real_array(real_ind+6)
                 p2= to_canvas(temp_p,canva%size)
+                if (char_array(char_ind)=="a") then
+                    p1= p1+cur_p
+                    p2= p2+cur_p
+                end if
                 call arc_to(cr, cur_p%x, cur_p%y,p1%x, p1%y,&
                     real_array(real_ind+2), real_array(real_ind+3)>0.1, real_array(real_ind+4)>0.1, p2%x,&
                     p2%y)
                 cur_p = p2
                 real_ind = real_ind + 7
-            case ("Z")
+            case ("Z","z")
                 real_ind = real_ind + 1
                 call cairo_close_path(cr)
-            case ("H")
-                temp_p%x = real_array(real_ind)
-                p1 = to_canvas(temp_p, canva%size)
-                cur_p%x=p1%x
-                call cairo_line_to(cr, cur_p%x, cur_p%y)
-                real_ind = real_ind + 1
-            case ("V")
-                temp_p%y = real_array(real_ind)
-                p1 = to_canvas(temp_p, canva%size)
-                cur_p%y=p1%y
-                call cairo_line_to(cr, cur_p%x, cur_p%y)
-                real_ind = real_ind + 1
         end select
 
             

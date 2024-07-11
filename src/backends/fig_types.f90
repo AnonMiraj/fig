@@ -12,6 +12,9 @@ module fig_types
         real(kind=8) :: y
     end type canvas_point
 
+    interface operator (+)
+        module procedure canvas_point_add
+    end interface
     type :: canvas_size
         integer(pixel) :: width
         integer(pixel) :: height
@@ -27,4 +30,11 @@ contains
         pxl%y = p%y * sz%height
     end function to_canvas
 
+    function canvas_point_add(p1, p2) result(result_point)
+        type(canvas_point), intent(in) :: p1, p2
+        type(canvas_point) :: result_point
+        
+        result_point%x = p1%x + p2%x
+        result_point%y = p1%y + p2%y
+    end function canvas_point_add
 end module fig_types
