@@ -15,6 +15,7 @@ module fig_types
     interface operator (+)
         module procedure canvas_point_add
     end interface
+
     type :: canvas_size
         integer(pixel) :: width
         integer(pixel) :: height
@@ -26,8 +27,13 @@ contains
         type(point), intent(in) :: p
         type(canvas_size), intent(in) :: sz
 
-        pxl%x = p%x * sz%width
-        pxl%y = p%y * sz%height
+        if (FIG_ABSOLUTE_COORDINATES) then
+            pxl%x = p%x
+            pxl%y = p%y 
+        else
+            pxl%x = p%x * sz%width
+            pxl%y = p%y * sz%height
+        end if
     end function to_canvas
 
     function canvas_point_add(p1, p2) result(result_point)
