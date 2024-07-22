@@ -6,6 +6,7 @@ module fig_canvas
     
     type, abstract :: base_canvas 
         type(canvas_size) :: size
+        character(len=:), allocatable :: title
     contains
         procedure(canvas_draw_shape), deferred :: draw_shape
         procedure :: init
@@ -21,12 +22,14 @@ module fig_canvas
 
 contains
 
-    subroutine init(this, width, height)
+    subroutine init(this, width, height, title)
         class(base_canvas), intent(inout) :: this
         integer, intent(in) :: width, height
+        character(len=*), intent(in) :: title
 
         this%size%width = width
         this%size%height = height
+        this%title=title
 
     end subroutine init
 

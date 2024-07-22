@@ -1,8 +1,8 @@
-module fig_bitmap_ellipse
+module fig_cairo_ellipse
     use cairo
     use fig_shapes
     use fig_canvas
-    use fig_bitmap_utils
+    use fig_cairo_utils
 
 contains
 
@@ -11,11 +11,10 @@ contains
         type(c_ptr), intent(inout):: cr
         type(ellipse), intent(in) :: ellip
         type(canvas_point) :: c
-        real(kind=8) :: left , top , right , bottom , kappa, cpx,cpy
+        real(kind=8) :: left , top , right , bottom , cpx, cpy
 
         c = to_canvas ( ellip%center , canva%size)
 
-        kappa = 0.55228474983079339840
         left = c%x - ellip%rx;
         top = c%y - ellip%ry;
         right = c%x + ellip%rx;
@@ -36,4 +35,4 @@ contains
 
     end subroutine write_ellipse
 
-end module fig_bitmap_ellipse
+end module fig_cairo_ellipse

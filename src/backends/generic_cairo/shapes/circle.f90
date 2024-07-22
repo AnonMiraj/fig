@@ -1,8 +1,8 @@
-module fig_bitmap_circle
+module fig_cairo_circle
     use cairo
     use fig_shapes
     use fig_canvas
-    use fig_bitmap_utils
+    use fig_cairo_utils
 
 contains
 
@@ -11,11 +11,10 @@ contains
         type(c_ptr), intent(inout):: cr
         type(circle), intent(in) :: circ
         type(canvas_point) :: c
-        real(kind=8) :: left , top , right , bottom , kappa, cpx,cpy
+        real(kind=8) :: left , top , right , bottom , cpx, cpy
 
         c = to_canvas ( circ%center , canva%size)
 
-        kappa = 0.55228474983079339840
         left = c%x - circ%r;
         top = c%y - circ%r;
         right = c%x + circ%r;
@@ -36,5 +35,5 @@ contains
 
     end subroutine write_circle
 
-end module fig_bitmap_circle
+end module fig_cairo_circle
 

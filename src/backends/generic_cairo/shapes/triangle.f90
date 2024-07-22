@@ -1,8 +1,8 @@
-module fig_bitmap_triangle
+module fig_cairo_triangle
     use cairo
     use fig_shapes
     use fig_canvas
-    use fig_bitmap_utils
+    use fig_cairo_utils
 
 contains
 
@@ -27,4 +27,4 @@ contains
     end subroutine write_triangle
    
 
-end module fig_bitmap_triangle
+end module fig_cairo_triangle
