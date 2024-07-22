@@ -82,11 +82,16 @@ program test_fig_fill_triangle
     end do
 
     ! Save to bitmap and SVG
-    call bitmap_canva%init(CANVAS_WIDTH, CANVAS_HEIGHT)
-    call bitmap_canva%save_to_file(test_canvas, file_name)
+    call svg_canva%init(CANVAS_WIDTH,CANVAS_HEIGHT,file_name)
+    call svg_canva%apply_shapes(test_canvas)
+    call svg_canva%save_to_svg()
+    call svg_canva%destroy()
+    call bitmap_canva%init(CANVAS_WIDTH,CANVAS_HEIGHT,file_name)
+    call bitmap_canva%apply_shapes(test_canvas)
+    call bitmap_canva%save_to_png()
+    call bitmap_canva%save_to_ppm()
+    call bitmap_canva%destroy()
 
-    call svg_canva%init(CANVAS_WIDTH, CANVAS_HEIGHT)
-    call svg_canva%save_to_file(test_canvas, file_name)
 
     call test_both(file_name,bitmap_canva)
 contains 
