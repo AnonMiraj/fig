@@ -1,8 +1,8 @@
-module fig_bitmap_line
+module fig_cairo_line
     use cairo
     use fig_shapes
     use fig_canvas
-    use fig_bitmap_utils
+    use fig_cairo_utils
 
 contains
 
@@ -24,4 +24,4 @@ contains
     end subroutine write_line
     
 
-end module fig_bitmap_line
+end module fig_cairo_line

@@ -1,27 +1,27 @@
-module fig_bitmap_circle
+module fig_cairo_ellipse
     use cairo
     use fig_shapes
     use fig_canvas
-    use fig_bitmap_utils
+    use fig_cairo_utils
 
 contains
 
-    subroutine write_circle(canva, cr, circ)
+    subroutine write_ellipse(canva, cr, ellip)
         class(base_canvas), intent(inout) :: canva
         type(c_ptr), intent(inout):: cr
-        type(circle), intent(in) :: circ
+        type(ellipse), intent(in) :: ellip
         type(canvas_point) :: c
         real(kind=8) :: left , top , right , bottom , cpx, cpy
 
-        c = to_canvas ( circ%center , canva%size)
+        c = to_canvas ( ellip%center , canva%size)
 
-        left = c%x - circ%r;
-        top = c%y - circ%r;
-        right = c%x + circ%r;
-        bottom = c%y + circ%r;
+        left = c%x - ellip%rx;
+        top = c%y - ellip%ry;
+        right = c%x + ellip%rx;
+        bottom = c%y + ellip%ry;
         
-        cpx = circ%r * kappa;
-        cpy = circ%r * kappa;
+        cpx = ellip%rx * kappa;
+        cpy = ellip%ry * kappa;
 
 
         call cairo_move_to(cr, c%x, top)
@@ -30,10 +30,9 @@ contains
         call cairo_curve_to(cr, c%x - cpx, bottom, left, c%y + cpy, left, c%y);
         call cairo_curve_to(cr, left, c%y - cpy, c%x - cpx, top, c%x, top);
         call cairo_close_path(cr);
-        call fill(cr,circ)
-        call stroke(cr,circ)
+        call fill(cr,ellip)
+        call stroke(cr,ellip)
 
-    end subroutine write_circle
+    end subroutine write_ellipse
 
-end module fig_bitmap_circle
-
+end module fig_cairo_ellipse

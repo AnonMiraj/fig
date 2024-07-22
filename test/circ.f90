@@ -54,12 +54,17 @@ program circles_pattern
         end do
     end do
 
-    call svg_canva%init(WIDTH,HEIGHT)
-    call svg_canva%save_to_file(canva,file_name) 
-    call bitmap_canva%init(WIDTH,HEIGHT)
-    call bitmap_canva%save_to_file(canva,file_name,"png")
-
+    call svg_canva%init(WIDTH,HEIGHT,file_name)
+    call svg_canva%apply_shapes(canva)
+    call svg_canva%save_to_svg()
+    call svg_canva%destroy()
+    call bitmap_canva%init(WIDTH,HEIGHT,file_name)
+    call bitmap_canva%apply_shapes(canva)
+    call bitmap_canva%save_to_png()
+    call bitmap_canva%save_to_ppm()
     call bitmap_canva%destroy()
+
+
     call test_both(file_name,bitmap_canva)
 contains
     

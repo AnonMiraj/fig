@@ -1,71 +1,36 @@
 module fig_svg
-    use fig_svg_shapes
-    use fig_canvas
-    use fig_shapes
+    use cairo
+    use cairo_enums
+    use cairo_types
+    use cairo_extra
     use fig_drawing
-    use fig_rgb
+    use fig_cairo
     implicit none
-    private
-    public :: svg_canvas ,save_to_file
-    integer :: unit_num
-    type,extends(base_canvas) :: svg_canvas
+    type,extends(cairo_canvas) :: svg_canvas
     contains
-        procedure :: save_to_file
-        procedure :: draw_shape => svg_write_shape
+        procedure :: init => init_svg
+        procedure :: save_to_svg
     end type svg_canvas
 contains
 
-    subroutine save_to_file(this,draw,file_path)
+    subroutine init_svg(this, width, height,title)
         class(svg_canvas), intent(inout) :: this
-        type(drawing), intent(in):: draw
-        character(len=*), intent(in) :: file_path
-        type(rectangle) :: bg
-        integer :: ierr, i
+        integer, intent(in) :: width, height
+        character(len=*), intent(in) :: title
 
-        open(newunit=unit_num, file=file_path//".svg", status='replace', action='write', iostat=ierr)
-        if (ierr /= 0) then
-            print *, "Error opening file ", file_path
-            stop
-        endif
+        this%size%width=width
+        this%size%height=height
+        this%title=title
 
-        write(unit_num, '(A)') '<svg '&
-             // attribute('width', trim(adjustl(int_to_str(this%size%width))), '') &
-             // attribute('height', trim(adjustl(int_to_str(this%size%height))), '') &
-             // attribute('xmlns', "http://www.w3.org/2000/svg", '') &
-             //' >'
+        this%surface = cairo_svg_surface_create(title//".svg"//c_null_char, real(width,kind=8), real(height,kind=8))
+        this%cairo = cairo_create(this%surface)
+    end subroutine init_svg
 
-        bg%height=this%size%height
-        bg%width=this%size%width
-        bg%upper_left%x=0
-        bg%upper_left%y=0
-        bg%fill_color=draw%background
-        call svg_write_shape(this,bg)
-        do i = 1, draw%shape_count
-            call svg_write_shape(this,draw%shapes(i)%sh)
-        end do
+    subroutine save_to_svg(this)
+        class(svg_canvas), intent(inout) :: this
 
-        write(unit_num, '(A)') '</svg>'
-        close(unit_num)
-
-    end subroutine save_to_file
-
-    subroutine svg_write_shape(canva,sh)
-        class(svg_canvas), intent(inout) :: canva
-        class(shape), intent(in) :: sh
-
-        select type(sh)
-        type is (circle)
-            call write_circle(sh, canva%size, unit_num)
-        type is (ellipse)
-            call write_ellipse(sh, canva%size, unit_num)
-        type is (rectangle)
-            call write_rectangle(sh, canva%size, unit_num)
-        type is (triangle)
-            call write_triangle(sh, canva%size, unit_num)
-        type is (line)
-            call write_line(sh, canva%size, unit_num)
-        end select
-    end subroutine svg_write_shape
+        call cairo_surface_finish(this%surface);
+    end subroutine save_to_svg
 
 end module fig_svg
 
