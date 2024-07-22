@@ -18,16 +18,18 @@ program drawing_test_all
     type(triangle) :: tri
     type(line) :: l
     type(ellipse) :: elp
+    type(arc) :: ar
     type(RGB) :: bg, color
     type(svg_canvas) :: svg_canva
     type(bitmap_canvas) :: bitmap_canva
-    file_name='test_all'
+    real(8) :: pi = 4.0d0 * atan(1.0d0)
+    file_name = "test_all"
     bg = FIG_COLOR_WHITE
 
     call canva%init()
     call canva%set_background(bg)
 
-    ! Circle
+   ! Circle
     c%center%x = 100.0 / CANVAS_WIDTH
     c%center%y = 100.0 / CANVAS_HEIGHT
     c%r = 50.0
@@ -104,18 +106,17 @@ program drawing_test_all
     call canva%add_shape(l)
 
 
-    ! Triangle
-    tri%p1%x = 450.0 / CANVAS_WIDTH
-    tri%p1%y = 150.0 / CANVAS_HEIGHT
-    tri%p2%x = 550.0 / CANVAS_WIDTH
-    tri%p2%y = 250.0 / CANVAS_HEIGHT
-    tri%p3%x = 450.0 / CANVAS_WIDTH
-    tri%p3%y = 350.0 / CANVAS_HEIGHT
-    tri%fill_color = FIG_COLOR_SILVER
-    tri%fill_color%a = 100
-    tri%stroke_color = FIG_COLOR_RED
-    call canva%add_shape(tri)
-    
+     ! arc
+    ar%center%x = 300.0 / CANVAS_WIDTH
+    ar%center%y = 400.0 / CANVAS_HEIGHT
+    ar%r = 50.0
+    ar%start_angle= 0
+    ar%end_angle= pi * 1.2
+    ar%fill_color = FIG_COLOR_INDIGO
+    ar%fill_color%a=100
+    ar%stroke_color = FIG_COLOR_BROWN
+    call canva%add_shape(ar)
+   
     call svg_canva%init(CANVAS_WIDTH,CANVAS_HEIGHT,file_name)
     call svg_canva%apply_shapes(canva)
     call svg_canva%save_to_svg()

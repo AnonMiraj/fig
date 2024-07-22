@@ -4,10 +4,17 @@ module fig_shapes
     use fig_rgb
 
     type, abstract :: shape
-        type(RGB) :: fill_color = FIG_COLOR_BLACK
+        type(RGB) :: fill_color = FIG_COLOR_BLANK
         type(RGB) :: stroke_color = FIG_COLOR_BLANK
         real(kind=8) :: stroke_width  =1
     end type shape
+
+    type, extends(shape) :: arc
+        type(point) :: center
+        real (kind=8):: r
+        real (kind=8):: start_angle
+        real (kind=8):: end_angle
+    end type arc
 
     type, extends(shape) :: circle
         type(point) :: center

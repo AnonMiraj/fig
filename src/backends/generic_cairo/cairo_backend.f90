@@ -11,6 +11,10 @@ module fig_cairo
     use fig_cairo_circle
     use fig_cairo_ellipse
     use fig_cairo_line
+    use fig_cairo_arc
+    use fig_path
+    use fig_cairo_path
+    use fig_cairo_poly
     use fig_cairo_rect
     use fig_cairo_text
     use fig_cairo_triangle
@@ -63,6 +67,14 @@ contains
             call write_triangle(canva, canva%cairo, sh)
         type is (text)
             call write_text(canva, canva%cairo, sh)
+        type is (path)
+            call write_path(canva, canva%cairo, sh)
+        type is (polyline)
+            call write_polyline(canva, canva%cairo, sh)
+        type is (polygon)
+            call write_polygon(canva, canva%cairo, sh)
+        type is (arc)
+            call write_arc(canva, canva%cairo, sh)
         end select
 
     end subroutine cairo_write_shape

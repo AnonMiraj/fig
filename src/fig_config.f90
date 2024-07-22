@@ -5,5 +5,7 @@ module fig_config
     !! technically it should be int8 but there are problems with signed integers and bit manipulation
     integer, parameter :: pixel = int32 !! 8 bits per every color channel (r,g,b,a)
     integer, parameter :: rgb_bit_depth = 8
+
+    logical :: FIG_ABSOLUTE_COORDINATES = .false.
 end module fig_config
 
