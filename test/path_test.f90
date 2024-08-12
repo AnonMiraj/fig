@@ -27,6 +27,9 @@ program path_test
     call my_path%closePath()
     my_path%fill_color = FIG_COLOR_LIGHTGOLDENRODYELLOW
     my_path%stroke_color = FIG_COLOR_AQUA
+    allocate(my_path%dash_array(2))
+    my_path%dash_array(1) =  6.
+    my_path%dash_array(2) =  6.
     call canva%add_shape(my_path)
     
     ! Save to bitmap and SVG

@@ -6,7 +6,9 @@ module fig_shapes
     type, abstract :: shape
         type(RGB) :: fill_color = FIG_COLOR_BLANK
         type(RGB) :: stroke_color = FIG_COLOR_BLANK
-        real(kind=8) :: stroke_width  =1
+        real(kind=8) :: stroke_width  = 1
+        real(kind=8) :: dash_offset = 0
+        real(kind=8), allocatable :: dash_array(:)
     end type shape
 
     type, extends(shape) :: arc
@@ -52,8 +54,9 @@ module fig_shapes
         type(point) :: p
         character(len=:),allocatable ::content
         character(len=:),allocatable ::font_family
-        integer :: slant,weight
-        real (kind=8):: size
+        integer :: slant = FIG_FONT_SLANT_NORMAL
+        integer :: weight = FIG_FONT_WEIGHT_NORMAL
+        real (kind=8):: size = 14
     end type text
 
     type :: shapeWrapper

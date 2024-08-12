@@ -32,6 +32,13 @@ contains
     subroutine stroke(cr,sh)
         type(c_ptr), intent(inout) :: cr
         class(shape), intent(in) :: sh
+        real(kind=8), dimension(:), allocatable, target :: dash_arr
+        if (allocated(sh%dash_array)) then
+            allocate(dash_arr(size(sh%dash_array)))
+            dash_arr = sh%dash_array
+            call cairo_set_dash(cr,c_loc(dash_arr), size(sh%dash_array), sh%dash_offset)
+            deallocate(dash_arr)
+        end if
 
         if (sh%stroke_color%a .ne. 0) then
             call set_rgba(cr,sh%stroke_color)
