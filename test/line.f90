@@ -42,9 +42,8 @@ program radial_lines
     angle_step = 1.0 * atan(1.0) / NUM_LINES
 
     do i = 0, NUM_LINES - 1
-        call random_color(color)
         angle = 4 * i * angle_step
-        call draw_radial_line(radial_canvas, cx, cy, radius, angle, color)
+        call draw_radial_line(radial_canvas, cx, cy, radius, angle)
     end do
 
     call svg_canva%init(CANVAS_WIDTH,CANVAS_HEIGHT,file_name)
@@ -60,11 +59,10 @@ program radial_lines
     call test_both(file_name,bitmap_canva)
 contains
 
-    subroutine draw_radial_line(canva, cx, cy, radius, angle, color)
+    subroutine draw_radial_line(canva, cx, cy, radius, angle)
         type(drawing), intent(inout) :: canva
         real, intent(in) :: cx, cy, radius
         real, intent(in) :: angle
-        type(RGB), intent(in) :: color
         integer :: x1, y1, x2, y2
         real :: cos_angle, sin_angle
 
@@ -79,18 +77,5 @@ contains
 
         call canva%add_shape(sh)
     end subroutine draw_radial_line
-
-    subroutine random_color(color)
-        type(RGB), intent(out) :: color
-        real :: r, g, b
-        call random_number(r)
-        call random_number(g)
-        call random_number(b)
-        color%r = int(r * 255)
-        color%g = int(g * 255)
-        color%b = int(b * 255)
-        color%a = 255
-    end subroutine random_color
-
 end program radial_lines
 

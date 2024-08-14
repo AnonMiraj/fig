@@ -17,8 +17,8 @@ module fig_types
     end interface
 
     type :: canvas_size
-        integer(pixel) :: width
-        integer(pixel) :: height
+        integer :: width
+        integer :: height
     end type canvas_size
 
 contains

@@ -21,7 +21,7 @@ program circle_test
 
     call canva%init()
     bg = FIG_COLOR_GREEN
-    bg%a = 150
+    bg%a = 150/255.
     call canva%set_background(bg)
 
     ! Circle parameters

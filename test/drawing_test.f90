@@ -34,9 +34,9 @@ program drawing_test_all
     c%center%y = 100.0 / CANVAS_HEIGHT
     c%r = 50.0
     c%fill_color = FIG_COLOR_PINK
-    c%fill_color%a = 100
+    c%fill_color%a = .5
     c%stroke_color = FIG_COLOR_RED
-    c%stroke_color%a = 100
+    c%stroke_color%a = .5
     call canva%add_shape(c)
 
     ! Ellipse
@@ -45,10 +45,10 @@ program drawing_test_all
     elp%rx = 50.0 
     elp%ry = 25.0 
     color = FIG_COLOR_GOLD
-    color%a = 100
+    color%a = .5
     elp%fill_color = color
     elp%stroke_color = FIG_COLOR_RED
-    elp%stroke_color%a = 100
+    elp%stroke_color%a = .5
     call canva%add_shape(elp)
 
     ! Rectangle 1
@@ -57,7 +57,7 @@ program drawing_test_all
     r%width = 100.0 
     r%height = 50.0 
     r%fill_color = FIG_COLOR_BLUE
-    r%fill_color%a = 100
+    r%fill_color%a = .5
     r%stroke_width = 10
     r%stroke_color = FIG_COLOR_GOLD
     call canva%add_shape(r)
@@ -68,12 +68,12 @@ program drawing_test_all
     r%width = 120.0 
     r%height = 50.0 
     r%fill_color = FIG_COLOR_RED
-    r%fill_color%a = 100
+    r%fill_color%a = .5
     r%rx=5
     r%ry=5
     r%stroke_width = 6
     r%stroke_color = FIG_COLOR_SEAGREEN
-    r%stroke_color%a=150
+    r%stroke_color%a=.5
     call canva%add_shape(r)
 
     ! Line
@@ -86,7 +86,7 @@ program drawing_test_all
     call canva%add_shape(l)
     l%stroke_width = 2
     l%stroke_color = FIG_COLOR_RED
-    l%stroke_color%a=100
+    l%stroke_color%a=.5
     call canva%add_shape(l)
 
 
@@ -96,12 +96,12 @@ program drawing_test_all
     l%p2%x = 550.0 / CANVAS_WIDTH
     l%p2%y = 400.0 / CANVAS_HEIGHT
     l%stroke_color = FIG_COLOR_BLACK
-    l%stroke_color%a=100
+    l%stroke_color%a=.5
     l%stroke_width = 50
     call canva%add_shape(l)
     l%stroke_width = 2
     l%stroke_color = FIG_COLOR_RED
-    l%stroke_color%a=100
+    l%stroke_color%a=.5
 
     call canva%add_shape(l)
 
@@ -113,7 +113,7 @@ program drawing_test_all
     ar%start_angle= 0
     ar%end_angle= pi * 1.2
     ar%fill_color = FIG_COLOR_INDIGO
-    ar%fill_color%a=100
+    ar%fill_color%a=.5
     ar%stroke_color = FIG_COLOR_BROWN
     call canva%add_shape(ar)
    

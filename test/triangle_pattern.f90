@@ -95,16 +95,5 @@ program test_fig_fill_triangle
 
     call test_both(file_name,bitmap_canva)
 contains 
-    subroutine random_color(color)
-        type(RGB) :: color
-        real :: r, g, b
-        call random_number(r)
-        call random_number(g)
-        call random_number(b)
-        color%r = int(r * 255)
-        color%g = int(g * 255)
-        color%b = int(b * 255)
-        color%a = 255
-    end subroutine random_color
 end program test_fig_fill_triangle
 

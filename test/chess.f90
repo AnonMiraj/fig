@@ -50,7 +50,7 @@ program chess_checker
     call svg_canva%apply_shapes(checker)
     call svg_canva%save_to_svg()
     call svg_canva%destroy()
-    call bitmap_canva%init(WIDTH,HEIGHT,file_name)
+    call bitmap_canva%init(HEIGHT,WIDTH,file_name)
     call bitmap_canva%apply_shapes(checker)
     call bitmap_canva%save_to_png()
     call bitmap_canva%save_to_ppm()
