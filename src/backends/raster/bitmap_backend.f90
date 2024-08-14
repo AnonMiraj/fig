@@ -90,7 +90,7 @@ contains
         integer :: unit_num, ierr
         integer :: i,j
         integer :: bytes(3)
-        integer(pixel) :: pixel_t
+        integer :: pixel_t
 
 
         open(newunit=unit_num, file=trim(this%title)//".ppm", status='replace', action='write', iostat=ierr)

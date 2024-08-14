@@ -12,7 +12,7 @@ module fig_rgb
 
 contains
 
-    elemental type(integer(pixel)) function rgb_to_int(color) result(rgb_int)
+    elemental type(integer) function rgb_to_int(color) result(rgb_int)
         type(RGB), intent(in) :: color
         integer :: r,g,b,a
         r=color%r*(2**rgb_bit_depth-1)
@@ -27,7 +27,7 @@ contains
      end function rgb_to_int
       
      elemental type(RGB) function int_to_rgb(rgb_int) result(color)
-       integer(pixel), intent(in):: rgb_int
+       integer, intent(in):: rgb_int
 
        color%a = real(ibits(rgb_int, 3*rgb_bit_depth, rgb_bit_depth),kind=8) / (2**rgb_bit_depth-1)
        color%r = real(ibits(rgb_int, 2*rgb_bit_depth, rgb_bit_depth),kind=8) / (2**rgb_bit_depth-1)
