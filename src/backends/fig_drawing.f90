@@ -33,7 +33,7 @@ contains
     subroutine add_shape(this, s)
         class(drawing), intent(inout) :: this
         class(shape), intent(in), target :: s
-        integer :: new_size, i
+        integer :: new_size
         type(shapeWrapper), allocatable :: temp(:)
 
         if (this%shape_count >= size(this%shapes)) then

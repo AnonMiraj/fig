@@ -1,6 +1,7 @@
 module fig_rgb_color_constants
    use fig_rgb
    implicit none
+   public
    
    type(RGB), parameter :: FIG_COLOR_ALICEBLUE= RGB(0.9412, 0.9725, 1.0000, 1.0000)
    type(RGB), parameter :: FIG_COLOR_ANTIQUEWHITE = RGB(0.9804, 0.9216, 0.8431, 1.0000)
@@ -76,7 +77,7 @@ module fig_rgb_color_constants
    type(RGB), parameter :: FIG_COLOR_LIGHTGRAY = RGB(0.8275, 0.8275, 0.8275, 1.0000)
    type(RGB), parameter :: FIG_COLOR_LIGHTGREEN = RGB(0.5647, 0.9333, 0.5647, 1.0000)
    type(RGB), parameter :: FIG_COLOR_LIGHTGREY = RGB(0.8275, 0.8275, 0.8275, 1.0000)
-   type(RGB), parameter :: FIG_COLOR_LIGHTPINK	= RGB(1.0000, 0.7137, 0.7569, 1.0000)
+   type(RGB), parameter :: FIG_COLOR_LIGHTPINK = RGB(1.0000, 0.7137, 0.7569, 1.0000)
    type(RGB), parameter :: FIG_COLOR_LIGHTSALMON = RGB(1.0000, 0.6275, 0.4784, 1.0000)
    type(RGB), parameter :: FIG_COLOR_LIGHTSEAGREEN = RGB( 0.1255, 0.6980, 0.6667, 1.0000)
    type(RGB), parameter :: FIG_COLOR_LIGHTSKYBLUE = RGB(0.5294, 0.8078, 0.9804, 1.0000)

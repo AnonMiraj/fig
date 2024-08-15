@@ -13,7 +13,6 @@ contains
         integer,intent(out) :: err
         integer :: status
         character(len=256) :: current_file, expected_file, diff_command, diff_file
-        character(:),allocatable :: diff_output
         current_file = canvas_name // ".svg"
         expected_file = "test/expected/" // canvas_name // ".svg"
         diff_file = canvas_name // "_svg.diff"
@@ -35,10 +34,8 @@ contains
         integer,intent(out) :: err
         type(bitmap_canvas)::expected_canvas
         type(bitmap_canvas)::diff_canvas
-        integer :: status
         logical :: failed = .false.
-        character(len=256) :: current_file, expected_file, diff_command, diff_file
-        character(:),allocatable :: diff_output
+        character(len=256) :: current_file, expected_file, diff_file
         integer :: i , j
         integer(c_int32_t) :: diff_color , current_pixel, expected_pixel
 
@@ -88,7 +85,7 @@ contains
     subroutine test_both(canvas_name,current_canvas)
         character(len=*), intent(in) :: canvas_name
         type(bitmap_canvas), intent(inout) ::current_canvas
-        integer :: svg_err,bitmap_err
+        ! integer :: svg_err,bitmap_err
         !call test_svg(canvas_name,svg_err)
         !!call test_bitmap(canvas_name,current_canvas,bitmap_err) 
         !! TODO NEED fixing possibly use img_diff instead

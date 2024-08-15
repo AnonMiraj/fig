@@ -4,4 +4,3 @@ module fig_config
     integer, parameter :: rgb_bit_depth = 8
     logical :: FIG_ABSOLUTE_COORDINATES = .false.
 end module fig_config
-

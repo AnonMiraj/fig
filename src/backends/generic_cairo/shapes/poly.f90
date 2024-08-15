@@ -14,7 +14,6 @@ contains
         type(point), allocatable:: points(:)
         integer :: p_count,i
         type(canvas_point) :: p
-        type(canvas_size):: s
         call parse_string(pl%poly_string, points, p_count)
 
         p = to_canvas(points(1), canva%size)
@@ -35,7 +34,6 @@ contains
         type(point), allocatable:: points(:)
         integer :: p_count,i
         type(canvas_point) :: p
-        type(canvas_size):: s
         call parse_string(pl%poly_string, points, p_count)
 
         p = to_canvas(points(1), canva%size)

@@ -1,6 +1,7 @@
 module fig_rgb
     use fig_config
     implicit none
+    public
 
     type :: RGB
         sequence

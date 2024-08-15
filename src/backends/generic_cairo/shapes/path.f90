@@ -15,7 +15,7 @@ contains
         character(len=1), allocatable:: char_array(:)
         real(kind=8), allocatable:: real_array(:)
         integer :: char_count, real_count,char_ind,real_ind
-        type(canvas_point) :: cur_p,p1,p2,p3,p4,p5,p6
+        type(canvas_point) :: cur_p,p1,p2
         type(point) :: temp_p
         real_ind =1
         

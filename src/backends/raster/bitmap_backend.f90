@@ -35,9 +35,6 @@ contains
         integer :: i, j, width, height, max_color_value
         integer :: red, green, blue
         character(len=2) :: magic_number
-        integer :: bytes(3)
-        character(len=1) :: temp
-        character(len=1) :: byte
         character :: ccode
 
         open(newunit=unit_num, file=file_path, status='old', access="stream", form="formatted", iostat=ierr)
