@@ -1,11 +1,5 @@
 program chess_checker
-    use fig_canvas
-    use fig_drawing
-    use fig_rgb
-    use fig_shapes
-    use fig_rgb_color_constants
-    use fig_svg
-    use fig_bitmap
+    use fig
     use fig_test
     implicit none
     integer, parameter :: WIDTH = 800
@@ -21,7 +15,7 @@ program chess_checker
     type(svg_canvas) :: svg_canva
     type(bitmap_canvas) :: bitmap_canva
     type(rectangle) :: rect
-    type(RGB) :: ALTERNATE_COLOR, BACKGROUND_COLOR, color
+    type(RGB) :: ALTERNATE_COLOR, BACKGROUND_COLOR
     file_name = "checker"
     call checker%init()
 
@@ -31,17 +25,17 @@ program chess_checker
 
     do y = 0, rows - 1
         do x = 0, cols - 1
-            if (mod(x + y, 2) == 0) then
-                color = ALTERNATE_COLOR
-            else
-                color = BACKGROUND_COLOR
-            endif
 
             rect%upper_left%x = (x * 1.0 / cols)
             rect%upper_left%y = (y * 1.0 / rows)
             rect%width = CELL_WIDTH
             rect%height = CELL_HEIGHT
-            rect%fill_color = color
+
+            if (mod(x + y, 2) == 0) then
+                rect%fill_color = ALTERNATE_COLOR
+            else
+                rect%fill_color = BACKGROUND_COLOR
+            endif
 
             call checker%add_shape(rect)
         end do

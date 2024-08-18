@@ -64,8 +64,9 @@ program logo_path_test
         v 3.24734 &
         H 81.684896 &
         H 66.01647 &
-        Z"
+        &Z"
     my_path%fill_color = FIG_COLOR_WHITE
+    my_path%stroke_color = FIG_COLOR_PURPLE
     call canva%add_shape(my_path)
     
     ! Save to bitmap and SVG

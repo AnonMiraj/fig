@@ -14,12 +14,11 @@ program circles_pattern
     integer, parameter :: CELL_WIDTH = (WIDTH/cols)
     integer, parameter :: CELL_HEIGHT =(HEIGHT/rows)
     character(len=:), allocatable  :: file_name
-    integer :: result,x,y
+    integer :: x,y
     real :: center_x, center_y
-    real :: u, v, t,shade
+    real :: t
     real :: radius
     type(drawing) :: canva
-    type(RGB) :: color
     type(RGB), dimension(8) :: color_palette
     type(circle) :: circ
 

@@ -15,7 +15,6 @@ program radial_lines
 
     type(drawing) :: radial_canvas
     type(line) :: sh
-    type(RGB) :: color
     type(svg_canvas) :: svg_canva
     type(bitmap_canvas) :: bitmap_canva
     type(RGB), dimension(8) :: color_palette
@@ -63,7 +62,6 @@ contains
         type(drawing), intent(inout) :: canva
         real, intent(in) :: cx, cy, radius
         real, intent(in) :: angle
-        integer :: x1, y1, x2, y2
         real :: cos_angle, sin_angle
 
         cos_angle = cos(angle)

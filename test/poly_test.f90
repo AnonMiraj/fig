@@ -22,9 +22,7 @@ program path_test
 
     real :: polygon_x_points(5) = [200.0, 140.0, 290.0, 110.0, 260.0]
     real :: polygon_y_points(5) = [10.0, 198.0, 78.0, 78.0, 198.0]
-    integer :: n=7,n2=5,i
-    type(point), allocatable:: points(:)
-    integer :: p_count, real_ind
+    integer :: n=7,n2=5
 
     x_points=x_points/CANVAS_WIDTH
     y_points=y_points/CANVAS_HEIGHT
