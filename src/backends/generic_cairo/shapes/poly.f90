@@ -5,6 +5,7 @@ module fig_cairo_poly
     use fig_cairo_utils
     use fig_poly
 
+    private :: parse_string
 contains
 
     subroutine write_polyline(canva, cr, pl)

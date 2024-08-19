@@ -11,10 +11,6 @@ module fig_shapes
         real(kind=8), allocatable :: dash_array(:)
     end type shape
 
-    type :: shapeWrapper
-      class(shape), allocatable :: sh
-    end type
-
     type, extends(shape) :: arc
         type(point) :: center
         real (kind=8):: r

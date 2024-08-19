@@ -5,6 +5,7 @@ module fig_cairo_path
     use fig_canvas
     use fig_cairo_utils
     use fig_path
+    private :: parse_string
 
 contains
 

@@ -5,10 +5,11 @@ module fig
     use fig_shapes 
     use fig_poly
     use fig_path
-    use fig_drawing
-    use fig_svg
-    use fig_bitmap
+    use fig_drawing, only: drawing
+    use fig_svg , only:svg_canvas
+    use fig_bitmap , only:bitmap_canvas
     implicit none
+    
 
 end module fig
 

@@ -3,26 +3,28 @@ module fig_cairo
     use cairo_enums
     use cairo_types
     use cairo_extra
+    use fig_cairo_utils ,only:set_rgba
     use fig_canvas
     use fig_shapes
     use fig_drawing
     use fig_config
-    use fig_cairo_utils
-    use fig_cairo_circle
-    use fig_cairo_ellipse
-    use fig_cairo_line
-    use fig_cairo_arc
+    use fig_cairo_circle ,only:write_circle
+    use fig_cairo_ellipse,only:write_ellipse
+    use fig_cairo_line,only:write_line
+    use fig_cairo_arc,only:write_arc
+    use fig_cairo_path,only:write_path
+    use fig_cairo_poly,only:write_polygon,write_polyline
+    use fig_cairo_rect,only:write_rectangle
+    use fig_cairo_text,only:write_text
+    use fig_cairo_triangle,only:write_triangle
     use fig_path
-    use fig_cairo_path
-    use fig_cairo_poly
-    use fig_cairo_rect
-    use fig_cairo_text
-    use fig_cairo_triangle
+    use fig_poly
     use fig_rgb
     implicit none
+
     private
-    public :: cairo_canvas 
-    type,extends(base_canvas) :: cairo_canvas
+
+    type,extends(base_canvas),public :: cairo_canvas
         type(c_ptr) :: surface
         type(c_ptr) :: cairo
     contains

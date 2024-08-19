@@ -4,14 +4,17 @@ module fig_drawing
     use fig_rgb
     use fig_rgb_color_constants
     implicit none
+
+    type,private :: shape_wrapper
+      class(shape), allocatable :: sh
+    end type
  
     type :: drawing
-        type(shapeWrapper), allocatable :: shapes(:)
+        type(shape_wrapper), allocatable :: shapes(:)
         type(RGB) :: background = FIG_COLOR_BLANK
         integer :: shape_count
     contains
         procedure :: add_shape
-        procedure :: set_background
         procedure :: init
     end type drawing
 
@@ -24,17 +27,11 @@ contains
         allocate(this%shapes(0))
     end subroutine init
 
-    subroutine set_background(this, bg_color)
-        class(drawing), intent(inout) :: this
-        type(RGB), intent(in), target :: bg_color
-        this%background=bg_color
-    end subroutine set_background
-
     subroutine add_shape(this, s)
         class(drawing), intent(inout) :: this
         class(shape), intent(in), target :: s
         integer :: new_size
-        type(shapeWrapper), allocatable :: temp(:)
+        type(shape_wrapper), allocatable :: temp(:)
 
         if (this%shape_count >= size(this%shapes)) then
             new_size = max(1, 2 * size(this%shapes))
