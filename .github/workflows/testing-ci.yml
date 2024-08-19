@@ -37,4 +37,4 @@ jobs:
       run: |
         which gfortran
         gfortran --version
-        fpm test
+        fpm test --flag '-DTESTING'
