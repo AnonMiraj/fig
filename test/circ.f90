@@ -64,7 +64,7 @@ program circles_pattern
     call bitmap_canva%destroy()
 
 
-    call test_both(file_name,bitmap_canva)
+    call test_both(file_name)
 contains
     
     function lerpf(a, b, t)

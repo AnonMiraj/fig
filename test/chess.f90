@@ -50,6 +50,6 @@ program chess_checker
     call bitmap_canva%save_to_ppm()
     call bitmap_canva%destroy()
 
-    call test_both(file_name,bitmap_canva)
+    call test_both(file_name)
 
 end program chess_checker

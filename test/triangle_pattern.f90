@@ -93,7 +93,7 @@ program test_fig_fill_triangle
     call bitmap_canva%destroy()
 
 
-    call test_both(file_name,bitmap_canva)
+    call test_both(file_name)
 contains 
 end program test_fig_fill_triangle
 

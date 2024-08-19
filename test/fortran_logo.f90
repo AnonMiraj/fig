@@ -16,7 +16,7 @@ program logo_path_test
 
     FIG_ABSOLUTE_COORDINATES = .true.
     call canva%init()
-    file_name= "fortran logo"
+    file_name= "fortran_logo"
 
     my_path%path_string="m 66.01647,123.09029 &
         c 0,-2.98216 0.0232,-3.24783 0.284142,-3.25337 &
@@ -80,7 +80,7 @@ program logo_path_test
     call svg_canva%apply_shapes(canva)
     call svg_canva%save_to_svg()
     call svg_canva%destroy()
-    call test_both(file_name,bitmap_canva)
+    call test_both(file_name)
 
 
 

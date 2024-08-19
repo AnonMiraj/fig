@@ -54,7 +54,7 @@ program path_test
     call svg_canva%apply_shapes(canva)
     call svg_canva%save_to_svg()
     call svg_canva%destroy()
-    call test_both(file_name,bitmap_canva)
+    call test_both(file_name)
 
 end program path_test
 

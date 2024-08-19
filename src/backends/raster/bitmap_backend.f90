@@ -10,7 +10,7 @@ module fig_bitmap
     contains
         procedure :: init => init_bitmap
         procedure :: save_to_png
-        procedure :: load_from_ppm
+        procedure, private :: load_from_ppm
         procedure :: save_to_ppm
     end type bitmap_canvas
 contains

@@ -140,7 +140,7 @@ program drawing_test_all
     te%font_family="sans"
     te%fill_color=FIG_COLOR_RED
     te%stroke_color=FIG_COLOR_BLACK
-    call canva%add_shape(te)
+    ! call canva%add_shape(te)
 
 
     call svg_canva%init(CANVAS_WIDTH,CANVAS_HEIGHT,file_name)
@@ -154,6 +154,6 @@ program drawing_test_all
     call bitmap_canva%save_to_ppm()
     call bitmap_canva%destroy()
 
-    call test_both(file_name,bitmap_canva)
+    call test_both(file_name)
 end program drawing_test_all
 

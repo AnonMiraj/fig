@@ -70,6 +70,6 @@ program test_fig_draw_triangle
     call bitmap_canva%destroy()
 
 
-    call test_both(file_name,bitmap_canva)
+    call test_both(file_name)
 end program test_fig_draw_triangle
 
