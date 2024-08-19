@@ -12,7 +12,7 @@ contains
         type(arc), intent(in) :: sh
         type(canvas_point) :: c
 
-        c = to_canvas ( sh%center , canva%size)
+        c = to_canvas ( sh%c , canva%size)
         call cairo_arc(cr, c%x, c%y, sh%r, sh%start_angle, sh%end_angle)
         call fill(cr,sh)
         call stroke(cr,sh)

@@ -30,7 +30,7 @@ program smile
     file_name= "smiley_face"
     ! Initialize the canvas
     call canva%init()
-    call canva%set_background(FIG_COLOR_WHITE)
+    canva%background=FIG_COLOR_WHITE
 
     ! Set parameters
     face_center_x = CANVAS_WIDTH / 2
@@ -41,16 +41,16 @@ program smile
     eye2_center_y = face_center_y - FACE_RADIUS / 3
 
     ! Draw face
-    circ%center%x = face_center_x / CANVAS_WIDTH
-    circ%center%y = face_center_y / CANVAS_HEIGHT
+    circ%c%x = face_center_x / CANVAS_WIDTH
+    circ%c%y = face_center_y / CANVAS_HEIGHT
     circ%r = FACE_RADIUS
     circ%stroke_color = FIG_COLOR_BLACK
     circ%fill_color = FIG_COLOR_YELLOW
     call canva%add_shape(circ)
 
     ! Draw left eye
-    circ%center%x = eye1_center_x / CANVAS_WIDTH
-    circ%center%y = eye1_center_y / CANVAS_HEIGHT
+    circ%c%x = eye1_center_x / CANVAS_WIDTH
+    circ%c%y = eye1_center_y / CANVAS_HEIGHT
     circ%r = EYE_RADIUS
     circ%stroke_color = FIG_COLOR_WHITE
     circ%fill_color = FIG_COLOR_WHITE
@@ -60,8 +60,8 @@ program smile
     call canva%add_shape(circ)
 
     ! Draw right eye
-    circ%center%x = eye2_center_x / CANVAS_WIDTH
-    circ%center%y = eye2_center_y / CANVAS_HEIGHT
+    circ%c%x = eye2_center_x / CANVAS_WIDTH
+    circ%c%y = eye2_center_y / CANVAS_HEIGHT
     circ%r = EYE_RADIUS
     circ%stroke_color = FIG_COLOR_WHITE
     circ%fill_color = FIG_COLOR_WHITE
@@ -71,8 +71,8 @@ program smile
     call canva%add_shape(circ)
 
     ! Draw mouth
-    ellip%center%x = face_center_x / CANVAS_WIDTH
-    ellip%center%y = (face_center_y + FACE_RADIUS / 3) / CANVAS_HEIGHT
+    ellip%c%x = face_center_x / CANVAS_WIDTH
+    ellip%c%y = (face_center_y + FACE_RADIUS / 3) / CANVAS_HEIGHT
     ellip%rx = MOUTH_RADIUS_X
     ellip%ry = MOUTH_RADIUS_Y
     ellip%fill_color = FIG_COLOR_RED

@@ -13,7 +13,7 @@ contains
         type(canvas_point) :: c
         real(kind=8) :: left , top , right , bottom , cpx, cpy
 
-        c = to_canvas ( circ%center , canva%size)
+        c = to_canvas ( circ%c , canva%size)
 
         left = c%x - circ%r;
         top = c%y - circ%r;

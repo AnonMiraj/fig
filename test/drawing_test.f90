@@ -27,11 +27,11 @@ program drawing_test_all
     bg = FIG_COLOR_WHITE
 
     call canva%init()
-    call canva%set_background(bg)
+    canva%background=FIG_COLOR_WHITE
 
    ! Circle
-    c%center%x = 100.0 / CANVAS_WIDTH
-    c%center%y = 100.0 / CANVAS_HEIGHT
+    c%c%x = 100.0 / CANVAS_WIDTH
+    c%c%y = 100.0 / CANVAS_HEIGHT
     c%r = 50.0
     c%fill_color = FIG_COLOR_PINK
     c%fill_color%a = .5
@@ -40,8 +40,8 @@ program drawing_test_all
     call canva%add_shape(c)
 
     ! Ellipse
-    elp%center%x = 250.0 / CANVAS_WIDTH
-    elp%center%y = 100.0 / CANVAS_HEIGHT
+    elp%c%x = 250.0 / CANVAS_WIDTH
+    elp%c%y = 100.0 / CANVAS_HEIGHT
     elp%rx = 50.0 
     elp%ry = 25.0 
     color = FIG_COLOR_GOLD
@@ -52,8 +52,8 @@ program drawing_test_all
     call canva%add_shape(elp)
 
     ! Rectangle 1
-    r%upper_left%x = 200.0 / CANVAS_WIDTH
-    r%upper_left%y = 200.0 / CANVAS_HEIGHT
+    r%p%x = 200.0 / CANVAS_WIDTH
+    r%p%y = 200.0 / CANVAS_HEIGHT
     r%width = 100.0 
     r%height = 50.0 
     r%fill_color = FIG_COLOR_BLUE
@@ -63,8 +63,8 @@ program drawing_test_all
     call canva%add_shape(r)
 
     ! Rectangle 2
-    r%upper_left%x = 250.0 / CANVAS_WIDTH
-    r%upper_left%y = 220.0 / CANVAS_HEIGHT
+    r%p%x = 250.0 / CANVAS_WIDTH
+    r%p%y = 220.0 / CANVAS_HEIGHT
     r%width = 120.0 
     r%height = 50.0 
     r%fill_color = FIG_COLOR_RED
@@ -107,8 +107,8 @@ program drawing_test_all
 
 
     ! Arc
-    ar%center%x = 300.0 / CANVAS_WIDTH
-    ar%center%y = 400.0 / CANVAS_HEIGHT
+    ar%c%x = 300.0 / CANVAS_WIDTH
+    ar%c%y = 400.0 / CANVAS_HEIGHT
     ar%r = 50.0
     ar%start_angle= 0
     ar%end_angle= pi * 1.2

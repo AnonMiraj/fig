@@ -45,8 +45,8 @@ program circles_pattern
             radius = min(CELL_WIDTH, CELL_HEIGHT) * lerpf(0.125, 0.5, t) 
             
             circ%r = radius
-            circ%center%x = center_x
-            circ%center%y = center_y
+            circ%c%x = center_x
+            circ%c%y = center_y
             circ%fill_color = color_palette(mod(3*x + 2*y, 8) + 1)
             circ%stroke_color = color_palette(mod(2*x + 3*y, 8) + 1)
             call canva%add_shape(circ)

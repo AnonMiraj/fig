@@ -26,8 +26,8 @@ program chess_checker
     do y = 0, rows - 1
         do x = 0, cols - 1
 
-            rect%upper_left%x = (x * 1.0 / cols)
-            rect%upper_left%y = (y * 1.0 / rows)
+            rect%p%x = (x * 1.0 / cols)
+            rect%p%y = (y * 1.0 / rows)
             rect%width = CELL_WIDTH
             rect%height = CELL_HEIGHT
 

@@ -25,7 +25,7 @@ program test_fig_draw_triangle
     file_name= "triangles"
     ! Initialize the canvas
     call test_canvas%init()
-    call test_canvas%set_background(FIG_COLOR_WHITE)
+    test_canvas%background=FIG_COLOR_WHITE
 
     ! Define colors in the array
     colors(0) = FIG_COLOR_RED

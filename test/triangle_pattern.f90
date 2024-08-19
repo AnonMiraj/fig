@@ -25,7 +25,7 @@ program test_fig_fill_triangle
     file_name= "cool_triangle_pattern"
     ! Initialize the canvas
     call test_canvas%init()
-    call test_canvas%set_background(FIG_COLOR_WHITE)
+    test_canvas%background=FIG_COLOR_WHITE
 
     colors = [ FIG_COLOR_RED,   & 
                FIG_COLOR_MAGENTA, &
@@ -61,22 +61,22 @@ program test_fig_fill_triangle
             tri%fill_color = colors(ind2)
             call test_canvas%add_shape(tri)
 
-            circ%center%x = real(i) / CANVAS_WIDTH
-            circ%center%y = real(j) / CANVAS_HEIGHT
+            circ%c%x = real(i) / CANVAS_WIDTH
+            circ%c%y = real(j) / CANVAS_HEIGHT
             circ%fill_color = colors(ind1)
             call test_canvas%add_shape(circ)
 
-            circ%center%x = real(i + TRIANGLE_SIZE) / CANVAS_WIDTH
+            circ%c%x = real(i + TRIANGLE_SIZE) / CANVAS_WIDTH
             call test_canvas%add_shape(circ)
 
-            circ%center%y = real(j + TRIANGLE_SIZE) / CANVAS_HEIGHT
+            circ%c%y = real(j + TRIANGLE_SIZE) / CANVAS_HEIGHT
             call test_canvas%add_shape(circ)
 
-            circ%center%x = real(i) / CANVAS_WIDTH
+            circ%c%x = real(i) / CANVAS_WIDTH
             call test_canvas%add_shape(circ)
 
-            circ%center%x = real(i + TRIANGLE_SIZE / 2) / CANVAS_WIDTH
-            circ%center%y = real(j + TRIANGLE_SIZE / 2) / CANVAS_HEIGHT
+            circ%c%x = real(i + TRIANGLE_SIZE / 2) / CANVAS_WIDTH
+            circ%c%y = real(j + TRIANGLE_SIZE / 2) / CANVAS_HEIGHT
             call test_canvas%add_shape(circ)
         end do
     end do

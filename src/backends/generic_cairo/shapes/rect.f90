@@ -14,7 +14,7 @@ contains
         real(kind=8) :: right , bottom
         real(kind=8) :: rx, ry, cpx,cpy
 
-        p = to_canvas ( rect%upper_left , canva%size)
+        p = to_canvas ( rect%p , canva%size)
 
 
         if (rect%rx<1.or.rect%ry<1) then

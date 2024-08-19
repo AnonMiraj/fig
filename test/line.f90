@@ -33,7 +33,7 @@ program radial_lines
                       FIG_COLOR_WHITE ]
      
     call radial_canvas%init()
-    call radial_canvas%set_background(FIG_COLOR_BLACK)
+    radial_canvas%background=FIG_COLOR_BLACK
 
     cx = CANVAS_WIDTH / 2
     cy = CANVAS_HEIGHT / 2

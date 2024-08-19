@@ -13,7 +13,7 @@ contains
         type(canvas_point) :: c
         real(kind=8) :: left , top , right , bottom , cpx, cpy
 
-        c = to_canvas ( ellip%center , canva%size)
+        c = to_canvas ( ellip%c , canva%size)
 
         left = c%x - ellip%rx;
         top = c%y - ellip%ry;

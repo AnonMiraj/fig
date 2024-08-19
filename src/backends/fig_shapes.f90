@@ -12,24 +12,24 @@ module fig_shapes
     end type shape
 
     type, extends(shape) :: arc
-        type(point) :: center
+        type(point) :: c
         real (kind=8):: r
         real (kind=8):: start_angle
         real (kind=8):: end_angle
     end type arc
 
     type, extends(shape) :: circle
-        type(point) :: center
+        type(point) :: c
         real (kind=8):: r
     end type circle
 
     type, extends(shape) :: ellipse
-        type(point) :: center
+        type(point) :: c
         real (kind=8):: rx, ry
     end type ellipse
 
     type, extends(shape) :: rectangle
-        type(point) :: upper_left
+        type(point) :: p !this means the upper left point of the rectangle
         real (kind=8):: width, height
         real (kind=8):: rx=0, ry=0
     end type rectangle
