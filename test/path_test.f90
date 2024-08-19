@@ -16,15 +16,15 @@ program path_test
 
     call canva%init()
     file_name= "path_example"
-    call my_path%moveTo(10.0/CANVAS_WIDTH, 10.0/CANVAS_HEIGHT)
-    call my_path%lineTo(50.0/CANVAS_WIDTH, 20.0/CANVAS_HEIGHT)
-    call my_path%bezierCurveTo(30.0/CANVAS_WIDTH, 40.0/CANVAS_HEIGHT,&
+    call my_path%move_to(10.0/CANVAS_WIDTH, 10.0/CANVAS_HEIGHT)
+    call my_path%line_to(50.0/CANVAS_WIDTH, 20.0/CANVAS_HEIGHT)
+    call my_path%bezier_curve_to(30.0/CANVAS_WIDTH, 40.0/CANVAS_HEIGHT,&
         60.0/CANVAS_WIDTH, 50.0/CANVAS_HEIGHT, 80.0/CANVAS_WIDTH, 30.0/CANVAS_HEIGHT)
-    call my_path%quadraticCurveTo(100.0/CANVAS_WIDTH, 50.0/CANVAS_HEIGHT,&
+    call my_path%quadratic_curve_to(100.0/CANVAS_WIDTH, 50.0/CANVAS_HEIGHT,&
         120.0/CANVAS_WIDTH, 80.0/CANVAS_HEIGHT)
-    call my_path%ellipticalArcTo(40.0/CANVAS_WIDTH, 20.0/CANVAS_HEIGHT,&
+    call my_path%elliptical_arc_to(40.0/CANVAS_WIDTH, 20.0/CANVAS_HEIGHT,&
         30.0, 1, 0, 150.0/CANVAS_WIDTH, 100.0/CANVAS_HEIGHT)
-    call my_path%closePath()
+    call my_path%close_path()
     my_path%fill_color = FIG_COLOR_LIGHTGOLDENRODYELLOW
     my_path%stroke_color = FIG_COLOR_AQUA
     allocate(my_path%dash_array(2))

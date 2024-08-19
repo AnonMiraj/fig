@@ -59,10 +59,10 @@ contains
 
     end subroutine quad_to
 
-    subroutine arc_to(cr, cx, cy, rx, ry, xAxisRotation, largeArcFlag, sweepFlag, x, y)
+    subroutine arc_to(cr, cx, cy, rx, ry, x_axis_rotation, large_arc_flag, sweep_flag, x, y)
         type(c_ptr), intent(inout) :: cr
-        real(kind=8), intent(in) :: cx, cy, rx, ry, xAxisRotation, x, y
-        logical, intent(in) :: largeArcFlag, sweepFlag
+        real(kind=8), intent(in) :: cx, cy, rx, ry, x_axis_rotation, x, y
+        logical, intent(in) :: large_arc_flag, sweep_flag
         real(kind=8) :: pi, sin_th, cos_th, dx, dy, dx1, dy1, Pr1, Pr2
         real(kind=8) :: Px, Py, check, a00, a01, a10, a11, x0, y0, x1, y1, d
         real(kind=8) :: sfactor_sq, sfactor, xc, yc, th0, th1, th_arc, th2, th3
@@ -77,8 +77,8 @@ contains
         rx_ = abs(rx)
         ry_ = abs(ry)
         
-        sin_th = sin(xAxisRotation * pi / 180.0)
-        cos_th = cos(xAxisRotation * pi / 180.0)
+        sin_th = sin(x_axis_rotation * pi / 180.0)
+        cos_th = cos(x_axis_rotation * pi / 180.0)
         
         dx = (cx - x) / 2.0
         dy = (cy - y) / 2.0
@@ -107,7 +107,7 @@ contains
         sfactor_sq = 1.0 / d - 0.25
         if (sfactor_sq < 0.0) sfactor_sq = 0.0
         sfactor = sqrt(sfactor_sq)
-        if (sweepFlag .eqv. largeArcFlag) sfactor = -sfactor
+        if (sweep_flag .eqv. large_arc_flag) sfactor = -sfactor
         xc = 0.5 * (x0 + x1) - sfactor * (y1 - y0)
         yc = 0.5 * (y0 + y1) + sfactor * (x1 - x0)
         
@@ -115,9 +115,9 @@ contains
         th1 = atan2(y1 - yc, x1 - xc)
         
         th_arc = th1 - th0
-        if (th_arc < 0.0 .and. sweepFlag) then
+        if (th_arc < 0.0 .and. sweep_flag) then
             th_arc = th_arc + 2.0 * pi
-        else if (th_arc > 0.0 .and. .not. sweepFlag) then
+        else if (th_arc > 0.0 .and. .not. sweep_flag) then
             th_arc = th_arc - 2.0 * pi
         end if
         
