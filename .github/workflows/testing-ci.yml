@@ -38,3 +38,14 @@ jobs:
         which gfortran
         gfortran --version
         fpm test --flag '-DTESTING'
+
+  upload-artifacts:
+    runs-on: ubuntu-22.04
+    needs: build-and-test
+    if: always() 
+
+    steps:
+    - uses: actions/upload-artifact@v4
+      with:
+        name: upload-artifact
+        path: .
