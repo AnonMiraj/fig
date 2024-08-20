@@ -43,6 +43,9 @@ contains
             call cairo_new_path(cr)
         end if
 
+        if (allocated(sh%dash_array)) then
+            call cairo_set_dash(cr,c_null_ptr, 0, real(0,kind=8))
+        end if
     end subroutine stroke
 
     subroutine quad_to(cr, cx, cy, x1, y1, x2, y2)

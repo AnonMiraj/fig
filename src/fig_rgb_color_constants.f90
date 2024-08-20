@@ -35,7 +35,7 @@ module fig_rgb_color_constants
    type(RGB), parameter :: FIG_COLOR_DARKOLIVEGREEN = RGB( 0.3333, 0.4196, 0.1843, 1.0000)
    type(RGB), parameter :: FIG_COLOR_DARKORANGE = RGB(1.0000, 0.5490, 0.0000, 1.0000)
    type(RGB), parameter :: FIG_COLOR_DARKORCHID = RGB(0.6000, 0.1961, 0.8000, 1.0000)
-   type(RGB), parameter :: FIG_COLOR_DARKED = RGB(0.5451, 0.0000, 0.0000, 1.0000)
+   type(RGB), parameter :: FIG_COLOR_DARKRED = RGB(0.5451, 0.0000, 0.0000, 1.0000)
    type(RGB), parameter :: FIG_COLOR_DARKSALMON = RGB(0.9137, 0.5882, 0.4784, 1.0000)
    type(RGB), parameter :: FIG_COLOR_DARKSEAGREEN = RGB(0.5608, 0.7373, 0.5608, 1.0000)
    type(RGB), parameter :: FIG_COLOR_DARKSLATEBLUE = RGB( 0.2824, 0.2392, 0.5451, 1.0000)

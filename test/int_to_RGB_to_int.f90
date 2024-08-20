@@ -29,6 +29,3 @@ program int_to_RGB_to_int
   end do
 
 end program int_to_RGB_to_int
-  
-  
-  

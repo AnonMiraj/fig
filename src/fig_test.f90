@@ -53,7 +53,7 @@ contains
         character(len=*), intent(in) :: canvas_name
 #ifdef TESTING
         integer :: svg_err=0,bitmap_err=0
-        ! call test_svg(canvas_name,svg_err) ! ci uses a diffrent version of cairo so the test will always fail
+        call test_svg(canvas_name,svg_err)
         call test_bitmap(canvas_name,bitmap_err) 
         if (svg_err==1 .or. bitmap_err==1 ) error stop
 #endif
