@@ -27,6 +27,7 @@ jobs:
       run: |
         sudo apt-get update
         sudo apt install -y gfortran-${GCC_V}
+        sudo apt install fonts-firacode
         sudo apt-get install libcairo2
         sudo update-alternatives --install /usr/bin/gfortran gfortran /usr/bin/gfortran-${GCC_V} 100
         wget https://github.com/dmtrKovalenko/odiff/releases/download/v3.0.1/odiff-Linux-3.0.0-5826168c.tar.gz

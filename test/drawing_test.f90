@@ -125,7 +125,7 @@ program drawing_test_all
     te%weight=FIG_FONT_WEIGHT_BOLD
     te%size = 20
     te%content="Hello, Fortran"
-    te%font_family="sans"
+    te%font_family="Fira Sans"
     te%fill_color=FIG_COLOR_RED
     te%stroke_color=FIG_COLOR_BLACK
     call canva%add_shape(te)
@@ -137,7 +137,7 @@ program drawing_test_all
     te%weight=FIG_FONT_WEIGHT_NORMAL
     te%size = 20
     te%content="Hello, Fortarn"
-    te%font_family="sans"
+    te%font_family="Fira Sans"
     te%fill_color=FIG_COLOR_RED
     te%stroke_color=FIG_COLOR_BLACK
     call canva%add_shape(te)
