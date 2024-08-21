@@ -216,8 +216,8 @@ program drawing_test_all
 
 
 
-    call draw_to_svg(canva , WIDTH, HEIGHT, file_name)
     call draw_to_png(canva , WIDTH, HEIGHT, file_name)
+    call draw_to_svg(canva , WIDTH, HEIGHT, file_name)
 
     call test_both(file_name)
 end program drawing_test_all
