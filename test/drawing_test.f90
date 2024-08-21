@@ -3,8 +3,8 @@ program drawing_test_all
    use fig_test
    implicit none
 
-   integer, parameter :: CANVAS_WIDTH = 600.0
-   integer, parameter :: CANVAS_HEIGHT = 600.0
+   integer, parameter :: WIDTH = 600.0
+   integer, parameter :: HEIGHT = 600.0
    character(len=:), allocatable  :: file_name
    type(drawing) :: canva
    type(circle) :: c
@@ -14,8 +14,6 @@ program drawing_test_all
    type(arc) :: ar
    type(text) :: te
    type(RGB) :: bg, color
-   type(svg_canvas) :: svg_canva
-   type(bitmap_canvas) :: bitmap_canva
    real(8) :: pi = 4.0d0*atan(1.0d0)
    file_name = "test_all"
    bg = FIG_COLOR_WHITE
@@ -24,8 +22,8 @@ program drawing_test_all
    canva%background = FIG_COLOR_WHITE
 
    ! Circle
-   c%c%x = 100.0/CANVAS_WIDTH
-   c%c%y = 100.0/CANVAS_HEIGHT
+   c%c%x = 100.0/WIDTH
+   c%c%y = 100.0/HEIGHT
    c%r = 50.0
    c%fill_color = FIG_COLOR_PINK
    c%fill_color%a = .5
@@ -34,8 +32,8 @@ program drawing_test_all
    call canva%add_shape(c)
 
    ! Ellipse
-   elp%c%x = 250.0/CANVAS_WIDTH
-   elp%c%y = 100.0/CANVAS_HEIGHT
+   elp%c%x = 250.0/WIDTH
+   elp%c%y = 100.0/HEIGHT
    elp%rx = 50.0
    elp%ry = 25.0
    color = FIG_COLOR_GOLD
@@ -46,8 +44,8 @@ program drawing_test_all
    call canva%add_shape(elp)
 
    ! Rectangle 1
-   r%p%x = 200.0/CANVAS_WIDTH
-   r%p%y = 200.0/CANVAS_HEIGHT
+   r%p%x = 200.0/WIDTH
+   r%p%y = 200.0/HEIGHT
    r%width = 100.0
    r%height = 50.0
    r%fill_color = FIG_COLOR_BLUE
@@ -57,8 +55,8 @@ program drawing_test_all
    call canva%add_shape(r)
 
    ! Rectangle 2
-   r%p%x = 250.0/CANVAS_WIDTH
-   r%p%y = 220.0/CANVAS_HEIGHT
+   r%p%x = 250.0/WIDTH
+   r%p%y = 220.0/HEIGHT
    r%width = 120.0
    r%height = 50.0
    r%fill_color = FIG_COLOR_RED
@@ -71,10 +69,10 @@ program drawing_test_all
    call canva%add_shape(r)
 
    ! Line 1
-   l%p1%x = 400.0/CANVAS_WIDTH
-   l%p1%y = 200.0/CANVAS_HEIGHT
-   l%p2%x = 550.0/CANVAS_WIDTH
-   l%p2%y = 450.0/CANVAS_HEIGHT
+   l%p1%x = 400.0/WIDTH
+   l%p1%y = 200.0/HEIGHT
+   l%p2%x = 550.0/WIDTH
+   l%p2%y = 450.0/HEIGHT
    l%stroke_color = FIG_COLOR_BLACK
    l%stroke_width = 10
    call canva%add_shape(l)
@@ -84,10 +82,10 @@ program drawing_test_all
    call canva%add_shape(l)
 
    ! Line
-   l%p1%x = 400.0/CANVAS_WIDTH
-   l%p1%y = 400.0/CANVAS_HEIGHT
-   l%p2%x = 550.0/CANVAS_WIDTH
-   l%p2%y = 400.0/CANVAS_HEIGHT
+   l%p1%x = 400.0/WIDTH
+   l%p1%y = 400.0/HEIGHT
+   l%p2%x = 550.0/WIDTH
+   l%p2%y = 400.0/HEIGHT
    l%stroke_color = FIG_COLOR_BLACK
    l%stroke_color%a = .5
    l%stroke_width = 50
@@ -99,8 +97,8 @@ program drawing_test_all
    call canva%add_shape(l)
 
    ! Arc
-   ar%c%x = 300.0/CANVAS_WIDTH
-   ar%c%y = 400.0/CANVAS_HEIGHT
+   ar%c%x = 300.0/WIDTH
+   ar%c%y = 400.0/HEIGHT
    ar%r = 50.0
    ar%start_angle = 0
    ar%end_angle = pi*1.2
@@ -133,16 +131,8 @@ program drawing_test_all
    te%stroke_color = FIG_COLOR_BLACK
    call canva%add_shape(te)
 
-   call svg_canva%init(CANVAS_WIDTH, CANVAS_HEIGHT, file_name)
-   call svg_canva%apply_shapes(canva)
-   call svg_canva%save_to_svg()
-   call svg_canva%destroy()
-
-   call bitmap_canva%init(CANVAS_WIDTH, CANVAS_HEIGHT, file_name)
-   call bitmap_canva%apply_shapes(canva)
-   call bitmap_canva%save_to_png()
-   call bitmap_canva%save_to_ppm()
-   call bitmap_canva%destroy()
+   call draw_to_png(canva, WIDTH, HEIGHT, file_name)
+   call draw_to_svg(canva, WIDTH, HEIGHT, file_name)
 
    call test_both(file_name)
 end program drawing_test_all

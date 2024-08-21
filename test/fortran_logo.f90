@@ -2,13 +2,11 @@ program logo_path_test
    use fig
    use fig_test
    implicit none
-   integer, parameter :: CANVAS_WIDTH = 200
-   integer, parameter :: CANVAS_HEIGHT = 200
+   integer, parameter :: WIDTH = 200
+   integer, parameter :: HEIGHT = 200
    character(len=:), allocatable  :: file_name
    type(drawing) :: canva
    type(path) :: my_path
-   type(svg_canvas) :: svg_canva
-   type(bitmap_canvas) :: bitmap_canva
 
    FIG_ABSOLUTE_COORDINATES = .true.
    call canva%init()
@@ -64,16 +62,10 @@ program logo_path_test
    my_path%stroke_color = FIG_COLOR_PURPLE
    call canva%add_shape(my_path)
 
-   call bitmap_canva%init(CANVAS_WIDTH, CANVAS_HEIGHT, file_name)
-   call bitmap_canva%apply_shapes(canva)
-   call bitmap_canva%save_to_png()
-   call bitmap_canva%save_to_ppm()
-   call bitmap_canva%destroy()
 
-   call svg_canva%init(CANVAS_WIDTH, CANVAS_HEIGHT, file_name)
-   call svg_canva%apply_shapes(canva)
-   call svg_canva%save_to_svg()
-   call svg_canva%destroy()
+   call draw_to_png(canva, WIDTH, HEIGHT, file_name)
+   call draw_to_svg(canva, WIDTH, HEIGHT, file_name)
+
    call test_both(file_name)
 
 end program logo_path_test

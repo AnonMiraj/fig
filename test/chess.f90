@@ -11,13 +11,11 @@ program chess_checker
    integer :: x, y
    character(len=:), allocatable  :: file_name
 
-   type(drawing) :: checker
-   type(svg_canvas) :: svg_canva
-   type(bitmap_canvas) :: bitmap_canva
+   type(drawing) :: canva
    type(rectangle) :: rect
    type(RGB) :: ALTERNATE_COLOR, BACKGROUND_COLOR
    file_name = "checker"
-   call checker%init()
+   call canva%init()
 
    BACKGROUND_COLOR = FIG_COLOR_BLACK
    ALTERNATE_COLOR = FIG_COLOR_WHITE
@@ -36,18 +34,12 @@ program chess_checker
             rect%fill_color = BACKGROUND_COLOR
          end if
 
-         call checker%add_shape(rect)
+         call canva%add_shape(rect)
       end do
    end do
-   call svg_canva%init(WIDTH, HEIGHT, file_name)
-   call svg_canva%apply_shapes(checker)
-   call svg_canva%save_to_svg()
-   call svg_canva%destroy()
-   call bitmap_canva%init(HEIGHT, WIDTH, file_name)
-   call bitmap_canva%apply_shapes(checker)
-   call bitmap_canva%save_to_png()
-   call bitmap_canva%save_to_ppm()
-   call bitmap_canva%destroy()
+
+   call draw_to_png(canva, WIDTH, HEIGHT, file_name)
+   call draw_to_svg(canva, WIDTH, HEIGHT, file_name)
 
    call test_both(file_name)
 
