@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="400pt" height="400pt" viewBox="0 0 400 400" version="1.1">
-<g id="surface1">
+<g id="surface2">
 <rect x="0" y="0" width="400" height="400" style="fill:rgb(100%,100%,100%);fill-opacity:1;stroke:none;"/>
 <path style="fill-rule:nonzero;fill:rgb(100%,100%,0%);fill-opacity:1;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke:rgb(0%,0%,0%);stroke-opacity:1;stroke-miterlimit:10;" d="M 200 100 C 255.226562 100 300 144.773438 300 200 C 300 255.226562 255.226562 300 200 300 C 144.773438 300 100 255.226562 100 200 C 100 144.773438 144.773438 100 200 100 Z M 200 100 "/>
 <path style="fill-rule:nonzero;fill:rgb(100%,100%,100%);fill-opacity:1;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke:rgb(100%,100%,100%);stroke-opacity:1;stroke-miterlimit:10;" d="M 150 142 C 163.808594 142 175 153.191406 175 167 C 175 180.808594 163.808594 192 150 192 C 136.191406 192 125 180.808594 125 167 C 125 153.191406 136.191406 142 150 142 Z M 150 142 "/>
