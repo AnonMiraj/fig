@@ -18,3 +18,6 @@ source-form = "free"
 
 [dependencies]
 cairo-fortran = {git = "https://github.com/vmagnin/cairo-fortran" }
+
+[preprocess]
+[preprocess.cpp]
