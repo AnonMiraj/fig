@@ -162,7 +162,7 @@ program drawing_test_all
     te%slant=FIG_FONT_SLANT_OBLIQUE
     te%weight=FIG_FONT_WEIGHT_NORMAL
     te%size = 20
-    te%content="Hello, Fortarn"
+    te%content="Hello, Fortran"
     te%font_family="Fira Sans"
     te%fill_color=FIG_COLOR_RED
     te%stroke_color=FIG_COLOR_BLACK
